@@ -1,2 +1,3 @@
 d fam2dta: command
-f ../f/fam2dta.ado
+
+f fam2dta.ado
