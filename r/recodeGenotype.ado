@@ -4,7 +4,6 @@
 # a command to convert allele codes into genotype codes
 #
 # command: recodeGenotype, a1(<A1>) a2(<A2>)
-# notes: the filename does not require the .bim to be added
 # dependencies: recodeGenotype
 # =======================================================================
 # Author:     Richard Anney
