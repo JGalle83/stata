@@ -1,6 +1,6 @@
 /*
 #########################################################################
-# recodeGenotype
+# recodegenotype
 # a command to convert allele codes into genotype codes
 #
 # command: recodeGenotype, a1(<A1>) a2(<A2>)
@@ -34,11 +34,11 @@ THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #########################################################################
 */
 
-program recodeGenotype
+program recodegenotype
 syntax , a1(string asis)  a2(string asis) 
 
 di "***************************************************"
-di "recodeGenotype - version 0.1a - 28may2014 richard anney "
+di "recodegenotype - version 0.1a - 28may2014 richard anney "
 di "***************************************************"
 di "...allele 1 is `a1'"
 di "...allele 2 is `a2'"
