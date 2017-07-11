@@ -1,0 +1,4 @@
+v 1
+d directory
+
+p fam2dta command to convert *.fam plink marker file to *.dta 
