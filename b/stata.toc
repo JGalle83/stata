@@ -1,0 +1,4 @@
+v 1
+d directory
+
+p bim2dta command to convert *.bim plink marker file to *.dta 
