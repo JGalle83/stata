@@ -1,4 +1,4 @@
-# stata-genomics
+# stata-genomics-ado
 This is a repository of stata codes that I have written.
 Most are for use in genomic analysis
 
