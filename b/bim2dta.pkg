@@ -1,4 +1,4 @@
 d bim2dta: command
 
 f bim2dta.ado
-f ../r/recodeGenotype.ado
+f ../r/recodegenotype.ado
