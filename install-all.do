@@ -2,6 +2,7 @@ net install bim2dta,        from(https://raw.github.com/ricanney/stata-genomics-
 net install datestamp,      from(https://raw.github.com/ricanney/stata-genomics-ado/master/d/) replace
 net install fam2dta,        from(https://raw.github.com/ricanney/stata-genomics-ado/master/f/) replace
 net install graphmanhattan, from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
+net install graphqq,        from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
 net install recodegenotype, from(https://raw.github.com/ricanney/stata-genomics-ado/master/r/) replace
 
 * external dependencies
