@@ -2,3 +2,4 @@ v 1
 d directory
 
 p bim2dta command to convert *.bim plink marker file to *.dta 
+p bim2ldexclude command to generate ld-exclude regions for plink
