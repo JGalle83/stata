@@ -54,7 +54,7 @@ qui {
 	rename v5 a1
 	rename v6 a2
 	noi di ".....recoding genotypes"
-	noi recodeGenotype , a1(a1) a2(a2)
+	noi recodegenotype , a1(a1) a2(a2)
 	rename _gt_tmp gt
 	order chr snp bp a1 a2 gt
 	keep  chr snp bp a1 a2 gt
