@@ -1,3 +1,4 @@
 d bim2eigenvec: command
 
 f bim2eigenvec.ado
+f bim2ldexclude.ado
