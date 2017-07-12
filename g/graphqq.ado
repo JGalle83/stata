@@ -143,8 +143,10 @@ qui{
 	qui { // defining plotting options
 		global gws red 
 		global str midgreen
-		colorscheme 8, palette(Blues)
-		global color4	"mlc("`r(color8)'") mfc("`r(color8)'")"
+		colorscheme 8, palette(Reds)
+		global level1	"mlc("`r(color4)'") mfc("`r(color4)'")"
+		global level2	"mlc("`r(color6)'") mfc("`r(color6)'")"
+		global level3	"mlc("`r(color8)'") mfc("`r(color8)'")"
 		}
 	qui { // plotting graph in memory
 		sum tmpO
@@ -159,9 +161,9 @@ qui{
 		tw line tmpE  tmpE , lwidth(vthin) lcolor(black)
 		|| line tmpU tmpE , lpattern(dash) lwidth(vthin) lcolor(black)
 		|| line tmpL tmpE , lpattern(dash) lwidth(vthin) lcolor(black)
-		|| scatter tmpO tmpE if (tmpO < `str') ,  				${tmp_symbol} mlcolor(${color4}) mfcolor(${color4})
-		|| scatter tmpO tmpE if (tmpO >= `str' & tmpO < `gws'), ${tmp_symbol} mlcolor(${str}) mfcolor(${str})
-		|| scatter tmpO tmpE if (tmpO >= `gws'), 				${tmp_symbol} mlcolor(${gws}) mfcolor(${gws})
+		|| scatter tmpO tmpE if (tmpO < `str') ,  		${tmp_symbol} ${level1}
+		|| scatter tmpO tmpE if (tmpO >= `str' & tmpO < `gws'), ${tmp_symbol} ${level2}
+		|| scatter tmpO tmpE if (tmpO >= `gws'), 		${tmp_symbol} ${level3}
 		legend(off) 
 		xtitle(" " "Expected (-log10(P))") 
 		ytitle("-log10(p)"" ")
