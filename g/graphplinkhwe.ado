@@ -78,7 +78,7 @@ qui {
 		           "SNPs with HWE P < 1e-`logP' ; N = ${nSNPslow}") ///
 		   nodraw saving(tmpHWE.gph, replace)
 		}
-	noi di"-exporting snps with excessive hew-P to tempHWE.indlist"
+	noi di"-exporting snps with excessive hew-P to tempHWE.snplist"
 	outsheet snp if p <1e-`logP' using tempHWE.snplist, non noq replace
 	restore
 	}
