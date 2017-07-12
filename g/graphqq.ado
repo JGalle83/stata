@@ -8,7 +8,7 @@
 # options: 
 # 			max(num) .....maximum -log10P to plot - default = 10
 # 			min(num) .....minimum -log10P to plot - default = 2
-# 			gws(num) ....where to plot gws line - default = 7.3 (5e-8)
+# 			gws(num) .....where to plot gws line - default = 7.3 (5e-8)
 # 			str(num) .....what to consider as a strong association - default = 6
 #
 # dependencies: colorscheme
@@ -175,6 +175,8 @@ qui{
 		;
 		#delimit cr
 		}
+	!del _tmpData.dta _tmpScript.do
+	
 	restore
 	}
 	noi di"...graph saved in tmpQQ.gph"
