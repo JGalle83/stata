@@ -5,7 +5,7 @@
 #
 # command: graphplinkhwe, hwe(input-file) 
 # options: 
-# 			threshold(num) ..... -log10P to flag in output-file 
+#          threshold(num) ..... -log10P to flag in output-file 
 #
 # dependencies: 
 # tabbed.pl must be set to be called via ${tabbed}
@@ -49,7 +49,7 @@ noi di"# routine in plink.                                                      
 noi di"# The input data comes in standard format from the hwe output.           "
 
 noi di"# -----------------------------------------------------------------------"
-noi di"# Syntax : graphplinkhwe, hwe(filename) [thresholdreal 6)]                   "
+noi di"# Syntax : graphplinkhwe, hwe(filename) [threshold(real 6)]                   "
 noi di"# for filename, .hwe is not needed                                       "
 noi di"#########################################################################"
 qui { 
@@ -63,7 +63,7 @@ qui {
 	for var p : lab var X "HWE (p)"
 	count
 	global nSNPs `r(N)'
-  count if p <1e-`logP' 
+	count if p <1e-`threshold' 
 	global nSNPslow `r(N)'
 	sum p
 	gen log10p = -log10(p)
@@ -72,14 +72,14 @@ qui {
 	noi di"-plotting hwe-P distribution to tmpHWE.gph (min 1e-4 to 1E-20)"
 	if `r(min)' != `r(max)' {
 		tw hist log10p , width(1) start(4) percent ///
-		   xline(`logP'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
+		   xline(`threshold'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
-		           "SNPs with HWE P < 1e-`logP' ; N = ${nSNPslow}") ///
+		           "SNPs with HWE P < 1e-`threshold' ; N = ${nSNPslow}") ///
 		   nodraw saving(tmpHWE.gph, replace)
 		}
 	noi di"-exporting snps with excessive hew-P to tempHWE.snplist"
-	outsheet snp if p <1e-`logP' using tempHWE.snplist, non noq replace
+	outsheet snp if p <1e-`threshold' using tempHWE.snplist, non noq replace
 	restore
 	}
 	display "done!"
