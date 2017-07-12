@@ -1,2 +1,9 @@
-t graphmanhattan command to draw a simple manhattan plot to tmpManhattan.gph
-t graphqq        command to draw a simple qq plot to tmpQQ.gph
+t graphmanhattan  command to draw a simple manhattan plot to tmpManhattan.gph
+t graphqq         command to draw a simple qq plot to tmpQQ.gph
+t graphplinkfrq   command to plot plink output *.frq
+t graphplinkhet   command to plot plink output *.het
+t graphplinkhwe   command to plot plink output *.hwe
+t graphplinkimiss command to plot plink output *.imiss
+t graphplinkkin0  command to plot plink output *.kin0
+t graphplinklmiss command to plot plink output *.lmiss
+
