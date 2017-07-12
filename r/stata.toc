@@ -2,3 +2,4 @@ v 1
 d directory
 
 p recodegenotype convert allele codes into genotype codes
+p recodestrand flip alleles to refrence strand
