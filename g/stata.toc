@@ -1,1 +1,2 @@
-t graphmanhattan command to draw a smple manhattan plot to tmpManhattan.gph
+t graphmanhattan command to draw a simple manhattan plot to tmpManhattan.gph
+t graphqq        command to draw a simple qq plot to tmpQQ.gph
