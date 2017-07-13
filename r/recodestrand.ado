@@ -55,9 +55,9 @@ noi di" that the code is error-free"
 noi di"#########################################################################"
 qui { // generating genotypes
 	noi di"# - generating genotype variables for reference and data alleles"
-	recodeGenotype, a1(`ref_a1') a2(`ref_a2')
+	recodegenotype, a1(`ref_a1') a2(`ref_a2')
 	rename _gt temp_ref_gt
-	recodeGenotype, a1(`alt_a1') a2(`alt_a2')
+	recodegenotype, a1(`alt_a1') a2(`alt_a2')
 	rename _gt temp_alt_gt
 	noi di"#########################################################################"
 	}
@@ -96,7 +96,7 @@ qui { // determing strand differences	and create alternate alleles
 	replace _tmpb2 = "G" if `alt_a2' == "C" & _tmpflip == 1
 	replace _tmpb2 = "T" if `alt_a2' == "A" & _tmpflip == 1
 	noi di"# - creating alternative genotype from new alleles"
-	recodeGenotype, a1(_tmpb1) a2(_tmpb2)
+	recodegenotype, a1(_tmpb1) a2(_tmpb2)
 	noi di"# - displaying genotypes (post-clean #3)"
 	noi ta temp_ref_gt _gt
 	drop _gt temp_ref_gt temp_alt_gt
