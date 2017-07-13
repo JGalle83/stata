@@ -1,4 +1,3 @@
-
 /*
 #########################################################################
 # genotypeqc
@@ -120,11 +119,6 @@ syntax , param(string asis) [depend(string asis)]
 		noi di""
 		!mkdir $wd
 		cd $wd
-		}
-
-	qui { // check input files exist
-		}
-	qui { // check dependencies are present
 		}
 	qui { // import parameters
 		import delim using ${cd}/template.parameters, stringcols(_all) rowr(21) varname(21) clear
@@ -1944,4 +1938,3 @@ syntax , param(string asis) [depend(string asis)]
 			!del tempfile* *.gph
 			}
 		}
-	}
