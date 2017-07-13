@@ -1,3 +1,4 @@
+t genotypeqc      command to run a full genotype-array-quality-control
 t graphmanhattan  command to draw a simple manhattan plot to tmpManhattan.gph
 t graphqq         command to draw a simple qq plot to tmpQQ.gph
 t graphplinkfrq   command to plot plink output *.frq
