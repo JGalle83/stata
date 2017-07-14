@@ -82,6 +82,20 @@
 */
 program genotypeqc
 syntax , param(string asis) 
-di"printing....`param'"
+
+	qui { // introduce program
+		noi di"#########################################################################"
+		noi di"# genotypeqc                                                             "
+		noi di"# version:       1.0                                                     "
+		noi di"# Creation Date: 12July2017                                              "
+		noi di"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
+		noi di"#########################################################################"
+		noi di""
+		}
+  
+  
+
+
+
 end;
  
