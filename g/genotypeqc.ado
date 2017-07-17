@@ -330,29 +330,27 @@ syntax , param(string asis)
 			noi di in green"...remove low-count genotypes (mac 5)"
 			!$plink --bfile ${input} --mac 5 --make-bed --out tempfile-module-2-01
 			import delim using tempfile-module-2-01.log, clear
-			keep in 12
-			split v1,p(" ")
-			keep v11 
-			for var v11  : destring X, replace
+			split v1,p(" variants loaded from .bim file.")
+			keep if v1 != v11
+			for var v11  : destring X, replace force
+			drop if v11 == .
 			noi di in green"#########################################################################"	
 			sum v11
-
 			noi di in green"# `r(sum)' variants in ${input}.bim"
 			import delim using tempfile-module-2-01.log, clear
-			keep in 13
-			split v1,p(" ")
-			keep v11 
-			for var v11  : destring X, replace
+			split v1,p(" people ("", "") loaded from .fam.")
+			keep if v1 != v11
+			for var v11  : destring X, replace force
+			drop if v11 == .
 			sum v11
 			noi di in green"# `r(sum)' individuals in ${input}.fam"
 			import delim using tempfile-module-2-01.log, clear
-			keep in 25
-			split v1,p(" ")
-			keep v11 v14
-			for var v11 v14  : destring X, replace
+			split v1,p(" variants and "" people pass filters and QC.")
+			for var v11 v12  : destring X, replace force
+			drop if v11 == .
 			sum v11
 			noi di in green"# `r(sum)' variants remain after --mac 5"
-			sum v14
+			sum v12
 			noi di in green"# `r(sum)' individuals remain after --mac 5"			
 			noi di in green"#########################################################################"	
 			}
