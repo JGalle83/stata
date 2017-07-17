@@ -959,7 +959,6 @@ syntax , param(string asis)
 			noi di in green"...tabulate relatedness prior to removal of 2nd-degree relatives"
 			noi ta rel
 			keep if rel == "2nd"
-			noi di in green"...`r(N)' genetic 2nd-degree relatives observed"
 			!type > 2nd-degree.remove
 			count
 			if `r(N)' != 0 { 
@@ -1041,7 +1040,6 @@ syntax , param(string asis)
 			noi di in green"...tabulate relatedness prior to removal of 3rd-degree relatives"
 			noi ta rel
 			keep if rel == "3rd"
-			noi di in green"...`r(N)' genetic 3rd-degree relatives observed"
 			!type > 3rd-degree.remove
 			count
 			if `r(N)' != 0 { 
