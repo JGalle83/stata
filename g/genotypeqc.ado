@@ -555,14 +555,12 @@ syntax , param(string asis)
 			}
 		qui { // report on status
 			import delim using tempfile-module-2-final.log, clear
-			keep in 24
-			split v1,p(" ")
-			keep v11 v14
-			for var v11 v14 : destring X, replace
-			noi di in green"#########################################################################"	
+			split v1,p(" variants and "" people pass filters and QC.")
+			for var v11 v12  : destring X, replace force
+			drop if v11 == .
 			sum v11
 			noi di in green"# `r(sum)' variants pass renaming / allele-frequency checking module"
-			sum v14
+			sum v12
 			noi di in green"# `r(sum)' individuals pass renaming / allele-frequency checking module"
 			noi di in green"#########################################################################"	
 			noi di in green""
