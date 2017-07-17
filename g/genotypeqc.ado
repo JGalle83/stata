@@ -1073,7 +1073,7 @@ syntax , param(string asis)
 							replace rel = "1st" if kinship > ${kin_f}
 							replace rel = "dup" if kinship > ${kin_d}
 							replace rel = ""    if kinship == .
-							noi di in green"...tabulate relatedness post removal of 2nd-degree relatives"
+							noi di in green"...tabulate relatedness post removal of 3rd-degree relatives"
 							noi ta rel
 							keep if rel == "3rd"
 							count
