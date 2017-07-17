@@ -1,3 +1,6 @@
 d genotypeqc: command
 
 f genotypeqc.ado
+f gtqc_report.ado
+f gtqc_meta.ado
+
