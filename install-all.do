@@ -1,5 +1,5 @@
 net install bim2dta,         from(https://raw.github.com/ricanney/stata-genomics-ado/master/b/) replace
-net install bim2ldeigenvec,  from(https://raw.github.com/ricanney/stata-genomics-ado/master/b/) replace
+net install bim2eigenvec,    from(https://raw.github.com/ricanney/stata-genomics-ado/master/b/) replace
 net install bim2ldexclude,   from(https://raw.github.com/ricanney/stata-genomics-ado/master/b/) replace
 net install datestamp,       from(https://raw.github.com/ricanney/stata-genomics-ado/master/d/) replace
 net install fam2dta,         from(https://raw.github.com/ricanney/stata-genomics-ado/master/f/) replace
