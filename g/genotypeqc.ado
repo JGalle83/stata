@@ -3,7 +3,7 @@
 # genotypeqc
 # a command to perform a full quality-control pipeline in plink binaries
 #
-# command: genotypeqc, bin(plink-binaries) param(parameter-file)
+# command: genotypeqc, param(parameter-file)
 # options: see parameter file
 #########################################################################
 #########################################################################
