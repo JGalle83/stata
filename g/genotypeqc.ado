@@ -91,6 +91,7 @@ syntax , param(string asis)
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
+		}
 	qui { // confirm dependencies are correctly defined
 		noi di in green"#########################################################################"
 		noi di in green"# checking necessary files exist and are set as globals"
@@ -157,7 +158,7 @@ syntax , param(string asis)
 		cd $wd
 		}
 	qui { // import parameters
-		import delim using ${cd}/template.parameters, stringcols(_all) rowr(21) varname(21) clear
+		import delim using ${cd}\\`param', stringcols(_all) rowr(21) varname(21) clear
 		gen global = "global " + parameter + `" ""' + definition + `"""' 
 		outsheet global using _000x.do, non noq replace
 		do _000x.do
@@ -165,9 +166,41 @@ syntax , param(string asis)
 		global input "${data_folder}\\${data_input}"
 		global output "${data_folder}\\${data_input}-qc-v4"
 		}
+	qui { // check dependencies from parameter file
+		noi di in green"#########################################################################"
+		noi di in green"# checking for dependency files;"
+		foreach i in build_ref kg_ref_frq aims  {
+			capture confirm file "${`i'}"
+			if _rc==0 {
+				noi di in green"# ...................................... ${`i'} found"
+				}
+			else {
+				noi di in red"# ...................................... ${`i'} does not exist"
+				exit
+				}
+			}
+		foreach i in bim bed fam {
+			capture confirm file "${hapmap_data}.`i'"
+			if _rc==0 {
+				noi di in green"# ...................................... ${hapmap_data}.`i' found"
+				}
+			else {
+				noi di in red"# ...................................... ${hapmap_data}.`i' does not exist"
+				exit
+				}
+			}
+		capture cd "$array_ref"
+		if _rc==0 {
+			noi di in green"# ...................................... $array_ref directory exists"
+			}
+		else {
+			noi di in red"# ...................................... ${array_ref} directory does not exist"
+			exit
+			}
+		}
 	qui { // report parameters to screen
 		noi di in green"#########################################################################"
-		noi di in green"# checking input files;"
+		noi di in green"# checking for input files;"
 		qui { // ${input}
 			foreach i in bim bed fam {
 				capture confirm file "${input}.`i'"
@@ -1357,5 +1390,7 @@ syntax , param(string asis)
 		cd ${cd}
 		!rmdir  $wd /S /Q
 		}
+	
+
 end;
  
