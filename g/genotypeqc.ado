@@ -231,7 +231,7 @@ syntax , param(string asis)
 			}
 		qui { // check the overlap with references
 			noi di in green"...checking overlap with reference lists and calculating overlaps (this bit can take some time)"
-			file open myfile using ${output}.ArrayMatch, write replace
+			file open myfile using ${output}.arraymatch, write replace
 			file write myfile "Array:Overlap:SNPsinModel:Jaccard Index" _n
 			file close myfile
 			clear
@@ -267,20 +267,20 @@ syntax , param(string asis)
 			replace a = `"sum JaccardIndex"' if obs == 10
 			replace a = `"global ji \`r(min)'"' if obs == 11 
 			replace a = `"di"... "' + folder + `" overlap = \${ab} of \${all}""' if obs == 12 
-			replace a = `"filei + ""' + folder + `":\${ab}:\${all}:\${ji}" \${output}.ArrayMatch"' if obs == 13 
+			replace a = `"filei + ""' + folder + `":\${ab}:\${all}:\${ji}" \${output}.arraymatch"' if obs == 13 
 			outsheet a using tempfile-2001.do, non noq replace
 			do tempfile-2001.do
 			!del tempfile-2001.do tempfile-2001.dta
 			noi di in green"...finished checking reference lists"
 			}
 		qui { // create mini-report build
-			import delim using ${output}.ArrayMatch, clear delim(":") varnames(1) case(preserve)
+			import delim using ${output}.arraymtch, clear delim(":") varnames(1) case(preserve)
 			gsort -J
 			gen MostLikely = "+++" in 1
 			replace MostLikely = "++" if J > 0.9 & MostLikely == ""
 			replace MostLikely = "+" if J > 0.8 & MostLikely == ""
-			outsheet using ${input}.ArrayMatch, replace noq
-			outsheet using ${output}.ArrayMatch, replace noq
+			outsheet using ${input}.arraymatch, replace noq
+			outsheet using ${output}.arraymatch, replace noq
 			keep in 1
 			gen a = ""
 			replace a = "global arrayType "
@@ -293,21 +293,21 @@ syntax , param(string asis)
 
 			}		
 		qui { // plot Jaccard Index by Array
-			import delim using ${output}.ArrayMatch, clear case(preserve)
+			import delim using ${output}.arraymatch, clear case(preserve)
 			keep if _n <10
 			graph hbar Jaccard , over(Array,sort(Jaccard) lab(labs(large))) title("Jaccard Index") yline(.9, lcol(red)) fxsize(200) fysize(100) ///
 				caption("Based on overlap with our reference data (derived from http://www.well.ox.ac.uk/~wrayner/strand/) the best matched ARRAY is ${arrayType}" ///
 								"Jaccard Index of  ${arrayType} = ${Jaccard}")
-				graph export ${output}.ArrayMatch.png, height(1000) width(4000) as(png) replace 
-				graph export  ${input}.ArrayMatch.png, height(1000) width(4000) as(png) replace 
+				graph export ${output}.arraymatch.png, height(1000) width(4000) as(png) replace 
+				graph export  ${input}.arraymatch.png, height(1000) width(4000) as(png) replace 
 			window manage close graph
 			}
 		qui { // give a brief output to screen
 			noi di in green"#########################################################################"
 			noi di in green"# best array match is ......... ${arrayType}"
 			noi di in green"# based on jaccard index of ... 0${Jaccard}"
-			noi di in green"# summary plot available in ... ${output}.ArrayMatch.png"
-			noi di in green"# summary data available in ... ${output}.ArrayMatch"
+			noi di in green"# summary plot available in ... ${output}.arraymatch.png"
+			noi di in green"# summary data available in ... ${output}.arraymatch"
 			noi di in green"#########################################################################"
 			noi di in green""
 			}
@@ -609,9 +609,9 @@ syntax , param(string asis)
 			gen MostLikely = "+++" in 1
 			replace MostLikely = "++" if p > 0.9 & MostLikely == ""
 			replace MostLikely = "+" if p > 0.8 & MostLikely == ""
-			outsheet using ${input}.hg_buildMatch, replace noq	
+			outsheet using ${input}.hg_buildmatch, replace noq	
 			graph hbar percentMatched , over(build,sort(percentMatched) lab(labs(large))) title("Percentage Match Genome Build") yline(.9, lcol(red))  
-			graph export ${input}.hg_buildMatch.png, as(png) height(1000) width(4000) replace
+			graph export ${input}.hg_buildmatch.png, as(png) height(1000) width(4000) replace
 			window manage close graph
 			keep in 1
 			gen a = "global buildType "
