@@ -184,7 +184,9 @@ syntax , param(string asis)
 			noi di in red"# ...................................... ${array_ref} directory does not exist"
 			exit
 			}
+		cd $wd	
 		}
+
 	qui { // report parameters to screen
 		noi di in green"#########################################################################"
 		noi di in green"# checking for input files;"
