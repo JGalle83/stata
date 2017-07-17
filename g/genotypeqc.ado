@@ -274,7 +274,7 @@ syntax , param(string asis)
 			noi di in green"...finished checking reference lists"
 			}
 		qui { // create mini-report build
-			import delim using ${output}.arraymtch, clear delim(":") varnames(1) case(preserve)
+			import delim using ${output}.arraymatch, clear delim(":") varnames(1) case(preserve)
 			gsort -J
 			gen MostLikely = "+++" in 1
 			replace MostLikely = "++" if J > 0.9 & MostLikely == ""
