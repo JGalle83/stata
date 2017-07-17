@@ -12,6 +12,8 @@ net install graphplinkimiss, from(https://raw.github.com/ricanney/stata-genomics
 net install graphplinkkin0,  from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
 net install graphplinklmiss, from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
 net install graphqq,         from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
+net install gtqc_report,     from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
+net install gt_qc_meta,      from(https://raw.github.com/ricanney/stata-genomics-ado/master/g/) replace
 net install recodegenotype,  from(https://raw.github.com/ricanney/stata-genomics-ado/master/r/) replace
 net install recodestrand,    from(https://raw.github.com/ricanney/stata-genomics-ado/master/r/) replace
 
