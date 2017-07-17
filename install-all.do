@@ -21,5 +21,7 @@ net install recodestrand,    from(https://raw.github.com/ricanney/stata-genomics
 
 * external dependencies
 net install colorscheme, from(https://github.com/matthieugomez/stata-colorscheme/raw/master/) replace
+net instal dm88_1.pkg, replace
+
 
 
