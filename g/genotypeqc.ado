@@ -3,7 +3,7 @@
 # genotypeqc
 # a command to perform a full quality-control pipeline in plink binaries
 #
-# command: genotypeqc, bin(plink-binaries) param(parameter-file) depend(dependency-file)
+# command: genotypeqc, bin(plink-binaries) param(parameter-file)
 # options: see parameter file
 #########################################################################
 #########################################################################
@@ -17,19 +17,6 @@
 # template.parameters file. these are based on our needs and may not 
 # reflect your needs. please review the parameters to establish whether 
 # these are appropriate.
-# =======================================================================
-#
-#
-#
-#
-#
-#########################################################################
-#########################################################################
-# dependencies: 
-# there are numerous dependencies that need to be specified in the 
-# dependencies file. 
-#
-# we recommend this as a flat text file called <study-id>.dependencies
 # =======================================================================
 #
 #
@@ -87,7 +74,7 @@ syntax , param(string asis)
 		noi di in green"#########################################################################"
 		noi di in green"# genotypeqc                                                             "
 		noi di in green"# version:       1.0                                                     "
-		noi di in green"# Creation Date: 12July2017                                              "
+		noi di in green"# Creation Date: 17July2017                                              "
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
