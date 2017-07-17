@@ -34,6 +34,7 @@
 */
 program gtqc_report
 syntax  
+end
 
 		qui { // create *.docx report		
 			noi di in green"...creating quality-control-report.docx"
