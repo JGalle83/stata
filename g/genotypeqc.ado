@@ -558,6 +558,7 @@ syntax , param(string asis)
 			split v1,p(" variants and "" people pass filters and QC.")
 			for var v11 v12  : destring X, replace force
 			drop if v11 == .
+			noi di in green"#########################################################################"
 			sum v11
 			noi di in green"# `r(sum)' variants pass renaming / allele-frequency checking module"
 			sum v12
