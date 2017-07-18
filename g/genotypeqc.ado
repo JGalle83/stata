@@ -4,46 +4,43 @@
 # a command to perform a full quality-control pipeline in plink binaries
 #
 # command: genotypeqc, param(parameter-file)
-# options: see parameter file
-# to run genotypeqc download the following archive;
-# https://www.dropbox.com/s/u7s9su44beda710/sandbox.tar.gz?dl=0 - archive
-# https://www.dropbox.com/s/4q1oh1nsxhnoww5/sandbox.tar.gz.md5?dl=0 - md5
-#########################################################################
-#########################################################################
-# parameter file
-#
-# we recommend this as a flat text file called <study-id>.parameters
-#
-# there are numerous parameters that can be defined for genotyping-array 
-# quality control. these will be recorded in the final *.meta-log and 
-# *-report.docx. default parameters are included in the 
-# template.parameters file. these are based on our needs and may not 
-# reflect your needs. please review the parameters to establish whether 
-# these are appropriate.
-# =======================================================================
-#
-#
-#
-#
 #
 #########################################################################
-######################################################################### 
-# other stata commands
-# prior to implementation, run the install-all.do file 
-# downloaded from https://github.com/ricanney/stata-genomics-ado
-# 
-# other non-stata scripts
-# tabbed.pl must be set to be called via ${tabbed}
+# additional files
+# download the following archive;
+#  https://www.dropbox.com/s/u7s9su44beda710/sandbox.tar.gz?dl=0 - archive
+#  https://www.dropbox.com/s/4q1oh1nsxhnoww5/sandbox.tar.gz.md5?dl=0 - md5
 #
-# other software
+# this archive contains 
+# 1- an example parameter file
+#  ** adjust parameter file according to location of unpacked archive **
+#  ** adjust parameter file according to quality-control appropriateness **
+# 2- the genotype-array archive
+# 3- the genome-build file
+# 4- reference genotypes from 1000-genomes-phase-1 and hapmap3
+# 5- reference frequency data from 1000-genomes-phase-1
+# 6- subset of hapmap3 ancestry-informative markers
+# 7- population tag for hapmap3
+#
+# prior to implementation, run the install-all.do file from
+# https://github.com/ricanney/stata-genomics-ado
+#
+#download the following executables from
 # plink1.9+ from https://www.cog-genomics.org/plink2
 # plink2.+  from https://www.cog-genomics.org/plink/2.0/
 #
-# other associated data
-# reference genotypes
+# download the following perl-script from 
+# tabbed.pl from https://github.com/ricanney/perl
+# 
+# prior to implementation map the following to global tags
+#
+# global tabbed <location of tabbed.pl>
+# global plink <location of plink1.9+.exe>
+# global plink2 <location of plink2+.exe>
 #
 #########################################################################
-# =======================================================================
+
+#########################################################################
 # Author: Richard Anney
 # Institute: Cardiff University
 # E-mail: AnneyR@cardiff.ac.uk
