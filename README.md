@@ -19,3 +19,7 @@ For the above code to work, two additional files are required in the destination
 * stata.toc
 * *package*.pkg
 
+# data-repositories
+to run genotypeqc download the following archive;
+* https://www.dropbox.com/s/u7s9su44beda710/sandbox.tar.gz?dl=0 - archive
+* https://www.dropbox.com/s/4q1oh1nsxhnoww5/sandbox.tar.gz.md5?dl=0 - md5
