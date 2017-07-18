@@ -612,9 +612,9 @@ qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 			gen MostLikely = "+++" in 1
 			replace MostLikely = "++" if p > 0.9 & MostLikely == ""
 			replace MostLikely = "+" if p > 0.8 & MostLikely == ""
-			outsheet using ${input}.hg_buildmatch, replace noq	
+			outsheet using ${input}.hg-buildmatch, replace noq	
 			graph hbar percentMatched , over(build,sort(percentMatched) lab(labs(large))) title("Percentage Match Genome Build") yline(.9, lcol(red))  
-			graph export ${input}.hg_buildmatch.png, as(png) height(1000) width(4000) replace
+			graph export ${input}.hg-buildmatch.png, as(png) height(1000) width(4000) replace
 			window manage close graph
 			keep in 1
 			gen a = "global buildType "
@@ -659,9 +659,9 @@ qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 			gen MostLikely = "+++" in 1
 			replace MostLikely = "++" if p > 0.9 & MostLikely == ""
 			replace MostLikely = "+" if p > 0.8 & MostLikely == ""
-			outsheet using ${output}.hg_buildMatch, replace noq		
+			outsheet using ${output}.hg-buildmatch, replace noq		
 			graph hbar percentMatched , over(build,sort(percentMatched) lab(labs(large))) title("Percentage Match Genome Build") yline(.9, lcol(red))  
-			graph export ${output}.hg_buildMatch.png, as(png) height(1000) width(4000) replace
+			graph export ${output}.hg-buildmatch.png, as(png) height(1000) width(4000) replace
 			window manage close graph
 			noi di in green"#########################################################################"
 			noi di in green"# the input binaries are based on build ${buildType}"			
