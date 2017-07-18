@@ -5,6 +5,9 @@
 #
 # command: genotypeqc, param(parameter-file)
 # options: see parameter file
+# to run genotypeqc download the following archive;
+# https://www.dropbox.com/s/u7s9su44beda710/sandbox.tar.gz?dl=0 - archive
+# https://www.dropbox.com/s/4q1oh1nsxhnoww5/sandbox.tar.gz.md5?dl=0 - md5
 #########################################################################
 #########################################################################
 # parameter file
