@@ -314,7 +314,7 @@ syntax , param(string asis)
 			noi di in green""
 			}
 		}
-	qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
+qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 		noi di in green"#########################################################################"
 		noi di in green"# Module #2 - update marker identifiers to 1000-genomes compatible rsid #"
 		* - prepare genotype files
@@ -446,8 +446,7 @@ syntax , param(string asis)
 				keep chr bp snp gt
 				for var chr bp: tostring X, replace
 				rename gt array_gt
-				sort chr bp
-				merge 1:m chr bp using ${kg_ref_frq}
+				merge m:m chr bp using ${kg_ref_frq}
 				keep if _m == 3
 				count
 				if `r(N)' != 0 { 
@@ -465,6 +464,10 @@ syntax , param(string asis)
 					replace drop = 1 if array_gt == "W" & (kg_gt != "W") 
 					drop if drop == 1
 					drop drop	
+					duplicates tag snp, gen(y)
+					count if y != 0
+					noi di in green"...`r(N)' observations where snp to be renamed has >1 rsid - drop all instances"
+					drop if y !=0
 					count
 					noi di in green"...`r(N)' variants to be renamed"
 					outsheet snp rsid using tempfile-module-2-07.update-name, non noq replace 
@@ -506,6 +509,7 @@ syntax , param(string asis)
 			!$plink --bfile tempfile-module-2-09 --freq --out tempfile-module-2-09		
 			!$tabbed tempfile-module-2-09.frq
 			import delim using tempfile-module-2-09.frq.tabbed, clear	
+			destring maf, replace force
 			tostring snp,replace
 			keep snp a1 maf
 			merge 1:1 snp a1 using tempfile-module-2-09_bim.dta
@@ -540,7 +544,7 @@ syntax , param(string asis)
 			replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "T" & array_a1 == "A")
 			replace ref_maf = 1-kg_maf if (kg_gt == array_gt & kg_a1 != array_a1)
 			replace ref_maf = 1-kg_maf if ref_maf == .
-			global format `"mlc(black) mfc(blue) mlw(vvthin) m(o) xtitle("allele-frequency-array") ytitle("allele-frequency-1000-genomes")"'
+			global format mlc(black) mfc(blue) mlw(vvthin) m(o) xtitle("allele-frequency-array") ytitle("allele-frequency-1000-genomes")
 			tw scatter ref_maf array_maf if drop != 1, $format saving(tempfile-module-2-09-pre-clean,replace) nodraw
 			replace drop = 1 if array_maf > ref_maf + .1 
 			replace drop = 1 if array_maf < ref_maf - .1  
