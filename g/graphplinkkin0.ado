@@ -56,10 +56,10 @@ qui {
 	replace kin = 0 if kin <0
 	noi di"-plotting ibs0 -by- kinship to tmpKIN0_1.gph"
 	global format "msiz(medlarge) msymbol(O) mfc(red) mlc(black) mlabsize(small) mlw(vvthin)"
-  global xlabel "0(0.2).4"
+  	global xlabel "0(0.2).4"
 	qui { 
 	tw scatter kin ibs, $format       ///
-			 title("Between-family Relationships")
+			 title("Between-family Relationships") ///
 			 xtitle("Proportioin of Zero IBS") ///
 			 ylabel($xlabel)          ///
 			 ytitle("Estimated Kinship Coefficient") ///
