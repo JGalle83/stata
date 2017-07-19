@@ -294,7 +294,7 @@ syntax , param(string asis)
 			noi di in green""
 			}
 		}
-qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
+	qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 		noi di in green"#########################################################################"
 		noi di in green"# Module #2 - update marker identifiers to 1000-genomes compatible rsid #"
 		* - prepare genotype files
