@@ -55,8 +55,8 @@ qui {
 		sum `i'
 		global `i'l `r(max)'
 		}
-	gen xu = round((4 * sd),1000)
-	gen xl = round(-(4 * sd),1000)
+	gen xu = round(((2+`sd') * sd),1000)
+	gen xl = round(-((2+`sd') * sd),1000)
 	foreach i in u l { 
 		sum x`i'
 		global `i'x `r(max)'
