@@ -53,16 +53,20 @@ qui {
 	erase `kin0'.kin0.tabbed
 	for var fid1-id2      : tostring X, replace 
 	for var hethet-kinship: destring X, replace force
+	replace kin = 0 if kin <0
 	noi di"-plotting ibs0 -by- kinship to tmpKIN0_1.gph"
 	global format "msiz(medlarge) msymbol(O) mfc(red) mlc(black) mlabsize(small) mlw(vvthin)"
-  global xlabel "-.2(0.2).4"
+  global xlabel "0(0.2).4"
 	qui { 
-	tw scatter ibs kin, $format  ///
-			 xlabel($xlabel)          ///
-			 xline(0.354, lpattern(dash) lwidth(vthin) lcolor(red))  ///
-			 xline(0.177, lpattern(dash) lwidth(vthin) lcolor(red))  ///
-			 xline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 xline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+	tw scatter kin ibs, $format       ///
+			 title("Between-family Relationships")
+			 xtitle("Proportioin of Zero IBS") ///
+			 ylabel($xlabel)          ///
+			 ytitle("Estimated Kinship Coefficient") ///
+			 yline(0.354, lpattern(dash) lwidth(vthin) lcolor(red))  ///
+			 yline(0.177, lpattern(dash) lwidth(vthin) lcolor(red))  ///
+			 yline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+			 yline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
 			 nodraw saving(tmpKIN0_1.gph, replace)
 			 }
 	gen rel = ""
