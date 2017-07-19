@@ -70,7 +70,7 @@ qui {
 	noi di"-plotting individual heterozygosity distribution to tmpHET.gph"
 	if `r(min)' != `r(max)' {
 		tw hist _ohom,  ///
-		   xlabel(${xl} 0 ${xu})
+		   xlabel(${xl} 0 ${xu}) ///
 		   xline(${ul}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   xline(${ll}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
