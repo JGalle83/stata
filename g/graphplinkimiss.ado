@@ -19,7 +19,7 @@
 */
 program graphplinkimiss
 
-syntax , imiss(string asis) [mind(real 0.05)]
+syntax , imiss(string asis) [mind(real 0.02)]
 noi di"#########################################################################"
 noi di"# graphplinkimiss                                                        "
 noi di"# version:       2a                                                      "
