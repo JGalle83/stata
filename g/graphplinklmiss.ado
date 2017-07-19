@@ -43,12 +43,14 @@ qui {
 	for var f_miss : lab var X "Frequency of Missing Genotypes per SNP"
 	count
 	global nSNPs `r(N)'
-    count if f_miss > `geno'
+        count if f_miss > `geno'
 	global nSNPlow `r(N)'
+	replace f_miss = 0.1 if f_miss >0.1 & f_miss !=.
 	sum f_miss
 	noi di"-plotting marker missingness distribution to tmpLMISS.gph"
 	if `r(min)' != `r(max)' {
-		tw hist f_miss , width(0.002) start(0) percent ///
+		tw hist f_miss , width(0.005) start(0) percent ///
+		   xlabel(0(0.005)0.1) ///
 		   xline(`geno'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
