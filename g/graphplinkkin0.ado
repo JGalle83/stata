@@ -60,7 +60,7 @@ qui {
 	qui { 
 	tw scatter kin ibs, $format       ///
 			 title("Between-Family Relationships") ///
-			 xtitle("Proportioin of Zero IBS") ///
+			 xtitle("Proportion of Zero IBS") ///
 			 ylabel($xlabel)          ///
 			 ytitle("Estimated Kinship Coefficient") ///
 			 yline(0.354, lpattern(dash) lwidth(vthin) lcolor(red))  ///
