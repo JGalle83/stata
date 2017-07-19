@@ -45,16 +45,23 @@ qui {
 	for var ohom   : lab var X "Homozygosity (observed)"
 	sum ohom
 	gen sd   = `r(sd)'
-	gen mean = `r(mean)'
+	gen _ohom = ohom - `r(mean)'
 	gen threshold = 0
-	replace threshold = 1 if ohom < mean - (`sd' * sd) 
-	replace threshold = 1 if ohom > mean + (`sd' * sd) 
-	gen u = mean + (`sd' * sd) 
-	gen l = mean - (`sd' * sd) 
+	replace threshold = 1 if _ohom <  -(`sd' * sd) 
+	replace threshold = 1 if _ohom >   (`sd' * sd) 
+	gen u = (`sd' * sd) 
+	gen l = -(`sd' * sd) 
 	foreach i in u l { 
 		sum `i'
 		global `i'l `r(max)'
 		}
+	gen xu = round((4 * sd),1000)
+	gen xl = round(-(4 * sd),1000)
+	foreach i in u l { 
+		sum x`i'
+		global x`i' `r(max)'
+		}
+		
 	count
 	global nIND `r(N)'
 	count if threshold == 1
@@ -63,6 +70,7 @@ qui {
 	noi di"-plotting individual heterozygosity distribution to tmpHET.gph"
 	if `r(min)' != `r(max)' {
 		tw hist ohom,  ///
+		   xlabel(${xl} 0 ${xu})
 		   xline(${ul}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   xline(${ll}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
