@@ -21,7 +21,7 @@ end
 	dh = _docx_new()
 	// set default document font, size, color, and orientation
 	_docx_set_color(dh, "000000")
-	_docx_set_font(dh, "Calibri")
+	_docx_set_font(dh, "Consolas")
 	_docx_set_size(dh, 20)
 
 	// TITLE PAGE
@@ -30,7 +30,6 @@ end
 	_docx_paragraph_add_text(dh, "Genotyping Array Quality Control Report")
 	_docx_paragraph_new(dh, "")
 	_docx_paragraph_set_textsize(dh, 20)
-	_docx_paragraph_set_font(dh, "Consolas")
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# genotypeqc                                                                        #")
@@ -42,6 +41,7 @@ end
 	_docx_paragraph_add_text(dh, "# Author ..................... Richard Anney (anneyr@cardiff.ac.uk)                 #")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# Downloaded from ............ https://github.com/ricanney                          #")
+	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# Run Date ..................... $S_DATE $S_TIME")
@@ -100,14 +100,14 @@ end
 	_docx_paragraph_add_text(dh, "# GENOME BUILD OF ${data_input}")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
-	_docx_image_add(dh,"${input}.hg_buildmatch.png")
+	_docx_image_add(dh,"${input}.hg-buildmatch.png")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# GENOME BUILD OF ${data_input}-qc-v4")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
-	_docx_image_add(dh,"${output}.hg_buildmatch.png")
+	_docx_image_add(dh,"${output}.hg-buildmatch.png")
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 
 	// REPORTING ARRAY
@@ -138,10 +138,13 @@ end
 	_docx_image_add(dh,"${output}.ArrayMatch.png")
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")	
 	_docx_paragraph_add_text(dh, "Genome Build of ${data_input}")
-	_docx_image_add(dh,"${input}.hg_buildmatch.png")
+	_docx_image_add(dh,"${input}.hg-buildmatch.png")
 	_docx_paragraph_add_linebreak(dh)
+	_docx_paragraph_add_text(dh, "# ================================================================================= #")	
 	_docx_paragraph_add_text(dh, "Genome Build of ${data_input}-qc-v4")
-	_docx_image_add(dh,"${output}.hg_buildmatch.png")
+	_docx_image_add(dh,"${output}.hg-buildmatch.png")
+	_docx_paragraph_add_text(dh, "# ================================================================================= #")	
+
 
 	// REPORTING ALLELE-FREQUENCY DIFFERENCES
 	_docx_paragraph_new(dh, "")
@@ -243,7 +246,7 @@ end
 	_docx_paragraph_add_linebreak(dh)	
 	_docx_paragraph_add_text(dh, "# These plots are created from the *.kin0 files created using the --make-king-table #")
 	_docx_paragraph_add_linebreak(dh)	
-	_docx_paragraph_add_text(dh, "#flag in plink2. The following plots show relatedness as defined by this kinship    #")
+	_docx_paragraph_add_text(dh, "# flag in plink2. The following plots show relatedness as defined by this kinship   #")
 	_docx_paragraph_add_linebreak(dh)	
 	_docx_paragraph_add_text(dh, "# matrix. Approximation of kinship thresholds (duplicates, 2nd and 3rd degree       #")
 	_docx_paragraph_add_linebreak(dh)	
@@ -252,7 +255,7 @@ end
 	_docx_paragraph_add_text(dh, "# degree relatives are removed from the dataset. First-degree relatives (parent-    #")
 	_docx_paragraph_add_linebreak(dh)	
 	_docx_paragraph_add_text(dh, "# child and sibling-pairs) are retained.                                            #")
-	_docx_paragraph_new(dh, "")
+	_docx_paragraph_add_linebreak(dh)	
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_image_add(dh,"tempfile-module-8-KIN0_1.png")
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
