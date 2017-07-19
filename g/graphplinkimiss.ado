@@ -49,8 +49,9 @@ qui {
 	sum f_miss
 	noi di"-plotting individual missingness distribution to tmpIMISS.gph"
 	if `r(min)' != `r(max)' {
-		tw hist f_miss , width(0.002) start(0) percent                       ///
-		   xline(`mind'  , lpattern(dash) lwidth(vthin) lcolor(red))        ///
+		tw hist f_miss , width(0.005) start(0) percent                       ///
+		   xlabel(0(0.005)0.05)                                              ///
+		   xline(`mind'  , lpattern(dash) lwidth(vthin) lcolor(red))         ///
 		   legend(off) ///
 		   caption("Individuals in dataset; N = ${nIND}" ///
 		           "Individuals with missingness > `mind' ; N = ${nINDlow}") ///
