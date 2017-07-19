@@ -59,7 +59,7 @@ qui {
   	global xlabel "0(0.2).4"
 	qui { 
 	tw scatter kin ibs, $format       ///
-			 title("Between-family Relationships") ///
+			 title("Between-Family Relationships") ///
 			 xtitle("Proportioin of Zero IBS") ///
 			 ylabel($xlabel)          ///
 			 ytitle("Estimated Kinship Coefficient") ///
@@ -82,7 +82,7 @@ qui {
 		}
 	noi di"-plotting kinship to tmpKIN0_2.gph"
 	qui { 
-		tw hist kinship , width(0.005) percent                     ///
+		tw hist kinship , width(0.005) percent                          ///
 			 xline(0.3540, lpattern(dash) lwidth(vthin) lcolor(red)) ///
 			 xline(0.1707, lpattern(dash) lwidth(vthin) lcolor(red)) ///
 			 xline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
