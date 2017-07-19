@@ -49,8 +49,8 @@ qui {
 	sum f_miss
 	noi di"-plotting marker missingness distribution to tmpLMISS.gph"
 	if `r(min)' != `r(max)' {
-		tw hist f_miss , width(0.005) start(0) percent ///
-		   xlabel(0(0.005)0.1) ///
+		tw hist f_miss , width(0.01) start(0) percent ///
+		   xlabel(0(0.01)0.1) ///
 		   xline(`geno'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
