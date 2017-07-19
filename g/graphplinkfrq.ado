@@ -49,8 +49,8 @@ qui {
 	sum maf
 	noi di"-plotting frequency distribution to tmpFRQ.gph"
 	if `r(min)' != `r(max)' {
-		tw hist maf,  width(.001) start(0) percent ///
-		   xlabel(0(.01)0.5) ///
+		tw hist maf,  width(.005) start(0) percent ///
+		   xlabel(0(.1)0.5) ///
 		   xline(`maf' , lpattern(dash) lwidth(vthin) lcolor(red) ) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
