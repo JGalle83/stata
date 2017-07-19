@@ -1,3 +1,3 @@
-d graphplinkimiss: command
-
+d graphplinkimiss command to plot plink output *.imiss
+d Richard Anney, Cardiff University
 f graphplinkimiss.ado

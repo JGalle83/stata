@@ -1,3 +1,3 @@
-d graphplinklmiss: command
-
+d graphplinklmiss command to plot plink output *.lmiss
+d Richard Anney, Cardiff University
 f graphplinklmiss.ado

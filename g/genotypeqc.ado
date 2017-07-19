@@ -1378,7 +1378,4 @@ qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 		cd ${cd}
 		!rmdir  $wd /S /Q
 		}
-	
-
 end;
- 

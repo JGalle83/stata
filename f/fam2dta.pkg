@@ -1,3 +1,3 @@
-d fam2dta: command
-
+d fam2dta command to convert *.fam plink marker file to *.dta 
+d Richard Anney, Cardiff University
 f fam2dta.ado

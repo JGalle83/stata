@@ -1,1 +1,2 @@
-t datestamp create a non-space datestamp in global that can be accessed via $DATA 
+d datestamp create a non-space datestamp in global that can be accessed via $DATA 
+d Richard Anney, Cardiff University

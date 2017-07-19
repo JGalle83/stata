@@ -1,3 +1,3 @@
-d graphqq : command
-
+d graphqq command to draw a simple qq plot to tmpQQ.gph
+d Richard Anney, Cardiff University
 f graphqq.ado
