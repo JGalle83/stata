@@ -24,5 +24,6 @@ net install dm88_1.pkg,  from(http://www.stata-journal.com/software/sj5-4/) repl
 * set graph to colorblind - this is cosmetic for the graphing elements of the report
 ssc install blindschemes, replace all
 set scheme Colorblind, permanently
+net install ralpha, from(http://fmwww.bc.edu/RePEc/bocode/r) replace
 
 
