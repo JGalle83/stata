@@ -54,7 +54,8 @@ qui {
 		   xline(`geno'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
-		           "SNPs with missingness > `geno' ; N = ${nSNPlow}") ///
+		           "SNPs with missingness > `geno' ; N = ${nSNPlow}" ///
+		           "SNPs with missingness > 0.1 are recoded to 0.1 for plotting") ///
 		   nodraw saving(tmpLMISS.gph, replace)
 		}
 	restore
