@@ -1,4 +1,4 @@
-d bim2eigenvec: command
-
+d bim2eigenvec - generate *.dta eigenval calculations from plink binaries
+d Richard Anney, Cardiff University
 f bim2eigenvec.ado
 f bim2ldexclude.ado
