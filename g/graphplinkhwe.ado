@@ -54,6 +54,7 @@ qui {
 	noi di"-plotting hwe-P distribution to tmpHWE.gph (min 1e-4 to 1E-20)"
 	if `r(min)' != `r(max)' {
 		tw hist log10p , width(1) start(4) percent ///
+		   xlabel(0(5)20) ///
 		   xline(`threshold'  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
