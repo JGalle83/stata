@@ -59,9 +59,8 @@ qui {
 	gen xl = round(-(4 * sd),1000)
 	foreach i in u l { 
 		sum x`i'
-		global x`i' `r(max)'
-		}
-		
+		global `i'x `r(max)'
+		}	
 	count
 	global nIND `r(N)'
 	count if threshold == 1
@@ -70,7 +69,8 @@ qui {
 	noi di"-plotting individual heterozygosity distribution to tmpHET.gph"
 	if `r(min)' != `r(max)' {
 		tw hist _ohom,  ///
-		   xlabel(${xl} 0 ${xu}) ///
+		   xtitle("Adjuster Homozygosity") ///
+		   xlabel(${ux} 0 ${lx}) ///
 		   xline(${ul}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   xline(${ll}  , lpattern(dash) lwidth(vthin) lcolor(red)) ///
 		   legend(off) ///
