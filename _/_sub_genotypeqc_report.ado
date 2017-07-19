@@ -3,32 +3,11 @@
 # _sub_genotypeqc_report
 # subroutine for genotypeqc
 # command: _sub_genotypeqc_report
-#########################################################################
 # =======================================================================
 # Author: Richard Anney
 # Institute: Cardiff University
 # E-mail: AnneyR@cardiff.ac.uk
 # Date: 12th July 2017
-# =======================================================================
-# Copyright 2017 Richard Anney
-# Permission is hereby granted, free of charge, to any person obtaining a 
-# copy of this software and associated documentation files (the 
-# "Software"), to deal in the Software without restriction, including  
-# without limitation the rights to use, copy, modify, merge, publish, 
-# distribute, sublicense, and/or sell copies of the Software, and to  
-# permit persons towhom the Software is furnished to do so, subject to 
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be included 
-# in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS 
-# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
-# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
-# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
-# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE 
-# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #########################################################################
 */
 program _sub_genotypeqc_report
@@ -63,71 +42,21 @@ end
 	_docx_paragraph_set_halign(dh, "left")
 	_docx_paragraph_set_font(dh, "Consolas")
 	_docx_paragraph_set_textsize(dh, 20)
-	_docx_paragraph_add_text(dh, `"# ======================================================================="')
+	_docx_paragraph_add_text(dh, "# =======================================================================")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# Author:     Richard Anney"')
+	_docx_paragraph_add_text(dh, "# Author:     Richard Anney")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# Institute:  Cardiff University"')
+	_docx_paragraph_add_text(dh, "# Institute:  Cardiff University")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# E-mail:     AnneyR@cardiff.ac.uk"')
+	_docx_paragraph_add_text(dh, "# E-mail:     AnneyR@cardiff.ac.uk")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# Date:       12th July 2017"')
+	_docx_paragraph_add_text(dh, "# Date:       12th July 2017")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# Copyright 2017 Richard Anney"')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# ======================================================================="')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# Permission is hereby granted, free of charge, to any person obtaining a "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# copy of this software and associated documentation files (the "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# "Software"), to deal in the Software without restriction, including  "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# without limitation the rights to use, copy, modify, merge, publish, "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# distribute, sublicense, and/or sell copies of the Software, and to  "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# permit persons to whom the Software is furnished to do so, subject to "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# the following conditions:"')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"#"')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# The above copyright notice and this permission notice shall be included "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# in all copies or substantial portions of the Software."')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"#"')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE "')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, `"#########################################################################"')
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_linebreak(dh)
+	_docx_paragraph_add_text(dh, "# =======================================================================")
 	_docx_paragraph_add_linebreak(dh)
 	//table #1 - dataset information
 	_docx_paragraph_new(dh, "")
+	_docx_add_pagebreak(dh,)
 	_docx_paragraph_set_halign(dh, "left")
 	_docx_paragraph_set_font(dh, "Consolas")
 	_docx_paragraph_set_textsize(dh, 20)

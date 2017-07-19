@@ -1,6 +1,20 @@
+/*
+#########################################################################
+# datestamp - create a non-space datestamp in global that can be accessed via $DATA 
+#
+# command: bim2dta, bim(<FILENAME>)
+# notes: the filename does not require the .bim to be added
+# dependencies: recodeGenotype
+# =======================================================================
+# Author:     Richard Anney
+# Institute:  Cardiff University
+# E-mail:     AnneyR@cardiff.ac.uk
+# Date:       10th September 2015
+# #########################################################################
+*/
+
 program datestamp
-version 10.1
-  
+ 
 qui{ 
 	clear
 	set obs 1
