@@ -1,4 +1,3 @@
-d recodestrand: command
-
-f recodestrand.ado
+d recodestrand - command to flip alleles to a refrence strand
+d Richard Anney, Cardiff University
 f recodegenotype.ado

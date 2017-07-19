@@ -1357,8 +1357,8 @@ qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
 			erase tempfile.do
 			}	
 		qui { // create *.docx report and meta-log		
-			gtqc_report
-			gtqc_meta
+			_sub_genotypeqc_report
+			_sub_genotypeqc_meta
 			}		
 		qui { // move files
 			noi di in green"...copying datasets to $data_folder"

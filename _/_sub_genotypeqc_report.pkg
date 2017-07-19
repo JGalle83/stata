@@ -1,0 +1,3 @@
+d _sub_genotypeqc_report subcommand: subrouting for genotypeqc to create report file
+d Richard Anney, Cardiff University
+f _sub_genotypeqc_report.ado

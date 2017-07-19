@@ -1,0 +1,2 @@
+t _sub_genotypeqc_report subcommand: subrouting for genotypeqc to create report file
+t _sub_genotypeqc_meta subcommand: subrouting for genotypeqc to create meta-log file

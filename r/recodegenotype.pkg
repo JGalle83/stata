@@ -1,4 +1,4 @@
-d recodegenotype: command
-
+d recodegenotype - command to convert allele codes into genotype codes
+d Richard Anney, Cardiff University
 f recodegenotype.ado
 
