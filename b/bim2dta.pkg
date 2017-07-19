@@ -1,4 +1,4 @@
-d bim2dta: command
-
+d bim2dta - convert plink *.bim files to STATA format (convert allele codes to genotypes and replace extended indel to I/D coding)
+d Richard Anney, Cardiff University
 f bim2dta.ado
 f ../r/recodegenotype.ado
