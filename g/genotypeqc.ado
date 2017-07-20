@@ -87,7 +87,12 @@ syntax , param(string asis)
 				}
 			}
 		qui { // tabbed
-			capture confirm file "$tabbed"
+ 			clear
+			set ob 1
+			gen a = "$tabbed"
+			replace a = subinstr(a,"perl ","capture confirm file ",.)
+			outsheet a using _ooo.do, non noq replace
+			do _ooo.do
 			if _rc==0 {
 				noi di in green"# the tabbed.pl script exists and is correctly assigned as  $tabbed"
 				noi di in white"# ensure perl is working on your system and can be called from the command-line"
@@ -98,6 +103,7 @@ syntax , param(string asis)
 				noi di in red`"# global tabbed "folder\file"  "'
 				exit
 				}
+			erase do _ooo.do
 			}
 		noi di in green"#########################################################################"
 		}
