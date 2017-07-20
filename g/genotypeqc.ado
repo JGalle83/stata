@@ -374,7 +374,7 @@ syntax , param(string asis)
 					outsheet snp using tempfile.exclude, non noq replace
 					}
 			else if `r(N)' == 0 {
-					noi di in green"...`r(N)' no duplicates are present"
+					noi di in green"...`r(N)' duplicates are present"
 					keep snp
 					outsheet snp using tempfile.exclude, non noq replace
 					}
