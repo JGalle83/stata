@@ -103,7 +103,7 @@ syntax , param(string asis)
 				noi di in red`"# global tabbed "folder\file"  "'
 				exit
 				}
-			erase do _ooo.do
+			erase _ooo.do
 			}
 		noi di in green"#########################################################################"
 		}
