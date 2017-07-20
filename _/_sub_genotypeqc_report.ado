@@ -252,8 +252,6 @@ end
 	_docx_image_add(dh,"tempfile-module-8-KIN0_1.png")
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_image_add(dh,"tempfile-module-8-KIN0_2.png")
-	_docx_paragraph_add_text(dh, "# ================================================================================= #")
-
 
 	// REPORTING HETEROZYGOSITY
 	_docx_paragraph_new(dh, "")
