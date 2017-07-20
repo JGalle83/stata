@@ -25,5 +25,6 @@ net install dm88_1.pkg,  from(http://www.stata-journal.com/software/sj5-4/) repl
 ssc install blindschemes, replace all
 set scheme Colorblind, permanently
 net install ralpha, from(http://fmwww.bc.edu/RePEc/bocode/r) replace
+net install filei, from(http://fmwww.bc.edu/RePEc/bocode/f) replace
 
 
