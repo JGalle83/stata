@@ -34,7 +34,7 @@
 # 
 # prior to implementation map the following to global tags
 #
-# global tabbed <location of tabbed.pl>
+# global tabbed perl <location of tabbed.pl>
 # global plink <location of plink1.9+.exe>
 # global plink2 <location of plink2+.exe>
 #
