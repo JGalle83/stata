@@ -1240,7 +1240,7 @@ syntax , param(string asis)
 						}
 					}
 			graph combine tempfile-module-7-scree.gph  _cPC1PC2.gph _cPC1PC3.gph _cPC2PC3.gph legend.gph , col(5) title("All HapMap Ancestries Plotted")
-			graph export  tempfile-module-7-pca.png, height(5000) width(16000) replace
+			graph export  tempfile-module-7-pca.png, height(2500) width(8000) replace
 			window manage close graph
 			}
 		qui { // plot eigenvecs against all reference ancestries (european focus)
@@ -1273,7 +1273,7 @@ syntax , param(string asis)
 						}
 					}
 			graph combine tempfile-module-7-scree.gph  _cPC1PC2.gph _cPC1PC3.gph _cPC2PC3.gph legend.gph , col(5) title("All HapMap Ancestries Plotted")
-			graph export  tempfile-module-7-pca-eur.png, height(5000) width(16000) replace
+			graph export  tempfile-module-7-pca-eur.png, height(2500) width(8000) replace
 			window manage close graph
 			}
 		qui { // clean up files
