@@ -88,7 +88,7 @@ syntax , param(string asis)
 			}
 		qui { // tabbed
  			clear
-			set ob 1
+			set obs 1
 			gen a = "$tabbed"
 			replace a = subinstr(a,"perl ","capture confirm file ",.)
 			outsheet a using _ooo.do, non noq replace
