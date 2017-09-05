@@ -1,0 +1,17 @@
+d genotypeqc - genotype-array quality-control pipeline
+d Richard Anney, Cardiff University
+f ../b/bim2dta.ado
+f ../b/bim2eigenvec.ado
+f ../b/bim2ldexclude.ado
+f ../f/fam2dta.ado
+f genotypeqc.ado
+f graphplinkfrq.ado
+f graphplinkhet.ado
+f graphplinkhwe.ado
+f graphplinkimiss.ado
+f graphplinkkin0.ado
+f graphplinklmiss.ado
+f ../_/_sub_genotypeqc_meta.ado
+f ../_/_sub_genotypeqc_report.ado
+f ../r/recodegenotype.ado
+f ../r/recodestrand.ado
