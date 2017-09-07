@@ -1,4 +1,5 @@
 d profilescore - polygenic-risk-profile-score-generator
 d Richard Anney, Cardiff University
+f profilescore.ado
 f ../r/recodegenotype.ado
 f ../r/recodestrand.ado
