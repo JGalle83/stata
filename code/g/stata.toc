@@ -8,5 +8,6 @@ t graphplinkhwe   command to plot plink output *.hwe
 t graphplinkimiss command to plot plink output *.imiss
 t graphplinkkin0  command to plot plink output *.kin0
 t graphplinklmiss command to plot plink output *.lmiss
+t graphgene       command to plot genes from chromosome location
 
 
