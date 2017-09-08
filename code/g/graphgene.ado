@@ -179,7 +179,7 @@ qui { // plot region
 		||     scatter order start if pos == 11  , msymbol(i) mlabel(symbol) mlabpos(11) mlabcolor(black) mlabsize(vsmall) 
 		||     scatter order end   if pos == 1   , msymbol(i) mlabel(symbol) mlabpos(1 ) mlabcolor(black) mlabsize(vsmall) 
 		legend(off) 
-		ylab(,ycol(white)) ytitle("genes")
+		ylab(,labc(white)) ytitle("genes")
 		xtitle("Chromosome `chr'")   
 		graphregion(margin(zero)) 
 		saving(temp-graphgene, replace) 
