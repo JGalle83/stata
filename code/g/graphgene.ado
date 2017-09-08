@@ -19,6 +19,7 @@
 # Date: 7th September 2017
 #########################################################################
 */
+
 program graphgene
 syntax  ,  chr(string asis) start(string asis) end(string asis) gene_file(string asis) 
 
@@ -122,35 +123,35 @@ qui { // define order of genes
 	use tmpGENEcoords.dta, clear
 	drop if symbol == "DUMMY"
 	sort chr start end
-	encode symbol,gen(x)
+	encode symbol,gen(y)
 	gen order = .
 	qui { // order == 1
-		replace order = 1 if x == 1
-		sum x
+		replace order = 1 if y == 1
+		sum y
 		foreach i of num 1 / `r(max)' {
 					sum start if order == 1
-					replace order = 1 if x == `i' & order == . & end < `r(min)' - 1000000
+					replace order = 1 if y == `i' & order == . & end < `r(min)' - 1000000
 					}
-		sum x
+		sum y
 		foreach i of num 1 / `r(max)' {
 					sum end if order == 1
-					replace order = 1 if x == `i' & order == . & start > `r(max)' + 1000000
+					replace order = 1 if y == `i' & order == . & start > `r(max)' + 1000000
 					}		
 		}
 	qui { // order == `j' to 100
 		foreach j of num 1 / 100 {
-			sum x if order == .
+			sum y if order == .
 			if `r(N)' != 0 {
-				replace order = `j' if x == `r(min)'
-				sum x
+				replace order = `j' if y == `r(min)'
+				sum y
 				foreach i of num 1 / `r(max)' {
 					sum start if order == `j'
-					replace order = `j' if x == `i' & order == . & end < `r(min)' - 1000000
+					replace order = `j' if y == `i' & order == . & end < `r(min)' - 1000000
 					}
-				sum x
+				sum y
 				foreach i of num 1 / `r(max)' {
 					sum end if order == `j'
-					replace order = `j' if x == `i' & order == . & start > `r(max)' + 1000000
+					replace order = `j' if y == `i' & order == . & start > `r(max)' + 1000000
 					}		
 				}
 			}
