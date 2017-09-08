@@ -6,6 +6,7 @@ net install bim2ldexclude,          from(https://raw.github.com/ricanney/stata/m
 net install datestamp,              from(https://raw.github.com/ricanney/stata/master/code/d/) replace
 net install fam2dta,                from(https://raw.github.com/ricanney/stata/master/code/f/) replace
 net install genotypeqc,             from(https://raw.github.com/ricanney/stata/master/code/g/) replace
+net install graphgene,              from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphmanhattan,         from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphplinkfrq,          from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphplinkhet,          from(https://raw.github.com/ricanney/stata/master/code/g/) replace
