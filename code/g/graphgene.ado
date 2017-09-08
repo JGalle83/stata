@@ -93,10 +93,6 @@ qui { // identify genes in region
 				drop if biotype == "snRNA"
 				drop if biotype == "snoRNA"
 				}
-			
-			
-			
-			
 			keep if chr    ==  `chr'
 			drop if start   > `end'
 			drop if end     < `start'
@@ -117,8 +113,7 @@ qui { // how many genes are in the region
 			sum region_n
 			global region_n `r(max)'
 			noi di in yellow "# there are $region_n unique elements in the region"
-			}
-			
+			}	
 qui { // save co-ordinates file
 			keep symbol	chr st en txs txe
 			save tmpGENEcoords.dta, replace
@@ -160,7 +155,6 @@ qui { // define order of genes
 						}
 					}
 				}
-			
 			}
 qui { // plot region 
 	qui { // expand exons to minimum of 1000
@@ -174,7 +168,7 @@ qui { // plot region
 				}
 	qui { // define label position
 				gen pos = 11
-				replace pos = 1 if start < $start + 500000
+				replace pos = 1 if start < `start' + 500000
 				}
 	save temp-graphgene-data.dta, replace
 	qui { // plot genes
