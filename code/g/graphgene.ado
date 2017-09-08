@@ -129,14 +129,14 @@ qui { // define order of genes
 		replace order = 1 if y == 1
 		sum y
 		foreach i of num 1 / `r(max)' {
-					sum start if order == 1
-					replace order = 1 if y == `i' & order == . & end < `r(min)' - 1000000
-					}
+			sum start if order == 1
+			replace order = 1 if y == `i' & order == . & end < `r(min)' - 1000000
+			}
 		sum y
 		foreach i of num 1 / `r(max)' {
-					sum end if order == 1
-					replace order = 1 if y == `i' & order == . & start > `r(max)' + 1000000
-					}		
+			sum end if order == 1
+			replace order = 1 if y == `i' & order == . & start > `r(max)' + 1000000
+			}		
 		}
 	qui { // order == `j' to 100
 		foreach j of num 1 / 100 {
