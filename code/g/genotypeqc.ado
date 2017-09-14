@@ -887,7 +887,7 @@ syntax , param(string asis)
 		qui { // remove-related-samples (duplicated)
 			noi di in green"...identifying duplicates"
 			noi di in green"...calculating kinship matrix"
-			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table"
+			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t}"
 			bim2ldexclude, bim(tempfile-module-5-round${rounds})
 			!$plink2 --bfile tempfile-module-5-round${rounds}	 ${makeking} --out tempfile-module-5-round${rounds}	
 			!$tabbed tempfile-module-5-round${rounds}.kin0
