@@ -293,15 +293,13 @@ syntax , param(string asis)
 		preserve
 		sum P
 		gen min = `r(min)'
-		gen threhold = ""
-		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4" in 1 if min < 1E-4
-		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5" in 1 if min < 1E-5
-		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6" in 1 if min < 1E-6
-		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7" in 1 if min < 1E-7
-		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7 1E-8" in 1 if min < 1E-8
-		keep in 1
-		keep threshold
-		outsheet _tmp.do, non noq replace
+		gen threshold = ""
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4"  if min < 1E-4
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5" if min < 1E-5
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6"  if min < 1E-6
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7"  if min < 1E-7
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7 1E-8" if min < 1E-8
+		outsheet threshold in 1 using _tmp.do, non noq replace
 		do _tmp.do
 		restore
 		foreach threshold in $thresholds {
