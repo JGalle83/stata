@@ -50,6 +50,10 @@
 program genotypeqc
 syntax , param(string asis) [ arraycheck(string asis) ]
 
+
+di `array'
+end
+
 	qui { // introduce program
 		noi di in green"#########################################################################"
 		noi di in green"# genotypeqc                                                             "
