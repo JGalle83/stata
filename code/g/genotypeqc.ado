@@ -210,6 +210,7 @@ syntax , param(string asis) [ arraycheck(string asis) ]
 		clear
 		set obs 1
 		gen a = "`array'"
+		x
 		if a != "" {
 			noi di in green"#########################################################################"
 			noi di in green"# Module #1 - determining the original genotyping array                 #"
