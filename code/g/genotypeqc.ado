@@ -50,6 +50,7 @@
 program genotypeqc
 syntax , param(string asis) [array(string asis)]
 
+noi di"`array'"
 	qui { // introduce program
 		noi di in green"#########################################################################"
 		noi di in green"# genotypeqc                                                             "
