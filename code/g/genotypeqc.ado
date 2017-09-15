@@ -58,7 +58,7 @@ syntax , param(string asis) [ array(string asis) ]
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
-		noi di "`array'"
+		noi di `""`array'""'
 
 		}
 	qui { // confirm dependencies are correctly defined
