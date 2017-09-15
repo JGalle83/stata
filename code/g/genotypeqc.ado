@@ -708,7 +708,7 @@ syntax , param(string asis)
 			!$plink  --bfile ${preqc} --missing        --out ${round0}
 			* i expect this threshold to crash if no individuals meet criteria (e.g. post qc)
 			* may need to look at how graphplinkkin0 works with a dummy file
-			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t}"
+			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t} --thin-count 100000"
 			!$plink2 --bfile ${preqc} ${makeking} --out ${round0}				
 			}
 		qui { // plot quality-control metrics
@@ -744,7 +744,7 @@ syntax , param(string asis)
 			noi di in green"...$sampleSize individuals are retained following preliminary quality-control"
 			noi di in green"...creating a $sampleSize x $sampleSize kinship matrix"
 			bim2ldexclude, bim(tempfile-module-5-06)
-			!$plink2 --bfile tempfile-module-5-06 --maf 0.05 --exclude long-range-ld.exclude --make-king square --out tempfile-module-5-06
+			!$plink2 --bfile tempfile-module-5-06 --maf 0.05 --exclude long-range-ld.exclude --make-king square --thin-count 100000 --out tempfile-module-5-06
 			!$tabbed tempfile-module-5-06.king
 			import delim using tempfile-module-5-06.king.tabbed, clear case(lower)
 			count
