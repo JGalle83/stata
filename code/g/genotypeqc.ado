@@ -708,8 +708,11 @@ syntax , param(string asis)
 			!$plink  --bfile ${preqc} --missing        --out ${round0}
 			* i expect this threshold to crash if no individuals meet criteria (e.g. post qc)
 			* may need to look at how graphplinkkin0 works with a dummy file
-			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t} --thin-count 100000"
-			!$plink2 --bfile ${preqc} ${makeking} --out ${round0}				
+			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t}"
+			!$plink  --bfile ${preqc} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y ${makeking} --out ${round0}	
+			!del tmp_x.* tmp_y.*
 			}
 		qui { // plot quality-control metrics
 			noi di in green"...plotting pre-quality-control metrics"
@@ -744,7 +747,10 @@ syntax , param(string asis)
 			noi di in green"...$sampleSize individuals are retained following preliminary quality-control"
 			noi di in green"...creating a $sampleSize x $sampleSize kinship matrix"
 			bim2ldexclude, bim(tempfile-module-5-06)
-			!$plink2 --bfile tempfile-module-5-06 --maf 0.05 --exclude long-range-ld.exclude --make-king square --thin-count 100000 --out tempfile-module-5-06
+			!$plink  --bfile tempfile-module-5-06 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y --make-king square --out tempfile-module-5-06	
+			!del tmp_x.* tmp_y.*					
 			!$tabbed tempfile-module-5-06.king
 			import delim using tempfile-module-5-06.king.tabbed, clear case(lower)
 			count
@@ -842,7 +848,10 @@ syntax , param(string asis)
 			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --het --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --hardy          --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --missing        --out tempfile-module-5-round${rounds}
-			!$plink2 --bfile tempfile-module-5-round${rounds} ${makeking} --out tempfile-module-5-round${rounds}	
+			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-5-round${rounds}	
+			!del tmp_x.* tmp_y.*
 			}
 		qui { // plotting post-quality-control metrics"
 			noi di in green"...plotting pre-quality-control metrics"
@@ -890,7 +899,10 @@ syntax , param(string asis)
 			noi di in green"...identifying duplicates"
 			noi di in green"...calculating kinship matrix"
 			bim2ldexclude, bim(tempfile-module-5-round${rounds})
-			!$plink2 --bfile tempfile-module-5-round${rounds}	 ${makeking} --out tempfile-module-5-round${rounds}	
+			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-5-round${rounds}
+			!del tmp_x.* tmp_y.*	
 			!$tabbed tempfile-module-5-round${rounds}.kin0
 			import delim using tempfile-module-5-round${rounds}.kin0.tabbed, clear case(lower)
 			erase tempfile-module-5-round${rounds}.kin0.tabbed
@@ -920,8 +932,11 @@ syntax , param(string asis)
 		qui { // remove-related-samples (2nd-degree)
 			noi di in green"...identifying 2nd-degree relatives"
 			noi di in green"...calculating kinship matrix"
-			bim2ldexclude, bim(tempfile-module-6-01)
-			!$plink2 --bfile tempfile-module-6-01 ${makeking} --out tempfile-module-6-01
+			bim2ldexclude, bim(tempfile-module-6-01)	
+			!$plink  --bfile tempfile-module-6-01 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-6-01
+			!del tmp_x.* tmp_y.*			
 			!$tabbed tempfile-module-6-01.kin0
 			import delim using tempfile-module-6-01.kin0.tabbed, clear case(lower)
 			erase tempfile-module-6-01.kin0.tabbed
@@ -956,8 +971,11 @@ syntax , param(string asis)
 							keep if keep == 1
 							outsheet fid id using tempfile-module-6-01.remove, non noq replace
 							!type tempfile-module-6-01.remove >> 2nd-degree.remove
-							noi di in green"...re-calculate kinship matrix"
-							!$plink2 --bfile tempfile-module-6-01	--remove 2nd-degree.remove ${makeking} --out tempfile-module-6-0x	
+							noi di in green"...re-calculate kinship matrix"		
+							!$plink  --bfile tempfile-module-6-01 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+							!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+							!$plink2 --bfile tmp_y --remove 2nd-degree.remove ${makeking} --out tempfile-module-6-0x
+							!del tmp_x.* tmp_y.*	
 							!$tabbed tempfile-module-6-0x.kin0
 							import delim using tempfile-module-6-0x.kin0.tabbed, clear case(lower)
 							erase tempfile-module-6-0x.kin0.tabbed
@@ -1002,7 +1020,10 @@ syntax , param(string asis)
 			noi di in green"...identifying 3rd-degree relatives"
 			noi di in green"...calculating kinship matrix"
 			bim2ldexclude, bim(tempfile-module-6-02)
-			!$plink2 --bfile tempfile-module-6-02 ${makeking} --out tempfile-module-6-02	
+			!$plink  --bfile tempfile-module-6-02 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-6-02
+			!del tmp_x.* tmp_y.*								
 			!$tabbed tempfile-module-6-02.kin0
 			import delim using tempfile-module-6-02.kin0.tabbed, clear case(lower)
 			erase tempfile-module-6-02.kin0.tabbed
@@ -1037,8 +1058,11 @@ syntax , param(string asis)
 							keep if keep == 1
 							outsheet fid id using tempfile-module-6-02.remove, non noq replace
 							!type tempfile-module-6-02.remove >> 3rd-degree.remove
-							noi di in green"...re-calculate kinship matrix"
-							!$plink2 --bfile tempfile-module-6-02	--remove 3rd-degree.remove ${makeking} --out tempfile-module-6-0x	
+							noi di in green"...re-calculate kinship matrix"						
+							!$plink  --bfile tempfile-module-6-02 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+							!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+							!$plink2 --bfile tmp_y --remove 3rd-degree.remove ${makeking} --out tempfile-module-6-0x
+							!del tmp_x.* tmp_y.*								
 							!$tabbed tempfile-module-6-0x.kin0
 							import delim using tempfile-module-6-0x.kin0.tabbed, clear case(lower)
 							erase tempfile-module-6-0x.kin0.tabbed
@@ -1081,7 +1105,10 @@ syntax , param(string asis)
 			}
 		qui { // plot post remove
 			noi di in green"...plot post-removal relatedness"
-			!$plink2 --bfile tempfile-module-6-final ${makeking} --out tempfile-module-6-final
+			!$plink  --bfile tempfile-module-6-final --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
+			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink2 --bfile tmp_y  ${makeking} --out tempfile-module-6-final
+			!del tmp_x.* tmp_y.*								
 			graphplinkkin0, kin0(tempfile-module-6-final)	
 			!copy tmpKIN0_2.gph tempfile-module-6-final_KIN0_2_noRel.gph
 			}
