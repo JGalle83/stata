@@ -88,7 +88,6 @@ syntax , param(string asis)
 	qui { // define project location
 		!mkdir ${project_folder}\\${project_name}
 		noi di in green "| data will be deposited in ............................  ${project_folder}\\${project_name}"
-		noi di in green "| prs for the following thresholds will be calculated ..  ${thresholds}"
 		}
 	qui { // check presence of gwas data files
 		noi di in green "| prs will be calculated from the gwas .................  ${gwas}.gz"
@@ -266,9 +265,7 @@ syntax , param(string asis)
 		foreach data of num 1 / $Ndata {
 		!del data`data'-2*
 		}
-		}
-		
-				
+		}			
 	qui { // define ld-independent (clumped) sets of SNPs
 		noi di in green "#########################################################################"
 		noi di in green "# define (clumped) gwas based on reference genotypes  "
@@ -286,7 +283,6 @@ syntax , param(string asis)
 		}
 		}				
 		}
-
 		qui { // define the overlap subset of the kg_ref 
 		noi di in green "- define overlapping SNPs between reference and gwas/ test subsets"
 		use tempfile-2.dta, clear
@@ -294,6 +290,20 @@ syntax , param(string asis)
 		!$plink --bfile ${kg_ref} --extract tempfile-3001.extract --make-bed --out tempfile-3001
 		rename (rsid gwas_p) (SNP P)
 		keep SNP P
+		preserve
+		sum P
+		gen min = `r(min)'
+		gen threhold = ""
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4" in 1 if min < 1E-4
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5" in 1 if min < 1E-5
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6" in 1 if min < 1E-6
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7" in 1 if min < 1E-7
+		replace threshold =  "global thresholds 5E-1 1E-1 5E-2 1E-2 1E-3 1E-4 1E-5 1E-6 1E-7 1E-8" in 1 if min < 1E-8
+		keep in 1
+		keep threshold
+		outsheet _tmp.do, non noq replace
+		do _tmp.do
+		restore
 		foreach threshold in $thresholds {
 		noi di in green "- define SNPs at P < `threshold' for clumping"
 		outsheet SNP P if P < `threshold' using tempfile-3002-P`threshold'.input-clump, noq replace
