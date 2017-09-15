@@ -783,7 +783,7 @@ syntax , param(string asis)
 			replace excessCryptic = "1" if rm > (ub)
 			count if ex == "1"
 			global excessC `r(N)'
-			noi di in green"...${excessC} individuals to be dropeed due to showing excessive kinship coefficients (greater than 2.5x standard-deviation from the mean)"
+			noi di in green"...${excessC} individuals to be dropped due to showing excessive kinship coefficients (individual mean greater than 2.5x standard-deviation from the population mean)"
 			outsheet fid iid if excessC == "1" using excessiveCryptic.remove, replace non noq
 			!$plink --bfile tempfile-module-5-06 --remove excessiveCryptic.remove   --make-bed --out tempfile-module-5-round1
 			}
