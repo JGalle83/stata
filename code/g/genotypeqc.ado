@@ -48,9 +48,8 @@
 #########################################################################
 */
 program genotypeqc
-syntax , param(string asis) [array(string asis)]
+syntax , param(string asis) [ array(string asis) ]
 
-noi di"`array'"
 	qui { // introduce program
 		noi di in green"#########################################################################"
 		noi di in green"# genotypeqc                                                             "
@@ -59,6 +58,8 @@ noi di"`array'"
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
+		noi di "`array'"
+
 		}
 	qui { // confirm dependencies are correctly defined
 		noi di in green"#########################################################################"
