@@ -48,10 +48,7 @@
 #########################################################################
 */
 program genotypeqc
-syntax , param(string asis) [ arraycheck(string asis) ]
-noi di "hello"
-noi di "`arraycheck'"
-x
+syntax , param(string asis) 
 
 	qui { // introduce program
 		noi di in green"#########################################################################"
@@ -176,7 +173,6 @@ x
 			}
 		cd $wd	
 		}
-
 	qui { // report parameters to screen
 		noi di in green"#########################################################################"
 		noi di in green"# checking for input files;"
@@ -210,148 +206,97 @@ x
 		noi di in green""
 		}
 	qui { // Module #1 - determining the original genotyping array 
-		clear
-		set obs 1
-		gen a = "`array'"
-		x
-		if a != "" {
-			noi di in green"#########################################################################"
-			noi di in green"# Module #1 - determining the original genotyping array                 #"
-			noi di in green"#########################################################################"
-			qui { // import bim file
-				noi di in green"...importing ............................${input}.bim"
-				bim2dta,bim(${input})
-				rename snp rsid
-				keep rsid
-				sort rsid
-				save tempfile-2001.dta, replace
-				}
-			qui { // check the overlap with references
-				noi di in green"...checking overlap with reference lists and calculating overlaps (this bit can take some time)"
-				file open myfile using ${output}.arraymatch, write replace
-				file write myfile "Array:Overlap:SNPsinModel:Jaccard Index" _n
-				file close myfile
-				clear
-				set obs 1								
-				gen folder = ""							
-				save tempfile-2002.dta,replace							
-				local myfiles: dir "${array_ref}" dirs "*" 	, respectcase				
-				foreach folder of local myfiles {
-					clear								
-					set obs 1							
-					gen folder = "`folder'" 					
-					append using tempfile-2002.dta						
-					save tempfile-2002.dta,replace						
-					}
-				drop if folder == ""
-				foreach i of num 1/20 {
-					append using tempfile-2002.dta
-					}
-				erase tempfile-2002.dta
-				sort folder
-				drop if folder == ""
-				egen obs = seq(),by(folder)
-				gen a = ""
-				replace a = `"use tempfile-2001.dta, clear"'     if obs == 1 
-				replace a = `"merge m:m rsid using ${array_ref}\"' + folder + "\" + folder + ".dta"  if obs == 2 
-				replace a = `"count if _merge == 3"' if obs == 3
-				replace a = `"global ab \`r(N)'"' if obs == 4
-				replace a = `"gen ab = \${ab}"' if obs == 5
-				replace a = `"count "' if obs == 6
-				replace a = `"global all \`r(N)'"' if obs == 7
-				replace a = `"gen all = \${all}"' if obs == 8
-				replace a = `"gen JaccardIndex = ab/all"' if obs == 9 
-				replace a = `"sum JaccardIndex"' if obs == 10
-				replace a = `"global ji \`r(min)'"' if obs == 11 
-				replace a = `"di"... "' + folder + `" overlap = \${ab} of \${all}""' if obs == 12 
-				replace a = `"filei + ""' + folder + `":\${ab}:\${all}:\${ji}" \${output}.arraymatch"' if obs == 13 
-				outsheet a using tempfile-2001.do, non noq replace
-				do tempfile-2001.do
-				!del tempfile-2001.do tempfile-2001.dta
-				noi di in green"...finished checking reference lists"
-				}
-			qui { // create mini-report build
-				import delim using ${output}.arraymatch, clear delim(":") varnames(1) case(preserve)
-				gsort -J
-				gen MostLikely = "+++" in 1
-				replace MostLikely = "++" if J > 0.9 & MostLikely == ""
-				replace MostLikely = "+" if J > 0.8 & MostLikely == ""
-				outsheet using ${input}.arraymatch, replace noq
-				outsheet using ${output}.arraymatch, replace noq
-				keep in 1
-				gen a = ""
-				replace a = "global arrayType "
-				outsheet a Array using tempfile-2001.do, non noq replace
-				replace a = "global Jaccard "
-				outsheet a J using tempfile-2002.do, non noq replace
-				do tempfile-2001.do
-				do tempfile-2002.do
-				!del tempfile-2001.do tempfile-2002.do
-				}		
-			qui { // plot Jaccard Index by Array
-				import delim using ${output}.arraymatch, clear case(preserve)
-				keep if _n <10
-				graph hbar Jaccard , over(Array,sort(Jaccard) lab(labs(large))) title("Jaccard Index") yline(.9, lcol(red)) fxsize(200) fysize(100) ///
-					caption("Based on overlap with our reference data (derived from http://www.well.ox.ac.uk/~wrayner/strand/) the best matched ARRAY is ${arrayType}" ///
-									"Jaccard Index of  ${arrayType} = ${Jaccard}")
-				graph export ${output}.arraymatch.png, height(1000) width(4000) as(png) replace 
-				graph export  ${input}.arraymatch.png, height(1000) width(4000) as(png) replace 
-				window manage close graph
-				}
-			qui { // give a brief output to screen
-				noi di in green"#########################################################################"
-				noi di in green"# best array match is ......... ${arrayType}"
-				noi di in green"# based on jaccard index of ... 0${Jaccard}"
-				noi di in green"# summary plot available in ... ${output}.arraymatch.png"
-				noi di in green"# summary data available in ... ${output}.arraymatch"
-				noi di in green"#########################################################################"
-				noi di in green""
-				}
+		noi di in green"#########################################################################"
+		noi di in green"# Module #1 - determining the original genotyping array                 #"
+		noi di in green"#########################################################################"
+		qui { // import bim file
+			noi di in green"...importing ............................${input}.bim"
+			bim2dta,bim(${input})
+			rename snp rsid
+			keep rsid
+			sort rsid
+			save tempfile-2001.dta, replace
 			}
-		else {
+		qui { // check the overlap with references
+			noi di in green"...checking overlap with reference lists and calculating overlaps (this bit can take some time)"
+			file open myfile using ${output}.arraymatch, write replace
+			file write myfile "Array:Overlap:SNPsinModel:Jaccard Index" _n
+			file close myfile
 			clear
-			set obs 2
-			gen a = "Array	Overlap	SNPsinModel	JaccardIndex	MostLikely"
-			replace a = "`array'	0	0	0.999	+++" in 2
+			set obs 1								
+			gen folder = ""							
+			save tempfile-2002.dta,replace							
+			local myfiles: dir "${array_ref}" dirs "*" 	, respectcase				
+			foreach folder of local myfiles {
+				clear								
+				set obs 1							
+				gen folder = "`folder'" 					
+				append using tempfile-2002.dta						
+				save tempfile-2002.dta,replace						
+				}
+			drop if folder == ""
+			foreach i of num 1/20 {
+				append using tempfile-2002.dta
+				}
+			erase tempfile-2002.dta
+			sort folder
+			drop if folder == ""
+			egen obs = seq(),by(folder)
+			gen a = ""
+			replace a = `"use tempfile-2001.dta, clear"'     if obs == 1 
+			replace a = `"merge m:m rsid using ${array_ref}\"' + folder + "\" + folder + ".dta"  if obs == 2 
+			replace a = `"count if _merge == 3"' if obs == 3
+			replace a = `"global ab \`r(N)'"' if obs == 4
+			replace a = `"gen ab = \${ab}"' if obs == 5
+			replace a = `"count "' if obs == 6
+			replace a = `"global all \`r(N)'"' if obs == 7
+			replace a = `"gen all = \${all}"' if obs == 8
+			replace a = `"gen JaccardIndex = ab/all"' if obs == 9 
+			replace a = `"sum JaccardIndex"' if obs == 10
+			replace a = `"global ji \`r(min)'"' if obs == 11 
+			replace a = `"di"... "' + folder + `" overlap = \${ab} of \${all}""' if obs == 12 
+			replace a = `"filei + ""' + folder + `":\${ab}:\${all}:\${ji}" \${output}.arraymatch"' if obs == 13 
+			outsheet a using tempfile-2001.do, non noq replace
+			do tempfile-2001.do
+			!del tempfile-2001.do tempfile-2001.dta
+			noi di in green"...finished checking reference lists"
+			}
+		qui { // create mini-report build
+			import delim using ${output}.arraymatch, clear delim(":") varnames(1) case(preserve)
+			gsort -J
+			gen MostLikely = "+++" in 1
+			replace MostLikely = "++" if J > 0.9 & MostLikely == ""
+			replace MostLikely = "+" if J > 0.8 & MostLikely == ""
 			outsheet using ${input}.arraymatch, replace noq
 			outsheet using ${output}.arraymatch, replace noq
-			qui { // create mini-report build
-				import delim using ${output}.arraymatch, clear delim(":") varnames(1) case(preserve)
-				gsort -J
-				gen MostLikely = "+++" in 1
-				replace MostLikely = "++" if J > 0.9 & MostLikely == ""
-				replace MostLikely = "+" if J > 0.8 & MostLikely == ""
-				outsheet using ${input}.arraymatch, replace noq
-				outsheet using ${output}.arraymatch, replace noq
-				keep in 1
-				gen a = ""
-				replace a = "global arrayType "
-				outsheet a Array using tempfile-2001.do, non noq replace
-				replace a = "global Jaccard "
-				outsheet a J using tempfile-2002.do, non noq replace
-				do tempfile-2001.do
-				do tempfile-2002.do
-				!del tempfile-2001.do tempfile-2002.do
-				}		
-			qui { // plot Jaccard Index by Array
-				import delim using ${output}.arraymatch, clear case(preserve)
-				keep if _n <10
-				graph hbar Jaccard , over(Array,sort(Jaccard) lab(labs(large))) title("Jaccard Index") yline(.9, lcol(red)) fxsize(200) fysize(100) ///
-					caption("this is a pre-defined array ${arrayType}" ///
-									"Jaccard Index of  ${arrayType} = ${Jaccard}")
-				graph export ${output}.arraymatch.png, height(1000) width(4000) as(png) replace 
-				graph export  ${input}.arraymatch.png, height(1000) width(4000) as(png) replace 
-				window manage close graph
-				}
-			qui { // give a brief output to screen
-				noi di in green"#########################################################################"
-				noi di in green"# best array match is ......... ${arrayType}"
-				noi di in green"# based on jaccard index of ... 0${Jaccard}"
-				noi di in green"# summary plot available in ... ${output}.arraymatch.png"
-				noi di in green"# summary data available in ... ${output}.arraymatch"
-				noi di in green"#########################################################################"
-				noi di in green""
-				}	
+			keep in 1
+			gen a = ""
+			replace a = "global arrayType "
+			outsheet a Array using tempfile-2001.do, non noq replace
+			replace a = "global Jaccard "
+			outsheet a J using tempfile-2002.do, non noq replace
+			do tempfile-2001.do
+			do tempfile-2002.do
+			!del tempfile-2001.do tempfile-2002.do
+			}		
+		qui { // plot Jaccard Index by Array
+			import delim using ${output}.arraymatch, clear case(preserve)
+			keep if _n <10
+			graph hbar Jaccard , over(Array,sort(Jaccard) lab(labs(large))) title("Jaccard Index") yline(.9, lcol(red)) fxsize(200) fysize(100) ///
+				caption("Based on overlap with our reference data (derived from http://www.well.ox.ac.uk/~wrayner/strand/) the best matched ARRAY is ${arrayType}" ///
+								"Jaccard Index of  ${arrayType} = ${Jaccard}")
+			graph export ${output}.arraymatch.png, height(1000) width(4000) as(png) replace 
+			graph export  ${input}.arraymatch.png, height(1000) width(4000) as(png) replace 
+			window manage close graph
+			}
+		qui { // give a brief output to screen
+			noi di in green"#########################################################################"
+			noi di in green"# best array match is ......... ${arrayType}"
+			noi di in green"# based on jaccard index of ... 0${Jaccard}"
+			noi di in green"# summary plot available in ... ${output}.arraymatch.png"
+			noi di in green"# summary data available in ... ${output}.arraymatch"
+			noi di in green"#########################################################################"
+			noi di in green""
 			}
 		}
 	qui { // Module #2 - update marker identifiers to 1000-genomes compatible rsid
