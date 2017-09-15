@@ -48,7 +48,7 @@
 #########################################################################
 */
 program genotypeqc
-syntax , param(string asis) [ array(string asis) ]
+syntax , param(string asis) [ arraycheck(string asis) ]
 
 	qui { // introduce program
 		noi di in green"#########################################################################"
@@ -58,7 +58,6 @@ syntax , param(string asis) [ array(string asis) ]
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
-		noi di `""`array'""'
 
 		}
 	qui { // confirm dependencies are correctly defined
@@ -208,7 +207,10 @@ syntax , param(string asis) [ array(string asis) ]
 		noi di in green""
 		}
 	qui { // Module #1 - determining the original genotyping array 
-		if `array' == "" {
+		clear
+		set obs 1
+		gen a = "`array'"
+		if a != "" {
 			noi di in green"#########################################################################"
 			noi di in green"# Module #1 - determining the original genotyping array                 #"
 			noi di in green"#########################################################################"
