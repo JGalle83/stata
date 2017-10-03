@@ -13,19 +13,19 @@ noi di"#########################################################################
 noi di "Started: $S_DATE $S_TIME"
 
 qui { // clean up gene-names
-	keep `ensembl'
-	drop if `ensembl' == ""
+	rename `ensembl' ensembl_geneID
+	keep ensembl_geneID
+	drop if ensembl_geneID == ""
 	count
 	global nonMissSymbol `r(N)'
 	duplicates drop
 	count
 	global uniqueSymbol `r(N)'
-	rename `ensembl' ensembl_geneID
 	merge 1:m ensembl_geneID using `data'
 	count if _m == 1
 	global notmapped `r(N)'
 	noi di in green`"${notmapped} ensembl identifiers not mapped to gene-symbols"'
-	outsheet `ensembl' if _m == 1 using tmp-notmapped.txt, non noq replace
+	outsheet ensembl_geneID if _m == 1 using tmp-notmapped.txt, non noq replace
 	count if _m == 3
 	global mapped `r(N)'
 	noi di in green`"${mapped} ensembl identifiers mapped to gene-symbols"'	
@@ -34,7 +34,7 @@ qui { // clean up gene-names
 	keep  chr sta end sym ens bio
 	sort  chr sta end sym ens bio
 	save `name'-ensembl-list.dta, replace
-	duplicates tag `ensembl', gen(tag)
+	duplicates tag ensembl_geneID, gen(tag)
 	ta tag
 	count if ta != 0
 	global dups `r(N)'
