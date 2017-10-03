@@ -18,6 +18,7 @@ net install profilescore,           from(https://raw.github.com/ricanney/stata/m
 net install graphqq,                from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install recodegenotype,         from(https://raw.github.com/ricanney/stata/master/code/r/) replace
 net install recodestrand,           from(https://raw.github.com/ricanney/stata/master/code/r/) replace
+net install symbol2ensembl,         from(https://raw.github.com/ricanney/stata/master/code/s/) replace
 
 * external dependencies
 net install colorscheme, from(https://github.com/matthieugomez/stata-colorscheme/raw/master/) replace

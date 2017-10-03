@@ -170,6 +170,7 @@ qui { // create meta-log
 			outsheet a using tmp-notmapped.list, non noq replace
 			!type tmp-notmapped.list >> `name'-ensembl-list.meta-log
 			}
+	import delim using tmp.counts.tabbed, clear
 	sum v1 in 2
 		if r(sum) != 0 {
 			import delim using tmp-notmapped.txt, varnames(noname) clear
