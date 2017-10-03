@@ -173,7 +173,7 @@ qui { // create meta-log
 	import delim using tmp.counts.tabbed, clear
 	sum v1 in 2
 		if r(sum) != 0 {
-			import delim using tmp-notmapped.txt, varnames(noname) clear
+			import delim using tmp-discontinued.txt, varnames(noname) clear
 			sxpose, clear
 			set obs 6
 			gen _var0   = "# " in 1
