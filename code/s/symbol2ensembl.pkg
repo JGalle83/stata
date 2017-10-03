@@ -1,0 +1,3 @@
+d symbol2ensembl - command to conver gene-symbols to enseml identifiers
+d Richard Anney, Cardiff University
+f symbol2ensembl.ado
