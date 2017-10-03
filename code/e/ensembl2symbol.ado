@@ -70,7 +70,7 @@ qui { // create meta-log
 	
 	!$wc -l tmp-notmapped.txt     > tmp.counts
 	!$tabbed tmp.counts
-	import delim using tmp.counts.tabbed, clear
+	import delim using tmp.counts.tabbed, varnames(noname)  clear
 	sum v1 in 1
 		if r(sum) != 0 {
 			import delim using tmp-notmapped.txt, varnames(noname) clear
