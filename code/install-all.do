@@ -4,6 +4,7 @@ net install bim2dta,                from(https://raw.github.com/ricanney/stata/m
 net install bim2eigenvec,           from(https://raw.github.com/ricanney/stata/master/code/b/) replace
 net install bim2ldexclude,          from(https://raw.github.com/ricanney/stata/master/code/b/) replace
 net install datestamp,              from(https://raw.github.com/ricanney/stata/master/code/d/) replace
+net install ensembl2symbol,         from(https://raw.github.com/ricanney/stata/master/code/e/) replace
 net install fam2dta,                from(https://raw.github.com/ricanney/stata/master/code/f/) replace
 net install genotypeqc,             from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphgene,              from(https://raw.github.com/ricanney/stata/master/code/g/) replace
