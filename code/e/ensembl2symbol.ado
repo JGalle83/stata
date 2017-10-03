@@ -1,5 +1,5 @@
 program ensembl2symbol
-syntax , name (string asis) symbol(string asis) data(string asis) history(string asis) 
+syntax , name (string asis) ensembl(string asis) data(string asis) history(string asis) 
 noi di"#########################################################################"
 noi di"# ensembl2symbol               "
 noi di"# version:  1a              "
