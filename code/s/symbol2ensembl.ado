@@ -14,57 +14,58 @@ noi di"#########################################################################
 noi di "Started: $S_DATE $S_TIME"
 
 qui { // clean up gene-names
-	count if `symbol' != ""
+	rename `symbol' symbol
+	count if symbol != ""
 	global nonMissSymbol `r(N)'
 	noi di in green`"${nonMissSymbol} non-missing gene-symbols observed"'
-	count if `symbol' == ""
-	drop  if `symbol' == ""
+	count if symbol == ""
+	drop  if symbol == ""
 	global MissSymbol `r(N)'
 	noi di in green`"${MissSymbol} missing gene-symbols dropped"'
 	noi di in green`"converting symbols to uppercase"'
-	replace `symbol' = strupper(`symbol')
+	replace symbol = strupper(symbol)
 	noi di in green`"correct common excel related issues"'
 	qui { // correct common excel related issues
-		replace `symbol' = "FEB1" 		if `symbol' == "01-Feb"
-		replace `symbol' = "FEB2" 		if `symbol' == "02-Feb"
-		replace `symbol' = "FEB3" 		if `symbol' == "03-Feb"
-		replace `symbol' = "FEB4" 		if `symbol' == "04-Feb"
-		replace `symbol' = "FEB5" 		if `symbol' == "05-Feb"
-		replace `symbol' = "FEB6" 		if `symbol' == "06-Feb"
-		replace `symbol' = "FEB7" 		if `symbol' == "07-Feb"
-		replace `symbol' = "MARCH1" 	if `symbol' == "01-Mar"
-		replace `symbol' = "MARCH2" 	if `symbol' == "02-Mar"
-		replace `symbol' = "MARCH3" 	if `symbol' == "03-Mar"
-		replace `symbol' = "MARCH4" 	if `symbol' == "04-Mar"
-		replace `symbol' = "MARCH5" 	if `symbol' == "05-Mar"
-		replace `symbol' = "MARCH6" 	if `symbol' == "06-Mar"
-		replace `symbol' = "MARCH7" 	if `symbol' == "07-Mar"
-		replace `symbol' = "MARCH8" 	if `symbol' == "08-Mar"
-		replace `symbol' = "MARCH8" 	if `symbol' == "09-Mar"
-		replace `symbol' = "MARCH10" if `symbol' == "10-Mar"
-		replace `symbol' = "MARCH11" if `symbol' == "11-Mar"
-		replace `symbol' = "SEPT1" 	if `symbol' == "01-Sep"
-		replace `symbol' = "SEPT2" 	if `symbol' == "02-Sep"
-		replace `symbol' = "SEPT3" 	if `symbol' == "03-Sep"
-		replace `symbol' = "SEPT4" 	if `symbol' == "04-Sep"
-		replace `symbol' = "SEPT5" 	if `symbol' == "05-Sep"
-		replace `symbol' = "SEPT6" 	if `symbol' == "06-Sep"
-		replace `symbol' = "SEPT7" 	if `symbol' == "07-Sep"
-		replace `symbol' = "SEPT8" 	if `symbol' == "08-Sep"
-		replace `symbol' = "SEPT9" 	if `symbol' == "09-Sep"
-		replace `symbol' = "SEPT10"	if `symbol' == "10-Sep"
-		replace `symbol' = "SEPT11"	if `symbol' == "11-Sep"
-		replace `symbol' = "SEPT12"	if `symbol' == "12-Sep"
-		replace `symbol' = "SEPT13"	if `symbol' == "13-Sep"
-		replace `symbol' = "SEPT14"	if `symbol' == "14-Sep"
-		replace `symbol' = "SEP15"		if `symbol' == "15-Sep"
-		replace `symbol' = "DEC1"		if `symbol' == "01-Dec"
+		replace symbol = "FEB1" 		if symbol == "01-Feb"
+		replace symbol = "FEB2" 		if symbol == "02-Feb"
+		replace symbol = "FEB3" 		if symbol == "03-Feb"
+		replace symbol = "FEB4" 		if symbol == "04-Feb"
+		replace symbol = "FEB5" 		if symbol == "05-Feb"
+		replace symbol = "FEB6" 		if symbol == "06-Feb"
+		replace symbol = "FEB7" 		if symbol == "07-Feb"
+		replace symbol = "MARCH1" 	if symbol == "01-Mar"
+		replace symbol = "MARCH2" 	if symbol == "02-Mar"
+		replace symbol = "MARCH3" 	if symbol == "03-Mar"
+		replace symbol = "MARCH4" 	if symbol == "04-Mar"
+		replace symbol = "MARCH5" 	if symbol == "05-Mar"
+		replace symbol = "MARCH6" 	if symbol == "06-Mar"
+		replace symbol = "MARCH7" 	if symbol == "07-Mar"
+		replace symbol = "MARCH8" 	if symbol == "08-Mar"
+		replace symbol = "MARCH8" 	if symbol == "09-Mar"
+		replace symbol = "MARCH10" if symbol == "10-Mar"
+		replace symbol = "MARCH11" if symbol == "11-Mar"
+		replace symbol = "SEPT1" 	if symbol == "01-Sep"
+		replace symbol = "SEPT2" 	if symbol == "02-Sep"
+		replace symbol = "SEPT3" 	if symbol == "03-Sep"
+		replace symbol = "SEPT4" 	if symbol == "04-Sep"
+		replace symbol = "SEPT5" 	if symbol == "05-Sep"
+		replace symbol = "SEPT6" 	if symbol == "06-Sep"
+		replace symbol = "SEPT7" 	if symbol == "07-Sep"
+		replace symbol = "SEPT8" 	if symbol == "08-Sep"
+		replace symbol = "SEPT9" 	if symbol == "09-Sep"
+		replace symbol = "SEPT10"	if symbol == "10-Sep"
+		replace symbol = "SEPT11"	if symbol == "11-Sep"
+		replace symbol = "SEPT12"	if symbol == "12-Sep"
+		replace symbol = "SEPT13"	if symbol == "13-Sep"
+		replace symbol = "SEPT14"	if symbol == "14-Sep"
+		replace symbol = "SEP15"		if symbol == "15-Sep"
+		replace symbol = "DEC1"		if symbol == "01-Dec"
 		}
 	qui { // standardising non-text/number variables
-		replace `symbol' = subinstr(`symbol', "-", "_",.)
-		replace `symbol' = subinstr(`symbol', " ", "",.)
+		replace symbol = subinstr(symbol, "-", "_",.)
+		replace symbol = subinstr(symbol, " ", "",.)
 		foreach j in . \ / ( ) # ' * + , : ; @ [ ] {
-			replace `symbol' = subinstr(`symbol', "`j'", "",.)
+			replace symbol = subinstr(symbol, "`j'", "",.)
 			}
 		}
 	noi di in green`"removing duplicates"'

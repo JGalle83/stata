@@ -25,7 +25,7 @@ qui { // clean up gene-names
 	count if _m == 1
 	global notmapped `r(N)'
 	noi di in green`"${notmapped} ensembl identifiers not mapped to gene-symbols"'
-	outsheet symbol if _m == 1 using tmp-notmapped.txt, non noq replace
+	outsheet `ensembl' if _m == 1 using tmp-notmapped.txt, non noq replace
 	count if _m == 3
 	global mapped `r(N)'
 	noi di in green`"${mapped} ensembl identifiers mapped to gene-symbols"'	
@@ -34,7 +34,7 @@ qui { // clean up gene-names
 	keep  chr sta end sym ens bio
 	sort  chr sta end sym ens bio
 	save `name'-ensembl-list.dta, replace
-	duplicates tag symbol, gen(tag)
+	duplicates tag `ensembl', gen(tag)
 	ta tag
 	count if ta != 0
 	global dups `r(N)'
