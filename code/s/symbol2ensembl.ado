@@ -22,8 +22,6 @@ qui { // clean up gene-names
 	drop  if symbol == ""
 	global MissSymbol `r(N)'
 	noi di in green`"${MissSymbol} missing gene-symbols dropped"'
-	noi di in green`"converting symbols to uppercase"'
-	replace symbol = strupper(symbol)
 	noi di in green`"correct common excel related issues"'
 	qui { // correct common excel related issues
 		replace symbol = "FEB1" 		if symbol == "01-Feb"
@@ -60,41 +58,9 @@ qui { // clean up gene-names
 		replace symbol = "SEPT14"		if symbol == "14-Sep"
 		replace symbol = "SEP15"		if symbol == "15-Sep"
 		replace symbol = "DEC1"			if symbol == "01-Dec"
-		replace symbol = "FEB1" 		if symbol == "01_Feb"
-		replace symbol = "FEB2" 		if symbol == "02_Feb"
-		replace symbol = "FEB3" 		if symbol == "03_Feb"
-		replace symbol = "FEB4" 		if symbol == "04_Feb"
-		replace symbol = "FEB5" 		if symbol == "05_Feb"
-		replace symbol = "FEB6" 		if symbol == "06_Feb"
-		replace symbol = "FEB7" 		if symbol == "07_Feb"
-		replace symbol = "MARCH1" 	if symbol == "01_Mar"
-		replace symbol = "MARCH2" 	if symbol == "02_Mar"
-		replace symbol = "MARCH3" 	if symbol == "03_Mar"
-		replace symbol = "MARCH4" 	if symbol == "04_Mar"
-		replace symbol = "MARCH5" 	if symbol == "05_Mar"
-		replace symbol = "MARCH6" 	if symbol == "06_Mar"
-		replace symbol = "MARCH7" 	if symbol == "07_Mar"
-		replace symbol = "MARCH8" 	if symbol == "08_Mar"
-		replace symbol = "MARCH8" 	if symbol == "09_Mar"
-		replace symbol = "MARCH10" 	if symbol == "10_Mar"
-		replace symbol = "MARCH11" 	if symbol == "11_Mar"
-		replace symbol = "SEPT1" 		if symbol == "01_Sep"
-		replace symbol = "SEPT2" 		if symbol == "02_Sep"
-		replace symbol = "SEPT3" 		if symbol == "03_Sep"
-		replace symbol = "SEPT4" 		if symbol == "04_Sep"
-		replace symbol = "SEPT5" 		if symbol == "05_Sep"
-		replace symbol = "SEPT6" 		if symbol == "06_Sep"
-		replace symbol = "SEPT7" 		if symbol == "07_Sep"
-		replace symbol = "SEPT8" 		if symbol == "08_Sep"
-		replace symbol = "SEPT9" 		if symbol == "09_Sep"
-		replace symbol = "SEPT10"		if symbol == "10_Sep"
-		replace symbol = "SEPT11"		if symbol == "11_Sep"
-		replace symbol = "SEPT12"		if symbol == "12_Sep"
-		replace symbol = "SEPT13"		if symbol == "13_Sep"
-		replace symbol = "SEPT14"		if symbol == "14_Sep"
-		replace symbol = "SEP15"		if symbol == "15_Sep"
-		replace symbol = "DEC1"			if symbol == "01_Dec"
 		}
+	noi di in green`"converting symbols to uppercase"'
+	replace symbol = strupper(symbol)
 	qui { // standardising non-text/number variables
 		replace symbol = subinstr(symbol, "-", "_",.)
 		replace symbol = subinstr(symbol, " ", "",.)
