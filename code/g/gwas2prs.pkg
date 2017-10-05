@@ -1,0 +1,5 @@
+d gwas2prs - command to prepare gwas-summary statistics for PRS analysis
+d Richard Anney, Cardiff University
+f gwas2prs.ado
+f ../r/recodegenotype.ado
+f ../r/recodestrand.ado
