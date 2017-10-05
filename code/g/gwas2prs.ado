@@ -98,8 +98,8 @@ qui { // outsheet data
 	global outputSNP `r(N)'
 	order chr bp rsid a1 a2 a1_f or p
 	keep  chr bp rsid a1 a2 a1_f or p
-	outsheet `name'-prePRS.tsv, noq replace
-	!$gzip   `name'-prePRS.tsv
+	outsheet "`name'-prePRS.tsv", noq replace
+	!$gzip   "`name'-prePRS.tsv"
 	}
 qui { // make meta log
 	noi di in green"...make a meta-log file (flat txt file)"
