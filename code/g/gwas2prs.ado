@@ -104,10 +104,10 @@ qui { // outsheet data
 qui { // make meta log
 	noi di in green"...make a meta-log file (flat txt file)"
 	clear
-	set obs 22
+	set obs 25
 	gen a = ""
 	replace a = `"#########################################################################"'            in 1
-	replace a = `"# gwas2prs log file"'                                                            in 2                                                             
+	replace a = `"# gwas2prs log file"'                                                                  in 2                                                             
 	replace a = `"# available from https://github.com/ricanney"'                                         in 3                                  
 	replace a = `"# ======================================================================="'            in 4
 	replace a = `"# Author:     Richard Anney"'                                                          in 5
@@ -119,18 +119,17 @@ qui { // make meta log
 	replace a = `"#########################################################################"'            in 11
 	replace a = `"# Run Information"'                                                                    in 12      
 	replace a = `"# ======================================================================="'            in 13
-	replace a = `"# Output.................................................. `name'-prePRS.tsv.gz "'  in 14
+	replace a = `"# Output.................................................. `name'-prePRS.tsv.gz "'     in 14
 	replace a = `"# Date ................................................... $S_DATE $S_TIME "'          in 15
-	replace a = `"# Number of snps imported ................................ ${inputSNP}"'          in 16
-	replace a = `"# Number of snps in output................................ ${outputSNP}"'          in 16
-	replace a = `"# Number of snps dropped due to (ID/W/S) genotype code.... ${problemSNP}"'           in 17
-	replace a = `"# Number of snps dropped due to non-autosomal chromosome.. ${nonautosomeSNP}"'           in 17
-	replace a = `"# Number of snps dropped due to info score < 0.8 ......... ${infoSNP}"'           in 17
-	replace a = `"# Number of snps dropped due missing in >1 study (meta) .. ${directionSNP}"'           in 17
-	replace a = `"# Number of snps dropped due to duplicated identifier..... ${directionSNP}"'           in 17
-	replace a = `"# Number of ensembl identifiers mapped to same symbol .... ${dupsSNP}"'                   in 19
-	replace a = `"# Origin of a1_frq ....................................... ${a1_frq}"'              in 20
-	replace a =  `"#########################################################################"'           in 21
+	replace a = `"# Number of snps imported ................................ ${inputSNP}"'               in 16
+	replace a = `"# Number of snps in output................................ ${outputSNP}"'              in 17
+	replace a = `"# Number of snps dropped due to (ID/W/S) genotype code.... ${problemSNP}"'             in 18
+	replace a = `"# Number of snps dropped due to non-autosomal chromosome.. ${nonautosomeSNP}"'         in 19
+	replace a = `"# Number of snps dropped due to info score < 0.8 ......... ${infoSNP}"'                in 20
+	replace a = `"# Number of snps dropped due missing in >1 study (meta) .. ${directionSNP}"'           in 21
+	replace a = `"# Number of snps dropped due to duplicated identifier..... ${dupsSNP}"'                in 22
+	replace a = `"# Origin of a1_frq ....................................... ${a1_frq}"'                 in 23
+	replace a =  `"#########################################################################"'           in 24
 	outsheet using `name'-prePRS.meta-log, non noq replace
 	}
 
