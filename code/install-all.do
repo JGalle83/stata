@@ -15,8 +15,9 @@ net install graphplinkhwe,          from(https://raw.github.com/ricanney/stata/m
 net install graphplinkimiss,        from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphplinkkin0,         from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphplinklmiss,        from(https://raw.github.com/ricanney/stata/master/code/g/) replace
-net install profilescore,           from(https://raw.github.com/ricanney/stata/master/code/p/) replace
 net install graphqq,                from(https://raw.github.com/ricanney/stata/master/code/g/) replace
+net install gwas2prs,               from(https://raw.github.com/ricanney/stata/master/code/g/) replace
+net install profilescore,           from(https://raw.github.com/ricanney/stata/master/code/p/) replace
 net install recodegenotype,         from(https://raw.github.com/ricanney/stata/master/code/r/) replace
 net install recodestrand,           from(https://raw.github.com/ricanney/stata/master/code/r/) replace
 net install symbol2ensembl,         from(https://raw.github.com/ricanney/stata/master/code/s/) replace
