@@ -90,7 +90,7 @@ qui { // create a1_frq if not present
 		replace a1_frq = maf if b1 == _tmpb1
 		replace a1_frq = 1-maf if b1 == _tmpb2
 		keep chr bp snp b1 b2 or p a1_frq
-		rename (b1 b2) (a1 a2)
+		rename (snp b1 b2) (rsid a1 a2)
 		}
 	}
 qui { // outsheet data
