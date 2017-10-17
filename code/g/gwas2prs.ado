@@ -79,7 +79,7 @@ qui { // create a1_frq if not present
 	}
 	else {
 		noi di"a1_frq not present"
-		global a1_frq "a1_frq not present in input and matched frq from ${hg19_maf} used in output"
+		global a1_frq "a1_frq not present in input and matched frq from ${ref} used in output"
 		rename (a1 a2 rsid) (b1 b2 snp) 
 		merge 1:1 snp using `reference'_frq.dta
 		keep if _m == 3
