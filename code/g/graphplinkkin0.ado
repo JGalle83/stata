@@ -51,52 +51,72 @@ qui {
 	!$tabbed `kin0'.kin0
 	import delim using `kin0'.kin0.tabbed, clear case(lower)
 	erase `kin0'.kin0.tabbed
-	for var fid1-id2      : tostring X, replace 
-	for var hethet-kinship: destring X, replace force
-	replace kin = 0 if kin <0
-	noi di"-plotting ibs0 -by- kinship to tmpKIN0_1.gph"
-	global format "msiz(medlarge) msymbol(O) mfc(red) mlc(black) mlabsize(small) mlw(vvthin)"
-  	global xlabel "0(0.2).4"
-	qui { 
-	tw scatter kin ibs, $format       ///
-			 title("Between-Family Relationships") ///
-			 xtitle("Proportion of Zero IBS") ///
-			 ylabel($xlabel)          ///
-			 ytitle("Estimated Kinship Coefficient") ///
-			 yline(0.354, lpattern(dash) lwidth(vthin) lcolor(red))  ///
-			 yline(0.177, lpattern(dash) lwidth(vthin) lcolor(red))  ///
-			 yline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 yline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 nodraw saving(tmpKIN0_1.gph, replace)
-			 }
-	gen rel = ""
-	replace rel = "3rd" if kinship > `t'
-	replace rel = "2nd" if kinship > `s'
-	replace rel = "1st" if kinship > `f'
-	replace rel = "dup" if kinship > `d'
-	replace rel = ""    if kinship == .
-	foreach rel in dup 1st 2nd 3rd { 
-		count if rel == "`rel'"
-		global rel`rel' "`r(N)'"
-		di "rel`rel'"
-		}
-	noi di"-plotting kinship to tmpKIN0_2.gph"
-	qui { 
-		tw hist kinship , width(0.005) percent                          ///
-			 xline(0.3540, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 xline(0.1707, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 xline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 xline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
-			 xlabel($xlabel) legend(off)                             ///
-			 caption("Twin/Duplicate Pairs; N = ${reldup}"           ///
-							 "1st Degree Relative Pairs ; N = ${rel1st}"     ///
-							 "2nd Degree Relative Pairs ; N = ${rel2nd}"     ///
-							 "3rd Degree Relative Pairs ; N = ${rel3rd}") nodraw saving(tmpKIN0_2.gph, replace)
+	count
+	if `r(N)' > 0 {
+		for var fid1-id2      : tostring X, replace 
+		for var hethet-kinship: destring X, replace force
+		replace kin = 0 if kin <0
+		noi di"-plotting ibs0 -by- kinship to tmpKIN0_1.gph"
+		global format "msiz(medlarge) msymbol(O) mfc(red) mlc(black) mlabsize(small) mlw(vvthin)"
+		global xlabel "0(0.2).4"
+		qui { 
+		tw scatter kin ibs, $format       ///
+				 title("Between-Family Relationships") ///
+				 xtitle("Proportion of Zero IBS") ///
+				 ylabel($xlabel)          ///
+				 ytitle("Estimated Kinship Coefficient") ///
+				 yline(0.354, lpattern(dash) lwidth(vthin) lcolor(red))  ///
+				 yline(0.177, lpattern(dash) lwidth(vthin) lcolor(red))  ///
+				 yline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 yline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 nodraw saving(tmpKIN0_1.gph, replace)
+				 }
+		gen rel = ""
+		replace rel = "3rd" if kinship > `t'
+		replace rel = "2nd" if kinship > `s'
+		replace rel = "1st" if kinship > `f'
+		replace rel = "dup" if kinship > `d'
+		replace rel = ""    if kinship == .
+		foreach rel in dup 1st 2nd 3rd { 
+			count if rel == "`rel'"
+			global rel`rel' "`r(N)'"
+			di "rel`rel'"
 			}
-	noi di"-exporting related paris to tmpKIN0.relPairs"
-	outsheet if rel != "" using tmpKIN0.relPairs, noq replace 
-	restore
+		noi di"-plotting kinship to tmpKIN0_2.gph"
+		qui { 
+			tw hist kinship , width(0.005) percent                          ///
+				 xline(0.3540, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 xline(0.1707, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 xline(0.0884, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 xline(0.0442, lpattern(dash) lwidth(vthin) lcolor(red)) ///
+				 xlabel($xlabel) legend(off)                             ///
+				 caption("Twin/Duplicate Pairs; N = ${reldup}"           ///
+								 "1st Degree Relative Pairs ; N = ${rel1st}"     ///
+								 "2nd Degree Relative Pairs ; N = ${rel2nd}"     ///
+								 "3rd Degree Relative Pairs ; N = ${rel3rd}") nodraw saving(tmpKIN0_2.gph, replace)
+				}
+		noi di"-exporting related paris to tmpKIN0.relPairs"
+		outsheet if rel != "" using tmpKIN0.relPairs, noq replace 
+		restore
+		}
+	else {
+		global xlabel "0(0.2).4"
+		twoway scatteri 1 1,            ///
+		title("Between-Family Relationships") ///
+		msymbol(i)                      ///
+		ylab("") xlab("")               ///
+		xtitle("Proportion of Zero IBS") ///
+		ylabel($xlabel)          ///
+		ytitle("Estimated Kinship Coefficient") ///
+		yscale(off) xscale(off)         ///
+		plotregion(lpattern(blank))     ///
+		caption("Twin/Duplicate Pairs; N = 0}"      ///
+						 "1st Degree Relative Pairs ; 0"     ///
+						 "2nd Degree Relative Pairs ; 0"     ///
+						 "3rd Degree Relative Pairs ; 0") nodraw saving(tmpKIN0_2.gph, replace)
+		}
 	}
+	
 noi di "done!"
 end;
 	

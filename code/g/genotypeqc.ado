@@ -710,7 +710,19 @@ syntax , param(string asis)
 			* may need to look at how graphplinkkin0 works with a dummy file
 			global makeking "--maf 0.05 --exclude long-range-ld.exclude --make-king-table --king-table-filter ${kin_t}"
 			!$plink  --bfile ${preqc} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			/*
+			the thin-count routine is problematic
+			- ld-prune the major dataset
+			- define a common set of SNPs (50K)
+			- keep these for each iteration
+			*/
+			!$plink  --bfile tmp_x --indep-pairwise 1000 5 0.2  --out tmp_x
+			import delim using tmp_x.prune.in, clear
+			gen x = uniform()
+			sort x
+			drop if _n > 50000
+			outsheet v1 using common50k.keep, non noq replace
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y	
 			!$plink2 --bfile tmp_y ${makeking} --out ${round0}	
 			!del tmp_x.* tmp_y.*
 			}
@@ -748,7 +760,7 @@ syntax , param(string asis)
 			noi di in green"...creating a $sampleSize x $sampleSize kinship matrix"
 			bim2ldexclude, bim(tempfile-module-5-06)
 			!$plink  --bfile tempfile-module-5-06 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y	
 			!$plink2 --bfile tmp_y --make-king square --out tempfile-module-5-06	
 			!del tmp_x.* tmp_y.*					
 			!$tabbed tempfile-module-5-06.king
@@ -783,7 +795,7 @@ syntax , param(string asis)
 			replace excessCryptic = "1" if rm > (ub)
 			count if ex == "1"
 			global excessC `r(N)'
-			noi di in green"...${excessC} individuals to be dropped due to showing excessive kinship coefficients (individual mean greater than 2.5x standard-deviation from the population mean)"
+			noi di in green"...${excessC} individuals to be dropeed due to showing excessive kinship coefficients (greater than 2.5x standard-deviation from the mean)"
 			outsheet fid iid if excessC == "1" using excessiveCryptic.remove, replace non noq
 			!$plink --bfile tempfile-module-5-06 --remove excessiveCryptic.remove   --make-bed --out tempfile-module-5-round1
 			}
@@ -849,7 +861,7 @@ syntax , param(string asis)
 			!$plink  --bfile tempfile-module-5-round${rounds} --hardy          --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --missing        --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y	
 			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-5-round${rounds}	
 			!del tmp_x.* tmp_y.*
 			}
@@ -899,8 +911,9 @@ syntax , param(string asis)
 			noi di in green"...identifying duplicates"
 			noi di in green"...calculating kinship matrix"
 			bim2ldexclude, bim(tempfile-module-5-round${rounds})
-			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x		
+			outsheet v1 using common50k.keep, non noq replace
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-5-round${rounds}
 			!del tmp_x.* tmp_y.*	
 			!$tabbed tempfile-module-5-round${rounds}.kin0
@@ -933,8 +946,8 @@ syntax , param(string asis)
 			noi di in green"...identifying 2nd-degree relatives"
 			noi di in green"...calculating kinship matrix"
 			bim2ldexclude, bim(tempfile-module-6-01)	
-			!$plink  --bfile tempfile-module-6-01 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tempfile-module-6-01 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x			
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-6-01
 			!del tmp_x.* tmp_y.*			
 			!$tabbed tempfile-module-6-01.kin0
@@ -973,7 +986,7 @@ syntax , param(string asis)
 							!type tempfile-module-6-01.remove >> 2nd-degree.remove
 							noi di in green"...re-calculate kinship matrix"		
 							!$plink  --bfile tempfile-module-6-01 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-							!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+							!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 							!$plink2 --bfile tmp_y --remove 2nd-degree.remove ${makeking} --out tempfile-module-6-0x
 							!del tmp_x.* tmp_y.*	
 							!$tabbed tempfile-module-6-0x.kin0
@@ -1021,7 +1034,7 @@ syntax , param(string asis)
 			noi di in green"...calculating kinship matrix"
 			bim2ldexclude, bim(tempfile-module-6-02)
 			!$plink  --bfile tempfile-module-6-02 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 			!$plink2 --bfile tmp_y ${makeking} --out tempfile-module-6-02
 			!del tmp_x.* tmp_y.*								
 			!$tabbed tempfile-module-6-02.kin0
@@ -1060,7 +1073,7 @@ syntax , param(string asis)
 							!type tempfile-module-6-02.remove >> 3rd-degree.remove
 							noi di in green"...re-calculate kinship matrix"						
 							!$plink  --bfile tempfile-module-6-02 --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-							!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+							!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 							!$plink2 --bfile tmp_y --remove 3rd-degree.remove ${makeking} --out tempfile-module-6-0x
 							!del tmp_x.* tmp_y.*								
 							!$tabbed tempfile-module-6-0x.kin0
@@ -1106,7 +1119,7 @@ syntax , param(string asis)
 		qui { // plot post remove
 			noi di in green"...plot post-removal relatedness"
 			!$plink  --bfile tempfile-module-6-final --maf 0.05 --exclude long-range-ld.exclude --make-bed --out tmp_x				
-			!$plink  --bfile tmp_x --thin-count 100000 --make-bed --out tmp_y				
+			!$plink  --bfile tmp_x --keep common50k.keep --make-bed --out tmp_y				
 			!$plink2 --bfile tmp_y  ${makeking} --out tempfile-module-6-final
 			!del tmp_x.* tmp_y.*								
 			graphplinkkin0, kin0(tempfile-module-6-final)	
