@@ -540,7 +540,7 @@ syntax , param(string asis)
 			!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final		
 			}
 		qui { // clean-up files
-			!del tempfile-module-2-0* tempfile-module-2-1* *.exclude *update-map *.update-chr *.extract 
+			!del tempfile-module-2-0* tempfile-module-2-1* *.exclude *update-map *.update-chr 
 			}
 		qui { // report on status
 			import delim using tempfile-module-2-final.log, clear
@@ -688,7 +688,7 @@ syntax , param(string asis)
 				}
 			}	
 		qui { // clean files
-			!del tempfile-module-4-01* *.extract
+			!del tempfile-module-4-01* 
 			noi di in green"#########################################################################"
 			noi di in green""
 			}	
