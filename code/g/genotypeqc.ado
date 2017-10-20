@@ -1151,6 +1151,21 @@ syntax , param(string asis)
 			use tempfile-module-7-hapmap.dta, clear
 			merge 1:1 snp using tempfile-module-7-test.dta
 			keep if _m == 3
+			drop _m
+			recodegenotype, a1(hapmap_a1) a2(hapmap_a2)
+			rename _gt hapmap_gt
+			recodegenotype, a1(test_a1) a2(test_a2)
+			rename _gt test_gt
+			gen drop = .
+			replace drop = 1 if hapmap_gt == "K" & test_gt =="R"
+			replace drop = 1 if hapmap_gt == "K" & test_gt =="Y"
+			replace drop = 1 if hapmap_gt == "M" & test_gt =="R"
+			replace drop = 1 if hapmap_gt == "M" & test_gt =="Y"
+			replace drop = 1 if hapmap_gt == "R" & test_gt =="K"
+			replace drop = 1 if hapmap_gt == "R" & test_gt =="M"
+			replace drop = 1 if hapmap_gt == "Y" & test_gt =="K"
+			replace drop = 1 if hapmap_gt == "Y" & test_gt =="M"	
+			drop if drop == 1
 			outsheet snp using overlap.extract, non noq replace
 			recodestrand, ref_a1(hapmap_a1) ref_a2(hapmap_a2) alt_a1(test_a1) alt_a2(test_a2) 
 			outsheet snp if _tmpflip == 1 using overlap.flip, non noq replace
