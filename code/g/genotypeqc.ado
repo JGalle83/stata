@@ -356,6 +356,15 @@ syntax , param(string asis)
 			noi di in green"...update names where rsid is in title"
 			bim2dta, bim(tempfile-module-2-04)
 			split snp,p("rs")
+			capture confirm variable snp2
+			if !_rc {
+				di in green "rs # included in array"
+				}
+			else {
+			 di in red "rs # not included in array"
+			 gen snp2 = ""
+			 }
+			
 			gen renameSNP = "rs" + snp2
 			outsheet snp renameSNP if renameSNP != "rs" using  tempfile-module-2-04.update-name, non noq replace 
 			!$plink --bfile tempfile-module-2-04 --update-name tempfile-module-2-04.update-name --make-bed --out tempfile-module-2-05
