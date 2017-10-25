@@ -58,7 +58,6 @@ syntax , param(string asis)
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
-
 		}
 	qui { // confirm dependencies are correctly defined
 		noi di in green"#########################################################################"
@@ -363,8 +362,7 @@ syntax , param(string asis)
 			else {
 			 di in red "rs # not included in array"
 			 gen snp2 = ""
-			 }
-			
+			 }	
 			gen renameSNP = "rs" + snp2
 			outsheet snp renameSNP if renameSNP != "rs" using  tempfile-module-2-04.update-name, non noq replace 
 			!$plink --bfile tempfile-module-2-04 --update-name tempfile-module-2-04.update-name --make-bed --out tempfile-module-2-05
@@ -432,6 +430,14 @@ syntax , param(string asis)
 			noi di in green"...update to latest rsid using 1000-genomes as a reference"
 			bim2dta, bim(tempfile-module-2-07)
 			split snp,p("rs")
+			capture confirm variable snp2
+			if !_rc {
+				di in green "rs # included in array"
+				}
+			else {
+			 di in red "rs # not included in array"
+			 gen snp2 = ""
+			 }
 			gen renameSNP = "rs" + snp2
 			keep if renameSNP == "rs"
 			count
