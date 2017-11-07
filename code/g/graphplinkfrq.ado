@@ -18,7 +18,7 @@
 #########################################################################
 */
 program graphplinkfrq
-syntax , frq(string asis) [maf(real 0.05)]
+syntax , frq(string asis) 
 noi di"#########################################################################"
 noi di"# graphplinkfrq                                                          "
 noi di"# version:       2a                                                      "
@@ -36,25 +36,29 @@ noi di"# for filename, .frq is not needed                                       
 noi di"#########################################################################"
 qui { 
 	preserve
-	!$tabbed `frq'.frq
-	import delim using `frq'.frq.tabbed, clear case(lower)
-	erase `frq'.frq.tabbed
-	for var maf : destring X, replace force
-	drop if  maf == .
+	!$tabbed `frq'.frq.counts
+	import delim using `frq'.frq.counts.tabbed, clear case(lower)
+	erase `frq'.frq.counts.tabbed
+	for var c1 c2 : destring X, replace force
+	for var c1 c2 : drop if  X == .
+	gen maf = c1/(c1+c2)
 	for var maf : lab var X "minor allele frequency"
 	count
 	global nSNPs `r(N)'
-    count if maf < `maf'
+    count if c1 <= 5
 	global nSNPlow `r(N)'
+	gen total = c1 + c2
+	sum total
+	global mac5 = 5/`r(max)'
 	sum maf
 	noi di"-plotting frequency distribution to tmpFRQ.gph"
 	if `r(min)' != `r(max)' {
 		tw hist maf,  width(.005) start(0) percent ///
 		   xlabel(0(.1)0.5) ///
-		   xline(`maf' , lpattern(dash) lwidth(vthin) lcolor(red) ) ///
+		   xline($mac5 , lpattern(dash) lwidth(vthin) lcolor(red) ) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
-		           "SNPs with MAF < `maf' ; N = ${nSNPlow}") ///
+		           "SNPs with mac < 5 ; N = ${nSNPlow}") ///
 		   nodraw saving(tmpFRQ.gph, replace)
 		}
 	restore
