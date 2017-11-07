@@ -41,7 +41,7 @@ qui {
 	erase `frq'.frq.counts.tabbed
 	for var c1 c2 : destring X, replace force
 	for var c1 c2 : drop if  X == .
-	gen maf = c1/(c1+c2)
+	gen maf = round(c1/(c1+c2),0.001)
 	for var maf : lab var X "minor allele frequency"
 	count
 	global nSNPs `r(N)'
@@ -53,12 +53,13 @@ qui {
 	sum maf
 	noi di"-plotting frequency distribution to tmpFRQ.gph"
 	if `r(min)' != `r(max)' {
-		tw hist maf,  width(.005) start(0) percent ///
+		tw hist maf,  width(0.004) start(0) percent ///
 		   xlabel(0(.1)0.5) ///
 		   xline($mac5 , lpattern(dash) lwidth(vthin) lcolor(red) ) ///
 		   legend(off) ///
 		   caption("SNPs in dataset; N = ${nSNPs}" ///
-		           "SNPs with mac < 5 ; N = ${nSNPlow}") ///
+		           "SNPs with mac < 5 ; N = ${nSNPlow}" ///
+							 "mac 5 = $mac5 %") ///
 		   nodraw saving(tmpFRQ.gph, replace)
 		}
 	restore

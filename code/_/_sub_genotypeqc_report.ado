@@ -168,7 +168,7 @@ end
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# ================================================================================= #")
 	_docx_paragraph_add_linebreak(dh)
-	_docx_paragraph_add_text(dh, "# For imputed data - allele freq check is ommitted and strands are assumed to be    #")
+	_docx_paragraph_add_text(dh, "# For imputed data - allele freq check is omitted and strands are assumed to be     #")
 	_docx_paragraph_add_linebreak(dh)
 	_docx_paragraph_add_text(dh, "# consistent. This also helps with assumptions about ancestry (i.e. compare to EUR) #")
 	_docx_paragraph_add_linebreak(dh)
