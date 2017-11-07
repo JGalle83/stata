@@ -45,7 +45,7 @@ qui {
 	for var maf : lab var X "minor allele frequency"
 	count
 	global nSNPs `r(N)'
-    count if c1 <= 5
+  count if c1 < 5
 	global nSNPlow `r(N)'
 	gen total = c1 + c2
 	sum total

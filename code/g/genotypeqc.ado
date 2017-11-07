@@ -44,6 +44,7 @@
 # =======================================================================
 # change maf to mac5
 # remove allele freq check if data is imputed against hrc - mixed ancestry of samples removes non-eur alleles
+# retain W/S and ID
 
 #########################################################################
 # Author: Richard Anney
@@ -310,7 +311,7 @@ syntax , param(string asis)
 		* - convert to hg+1 using wrayner data
 		* - update names where rsid is in title
 		* - remove duplicates by rsid - round #1
-		* - remove duplicates by location
+		* - remove duplicates by location 
 		* - rename snps without rsid using 1000-genomes as a reference
 		* - remove duplicates by rsid - round #1
 		* - remove variants with divergent allele-frequencies with reference genotypes
@@ -356,9 +357,11 @@ syntax , param(string asis)
 			!$plink --bfile tempfile-module-2-02 --update-chr tempfile.update-chr --make-bed --out tempfile-module-2-03
 			!$plink --bfile tempfile-module-2-03 --update-map tempfile.update-map --make-bed --out tempfile-module-2-04 
 			}	
-		qui { // update names where rsid is in title
+		qui { // update non-rsid names where rsid is in title
 			noi di in green"...update names where rsid is in title"
-			bim2dta, bim(tempfile-module-2-04)
+			import delim using tempfile-module-2-04.bim, clear case(lower)
+			rename v2 snp
+			keep snp
 			split snp,p("rs")
 			capture confirm variable snp2
 			if !_rc {
@@ -369,12 +372,16 @@ syntax , param(string asis)
 			 gen snp2 = ""
 			 }	
 			gen renameSNP = "rs" + snp2
-			outsheet snp renameSNP if renameSNP != "rs" using  tempfile-module-2-04.update-name, non noq replace 
+			drop if snp == renameSNP
+			drop if renameSNP == "rs"
+			outsheet snp renameSNP using  tempfile-module-2-04.update-name, non noq replace 
 			!$plink --bfile tempfile-module-2-04 --update-name tempfile-module-2-04.update-name --make-bed --out tempfile-module-2-05
 			}
 		qui { // remove duplicates by rsid - round #1
 			noi di in green"...remove duplicates by rsid"
-			bim2dta,bim(tempfile-module-2-05)
+			import delim using tempfile-module-2-05.bim, clear case(lower)
+			rename v2 snp
+			keep snp
 			duplicates tag snp, gen(tag)
 			keep if tag !=0
 			count
@@ -428,6 +435,7 @@ syntax , param(string asis)
 					!$plink --bfile tempfile-module-2-06 --exclude tempfile.exclude --make-bed --out tempfile-module-2-07
 					}
 				else if `r(N)' == 0 {
+					noi di in green"...0 locations have >1 variants with common alleles"
 					!$plink --bfile tempfile-module-2-06 --make-bed --out tempfile-module-2-07
 					}
 				}
@@ -460,13 +468,13 @@ syntax , param(string asis)
 					noi di in green"...checking strand compatibility of UIPAC codes"
 					noi ta array_gt kg_gt
 					gen drop = .
-					replace drop = 1 if array_gt == "ID"
-					replace drop = 1 if array_gt == "M" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-					replace drop = 1 if array_gt == "K" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-					replace drop = 1 if array_gt == "R" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-					replace drop = 1 if array_gt == "Y" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-					replace drop = 1 if array_gt == "S" & (kg_gt != "S") 
-					replace drop = 1 if array_gt == "W" & (kg_gt != "W") 
+					replace drop = 1 if array_gt == "M"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+					replace drop = 1 if array_gt == "K"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+					replace drop = 1 if array_gt == "R"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+					replace drop = 1 if array_gt == "Y"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+					replace drop = 1 if array_gt == "ID" & (kg_gt != "ID")
+					replace drop = 1 if array_gt == "S"  & (kg_gt != "S") 
+					replace drop = 1 if array_gt == "W"  & (kg_gt != "W") 
 					drop if drop == 1
 					drop drop	
 					duplicates tag snp, gen(y)
@@ -491,7 +499,9 @@ syntax , param(string asis)
 			}
 		qui { // remove duplicates by rsid - round #2
 			noi di in green"...remove duplicates by rsid"
-			bim2dta,bim(tempfile-module-2-08)
+			import delim using tempfile-module-2-08.bim, clear case(lower)
+			rename v2 snp
+			keep snp
 			duplicates tag snp, gen(tag)
 			keep if tag !=0
 			count
@@ -511,17 +521,27 @@ syntax , param(string asis)
 		qui { // remove variants with divergent allele-frequencies with reference genotypes
 			clear
 			set obs 1
-			gen array == "${arrayType}"
+			gen array = "${arrayType}"
 			if array != "michigan-imputation-server-v1.0.3-hrc-r1.1-2016" {
-				noi di in green"...remove variants with divergent allele-frequencies with reference genotypes"
+				noi di in green"...remove variants with divergent allele-frequencies from that in reference genotypes - keep those without information"
+				import delim using tempfile-module-2-09.bim, clear case(lower)
+				rename v2 rsid
+				keep rsid
+				merge 1:m rsid using ${kg_ref_frq}
+				keep if _m == 3
+				duplicates tag rsid, gen(tag)
+				outsheet rsid if tag != 0 using tempfile-module-2-09a.exclude, non noq replace
+				keep if tag == 0
+				outsheet rsid using tempfile-module-2-09.extract, non noq replace
+				!$plink --bfile tempfile-module-2-09 --extract tempfile-module-2-09.extract --freq --out tempfile-module-2-09
 				bim2dta, bim(tempfile-module-2-09)
-				!$plink --bfile tempfile-module-2-09 --freq --out tempfile-module-2-09		
 				!$tabbed tempfile-module-2-09.frq
 				import delim using tempfile-module-2-09.frq.tabbed, clear	
 				destring maf, replace force
 				tostring snp,replace
 				keep snp a1 maf
 				merge 1:1 snp a1 using tempfile-module-2-09_bim.dta
+				keep if _m == 3
 				drop _m chr bp
 				for var a1 a2 maf gt: rename X array_X
 				rename snp rsid
@@ -533,18 +553,17 @@ syntax , param(string asis)
 				drop if _m == 2
 				noi di in green"...checking allele-frequencies with reference (W/S excluded)"
 				gen drop = .
-				replace drop = 1 if _m == 1
-				replace drop = 1 if array_gt == "ID"
-				replace drop = 1 if array_gt == "M" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "K" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "R" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "Y" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "S" & (kg_gt != "S") 
-				replace drop = 1 if array_gt == "W" & (kg_gt != "W") 
-				replace drop = 1 if array_gt == "W"
-				replace drop = 1 if array_gt == "S"
+				drop if _m == 1
+				replace drop = 1 if array_gt == "M"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "K"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "R"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "Y"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "ID" & (kg_gt != "ID")
+				outsheet rsid if drop == 1 using tempfile-module-2-09b.exclude, non noq replace
+				replace drop = 2 if array_gt == "W"
+				replace drop = 2 if array_gt == "S"
 				sum drop 
-				noi di in green"...`r(N)' variants to be excluded due to ambiguous genotype of non compatible UIPAC codes"
+				noi di in green"...`r(N)' variants to be excluded due to incompatible UIPAC codes"
 				gen ref_maf = .
 				replace ref_maf = kg_maf if (kg_gt == array_gt & kg_a1 == array_a1)
 				replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "A" & array_a1 == "T")
@@ -554,25 +573,38 @@ syntax , param(string asis)
 				replace ref_maf = 1-kg_maf if (kg_gt == array_gt & kg_a1 != array_a1)
 				replace ref_maf = 1-kg_maf if ref_maf == .
 				global format mlc(black) mfc(blue) mlw(vvthin) m(o) xtitle("allele-frequency-array") ytitle("allele-frequency-1000-genomes")
-				tw scatter ref_maf array_maf if drop != 1, $format saving(tempfile-module-2-09-pre-clean,replace) nodraw
+				tw scatter ref_maf array_maf if drop == . , $format saving(tempfile-module-2-09-pre-clean,replace) nodraw
 				replace drop = 1 if array_maf > ref_maf + .1 
 				replace drop = 1 if array_maf < ref_maf - .1  
-				tw scatter ref_maf array_maf if drop != 1, $format saving(tempfile-module-2-09-post-clean,replace) nodraw
+				tw scatter ref_maf array_maf if drop == . , $format saving(tempfile-module-2-09-post-clean,replace) nodraw
 				graph combine tempfile-module-2-09-pre-clean.gph tempfile-module-2-09-post-clean.gph, ycommon
 				graph export  tempfile-module-2-allele-frequency-check.png, as(png) height(500) width(2000) replace
-				outsheet rsid if drop == 1 using tempfile.exclude, non noq replace 
+				outsheet rsid if drop == 1 using tempfile-module-2-09c.exclude, non noq replace
+				!type tempfile-module-2-09a.exclude > tempfile.exclude
+				!type tempfile-module-2-09b.exclude >> tempfile.exclude
+				!type tempfile-module-2-09c.exclude >> tempfile.exclude
 				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final		
 				}
-			else if {
-				noi di in green"...remove variants with divergent allele-frequencies with reference genotypes"
+			else if array == "michigan-imputation-server-v1.0.3-hrc-r1.1-2016"{
+				noi di in green"...remove variants with divergent allele-codes from that in reference genotypes - keep those without information"
+				import delim using tempfile-module-2-09.bim, clear case(lower)
+				rename v2 rsid
+				keep rsid
+				merge 1:m rsid using ${kg_ref_frq}
+				keep if _m == 3
+				duplicates tag rsid, gen(tag)
+				outsheet rsid if tag != 0 using tempfile-module-2-09a.exclude, non noq replace
+				keep if tag == 0
+				outsheet rsid using tempfile-module-2-09.extract, non noq replace
+				!$plink --bfile tempfile-module-2-09 --extract tempfile-module-2-09.extract --freq --out tempfile-module-2-09
 				bim2dta, bim(tempfile-module-2-09)
-				!$plink --bfile tempfile-module-2-09 --freq --out tempfile-module-2-09		
 				!$tabbed tempfile-module-2-09.frq
 				import delim using tempfile-module-2-09.frq.tabbed, clear	
 				destring maf, replace force
 				tostring snp,replace
 				keep snp a1 maf
 				merge 1:1 snp a1 using tempfile-module-2-09_bim.dta
+				keep if _m == 3
 				drop _m chr bp
 				for var a1 a2 maf gt: rename X array_X
 				rename snp rsid
@@ -582,26 +614,44 @@ syntax , param(string asis)
 				count if _m == 3
 				noi di in green"...`r(N)' varaints present in ${kg_ref_frq}"
 				drop if _m == 2
+				noi di in green"...checking allele-frequencies with reference (W/S excluded)"
+				gen drop = .
+				drop if _m == 1
+				replace drop = 1 if array_gt == "M"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "K"  & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "R"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "Y"  & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
+				replace drop = 1 if array_gt == "ID" & (kg_gt != "ID")
+				outsheet rsid if drop == 1 using tempfile-module-2-09b.exclude, non noq replace
+				replace drop = 2 if array_gt == "W"
+				replace drop = 2 if array_gt == "S"
+				sum drop 
+				noi di in green"...`r(N)' variants to be excluded due to incompatible UIPAC codes"
+				gen ref_maf = .
+				replace ref_maf = kg_maf if (kg_gt == array_gt & kg_a1 == array_a1)
+				replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "A" & array_a1 == "T")
+				replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "C" & array_a1 == "G")
+				replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "G" & array_a1 == "C")
+				replace ref_maf = kg_maf if (kg_gt != array_gt & kg_a1 == "T" & array_a1 == "A")
+				replace ref_maf = 1-kg_maf if (kg_gt == array_gt & kg_a1 != array_a1)
+				replace ref_maf = 1-kg_maf if ref_maf == .
 				global format mlc(black) mfc(blue) mlw(vvthin) m(o) xtitle("allele-frequency-array") ytitle("allele-frequency-1000-genomes")
-				tw scatter ref_maf array_maf if drop != 1, $format saving(tempfile-module-2-09-pre-clean,replace) nodraw
+				tw scatter ref_maf array_maf if drop == . , $format saving(tempfile-module-2-09-pre-clean,replace) nodraw
 				twoway scatteri 1 1,            ///
 				msymbol(i)                      ///
 				ylab("") xlab("")               ///
 				ytitle("") xtitle("")           ///
 				yscale(off) xscale(off)         ///
 				plotregion(lpattern(blank))     ///
-				name(tempfile-module-2-09-post-clean,replace) nodraw
-				graph combine tempfile-module-2-09-pre-clean.gph tempfile-module-2-09-post-clean.gph, ycommon
+				name(blank, replace)
+				
+				graph combine tempfile-module-2-09-pre-clean.gph blank, ycommon
 				graph export  tempfile-module-2-allele-frequency-check.png, as(png) height(500) width(2000) replace
-				gen drop = .
-				replace drop = 1 if _m == 1
-				replace drop = 1 if array_gt == "M" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "K" & (kg_gt == "R" | kg_gt == "Y" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "R" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-				replace drop = 1 if array_gt == "Y" & (kg_gt == "M" | kg_gt == "K" | kg_gt == "S" | kg_gt == "W") 
-				* keep ID and W/S in imputed data
-				outsheet rsid if drop == 1 using tempfile.exclude, non noq replace 
-				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final	
+				outsheet rsid if drop == 1 using tempfile-module-2-09c.exclude, non noq replace
+				!type tempfile-module-2-09a.exclude > tempfile.exclude
+				!type tempfile-module-2-09b.exclude >> tempfile.exclude
+				!type tempfile-module-2-09c.exclude >> tempfile.exclude
+				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final		
 				}
 			}
 		qui { // clean-up files
@@ -767,7 +817,7 @@ syntax , param(string asis)
 			global preqc tempfile-module-4-final
 			global round0 tempfile-module-5-round0
 			bim2ldexclude, bim(${preqc})
-			!$plink  --bfile ${preqc} --freq counts     --out ${round0}
+			!$plink  --bfile ${preqc} --freq counts    --out ${round0}
 			!$plink  --bfile ${preqc} --maf 0.05 --het --out ${round0}
 			!$plink  --bfile ${preqc} --hardy          --out ${round0}
 			!$plink  --bfile ${preqc} --missing        --out ${round0}
@@ -921,7 +971,7 @@ syntax , param(string asis)
 			}
 		qui { // calculate post-qc metrics
 			bim2ldexclude, bim(tempfile-module-5-round${rounds})
-			!$plink  --bfile tempfile-module-5-round${rounds} --freq counts     --out tempfile-module-5-round${rounds}
+			!$plink  --bfile tempfile-module-5-round${rounds} --freq counts    --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --maf 0.05 --het --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --hardy          --out tempfile-module-5-round${rounds}
 			!$plink  --bfile tempfile-module-5-round${rounds} --missing        --out tempfile-module-5-round${rounds}
@@ -931,7 +981,7 @@ syntax , param(string asis)
 			!del tmp_x.* tmp_y.*
 			}
 		qui { // plotting post-quality-control metrics"
-			noi di in green"...plotting pre-quality-control metrics"
+			noi di in green"...plotting post-quality-control metrics"
 			qui { // create blank graphs
 				tw scatteri 1 1, msymbol(i) ylab("") xlab("") ytitle("") xtitle("") yscale(off) xscale(off) plotregion(lpattern(blank))     
 				foreach i in tmpFRQ tmpHET tmpHWE tmpIMISS tmpLMISS tmpKIN0_1 tmpKIN0_2 {
@@ -1222,6 +1272,10 @@ syntax , param(string asis)
 			recodegenotype, a1(test_a1) a2(test_a2)
 			rename _gt test_gt
 			gen drop = .
+			replace drop = 1 if hapmap_gt == "S"
+			replace drop = 1 if hapmap_gt == "W"
+			replace drop = 1 if test_gt == "S"
+			replace drop = 1 if test_gt == "W"
 			replace drop = 1 if hapmap_gt == "K" & test_gt =="R"
 			replace drop = 1 if hapmap_gt == "K" & test_gt =="Y"
 			replace drop = 1 if hapmap_gt == "M" & test_gt =="R"
