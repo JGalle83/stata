@@ -562,7 +562,7 @@ syntax , param(string asis)
 				outsheet rsid if drop == 1 using tempfile-module-2-09b.exclude, non noq replace
 				replace drop = 2 if array_gt == "W"
 				replace drop = 2 if array_gt == "S"
-				sum drop 
+				sum if drop == 1
 				noi di in green"...`r(N)' variants to be excluded due to incompatible UIPAC codes"
 				gen ref_maf = .
 				replace ref_maf = kg_maf if (kg_gt == array_gt & kg_a1 == array_a1)
