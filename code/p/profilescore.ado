@@ -502,6 +502,7 @@ syntax , param(string asis)
 		graphmanhattan, chr(chr) bp(bp) p(gwas_p) max(100) min(1) 
 		graph combine tmpManhattan.gph, title("manhattan-plot for PRS processed gwas ")  caption("CREATED: $S_DATE $S_TIME" "INPUT: ${gwas}",	size(tiny))
 		graph export gwas-processed-mahhattan.png, as(png) height(2000) width(4000) replace
+		window manage close graph
 		}	
 	qui { // copy files 
 		noi di in green "#########################################################################"
@@ -512,6 +513,7 @@ syntax , param(string asis)
 			!copy "data`data'-final-profiles.csv"   "..\\${project_name}_data`data'_profiles.csv"
 			graph use "tempfile-2-gwas_risk_frq_x_data`data'_risk_frq.gph" 
 			graph export "..\\${project_name}_sanity-check-gwas-vs-data`data'-allele-frequencies.png", as(png) height(500) width(1000) replace
+			window manage close graph
 			}
 		!copy "tempfile-4.log"               "..\\${project_name}.meta-log"
 		!copy "gwas-processed-mahhattan.png" "..\\${project_name}_processed_manhattan.png"
