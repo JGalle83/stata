@@ -85,10 +85,6 @@ syntax , param(string asis)
 		global ldPrune        "--clump-p1 1 --clump-p2 1 --clump-r2 0.2 --clump-kb 1000" 
 		do `param'
 		}
-	qui { // define project location
-		!mkdir ${project_folder}\\${project_name}
-		noi di in green "| data will be deposited in ............................  ${project_folder}\\${project_name}"
-		}
 	qui { // check presence of gwas data files
 		noi di in green "| prs will be calculated from the gwas .................  ${gwas}.gz"
 		capture confirm file "${gwas}.gz"
