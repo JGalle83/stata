@@ -1217,7 +1217,7 @@ syntax , param(string asis)
 								}
 							}
 						}
-										}
+					}
 				}
 			count
 			if `r(N)' != 0 { 
