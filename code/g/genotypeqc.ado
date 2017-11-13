@@ -354,8 +354,17 @@ syntax , param(string asis)
 			outsheet rsid chr               using tempfile.update-chr, non noq replace
 			outsheet rsid bp                using tempfile.update-map, non noq replace
 			!$plink --bfile tempfile-module-2-01 --extract    tempfile.extract    --make-bed --out tempfile-module-2-02
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-01.`file'
+				}
 			!$plink --bfile tempfile-module-2-02 --update-chr tempfile.update-chr --make-bed --out tempfile-module-2-03
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-02.`file'
+				}
 			!$plink --bfile tempfile-module-2-03 --update-map tempfile.update-map --make-bed --out tempfile-module-2-04 
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-03.`file'
+				}
 			}	
 		qui { // update non-rsid names where rsid is in title
 			noi di in green"...update names where rsid is in title"
@@ -376,6 +385,9 @@ syntax , param(string asis)
 			drop if renameSNP == "rs"
 			outsheet snp renameSNP using  tempfile-module-2-04.update-name, non noq replace 
 			!$plink --bfile tempfile-module-2-04 --update-name tempfile-module-2-04.update-name --make-bed --out tempfile-module-2-05
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-04.`file'
+				}
 			}
 		qui { // remove duplicates by rsid - round #1
 			noi di in green"...remove duplicates by rsid"
@@ -397,6 +409,9 @@ syntax , param(string asis)
 					outsheet snp using tempfile.exclude, non noq replace
 					}
 			!$plink --bfile tempfile-module-2-05 --exclude tempfile.exclude --make-bed --out tempfile-module-2-06
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-05.`file'
+				}
 			}
 		qui { // remove duplicates by location
 				noi di in green"...remove duplicates by location"
@@ -433,10 +448,16 @@ syntax , param(string asis)
 					merge 1:1 rsid using tempfile-module-2-06.dta
 					outsheet rsid if _m == 1 using tempfile.exclude, non noq replace
 					!$plink --bfile tempfile-module-2-06 --exclude tempfile.exclude --make-bed --out tempfile-module-2-07
+					foreach file in bim bed fam { 
+						!del tempfile-module-2-06.`file'
+						}
 					}
 				else if `r(N)' == 0 {
 					noi di in green"...0 locations have >1 variants with common alleles"
 					!$plink --bfile tempfile-module-2-06 --make-bed --out tempfile-module-2-07
+					foreach file in bim bed fam { 
+						!del tempfile-module-2-06.`file'
+						}
 					}
 				}
 		qui { // rename snps without rsid using 1000-genomes as a reference
@@ -485,17 +506,26 @@ syntax , param(string asis)
 					noi di in green"...`r(N)' variants to be renamed"
 					outsheet snp rsid using tempfile-module-2-07.update-name, non noq replace 
 					!$plink --bfile tempfile-module-2-07 --update-name tempfile-module-2-07.update-name --make-bed --out tempfile-module-2-08
+					foreach file in bim bed fam { 
+						!del tempfile-module-2-07.`file'
+						}
 					}
 				else if `r(N)' == 0 { 
 					noi di in green"...`r(N)' variants (by location) have a matching rsid"
 					noi di in green"...`r(N)' variants to be renamed"
 					!$plink --bfile tempfile-module-2-07 --make-bed --out tempfile-module-2-08
+					foreach file in bim bed fam { 
+						!del tempfile-module-2-07.`file'
+						}
 					}
 				}
 			else if `r(N)' == 0 {
 				noi di in green"...`r(N)' variants do not have an rsid"
 				!$plink --bfile tempfile-module-2-07 --make-bed --out tempfile-module-2-08
-				}
+					foreach file in bim bed fam { 
+						!del tempfile-module-2-07.`file'
+						}
+					}
 			}
 		qui { // remove duplicates by rsid - round #2
 			noi di in green"...remove duplicates by rsid"
@@ -517,6 +547,9 @@ syntax , param(string asis)
 				outsheet snp using tempfile.exclude, non noq replace
 				}
 			!$plink --bfile tempfile-module-2-08 --exclude tempfile.exclude --make-bed --out tempfile-module-2-09
+			foreach file in bim bed fam { 
+				!del tempfile-module-2-08.`file'
+				}
 			}
 		qui { // remove variants with divergent allele-frequencies with reference genotypes
 			clear
@@ -583,7 +616,10 @@ syntax , param(string asis)
 				!type tempfile-module-2-09a.exclude > tempfile.exclude
 				!type tempfile-module-2-09b.exclude >> tempfile.exclude
 				!type tempfile-module-2-09c.exclude >> tempfile.exclude
-				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final		
+				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final
+				foreach file in bim bed fam { 
+					!del tempfile-module-2-09.`file'
+					}
 				}
 			else if array == "michigan-imputation-server-v1.0.3-hrc-r1.1-2016"{
 				noi di in green"...remove variants with divergent allele-codes from that in reference genotypes - keep those without information"
@@ -652,6 +688,9 @@ syntax , param(string asis)
 				!type tempfile-module-2-09b.exclude >> tempfile.exclude
 				!type tempfile-module-2-09c.exclude >> tempfile.exclude
 				!$plink --bfile tempfile-module-2-09 --exclude tempfile.exclude --make-bed --out tempfile-module-2-final		
+				foreach file in bim bed fam { 
+					!del tempfile-module-2-09.`file'
+					}
 				}
 			}
 		qui { // clean-up files
@@ -796,10 +835,16 @@ syntax , param(string asis)
 			if `r(max)' == 23 {
 				noi di in green"...great! chromosome 23 is present - imputing sex"
 				!$plink --bfile tempfile-module-4-01 --mac 5 --geno 0.99 --mind 0.99 --impute-sex --make-bed --out tempfile-module-4-final
+				foreach file in bim bed fam { 
+					!del tempfile-module-4-01.`file'
+					}
 				}
 			else if `r(max)' != 23 {
 				noi di in green"...sorry! chromosome 23 is not present"
 				!$plink --bfile tempfile-module-4-01 --mac 5 --geno 0.99 --mind 0.99  --make-bed --out tempfile-module-4-final
+				foreach file in bim bed fam { 
+					!del tempfile-module-4-01.`file'
+					}
 				}
 			}	
 		qui { // clean files
@@ -861,10 +906,25 @@ syntax , param(string asis)
 			noi di in green"...apply quality-control to binaries"	
 			!$plink --bfile ${preqc}  --remove tempHET.indlist --set-hh-missing --make-bed --out tempfile-module-5-01
 			!$plink --bfile tempfile-module-5-01 --exclude  tempHWE.snplist --make-bed --out tempfile-module-5-02
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-01.`file'
+				}
 			!$plink --bfile tempfile-module-5-02 --geno ${geno1} --make-bed --out tempfile-module-5-03
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-02.`file'
+				}
 			!$plink --bfile tempfile-module-5-03 --mind ${mind}  --make-bed --out tempfile-module-5-04
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-03.`file'
+				}
 			!$plink --bfile tempfile-module-5-04 --geno ${geno2} --make-bed --out tempfile-module-5-05		
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-04.`file'
+				}
 			!$plink --bfile tempfile-module-5-05 --mac 5  --make-bed --out tempfile-module-5-06
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-05.`file'
+				}
 			}
 		qui { // remove excessive cryptic relatedness
 			noi di in green"...remove excess cryptic relatedness"
@@ -913,6 +973,9 @@ syntax , param(string asis)
 			noi di in green"...${excessC} individuals to be dropeed due to showing excessive kinship coefficients (greater than 2.5x standard-deviation from the mean)"
 			outsheet fid iid if excessC == "1" using excessiveCryptic.remove, replace non noq
 			!$plink --bfile tempfile-module-5-06 --remove excessiveCryptic.remove   --make-bed --out tempfile-module-5-round1
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-06.`file'
+				}			
 			}
 		qui { // plot mean kinship vs maximum kinship
 			noi di in green"...plot mean kinship vs maximum kinship"
@@ -963,10 +1026,25 @@ syntax , param(string asis)
 			qui { // apply quality-control to binaries
 				noi di in green"...apply quality-control to binaries"	
 				!$plink --bfile tempfile-module-5-${round1}  --remove tempHET.indlist --set-hh-missing --make-bed --out tempfile-module-5-01
+				foreach file in bim bed fam { 
+					!del tempfile-module-5-${round1}.`file'
+					}
 				!$plink --bfile tempfile-module-5-01 --exclude  tempHWE.snplist --make-bed --out tempfile-module-5-02
+				foreach file in bim bed fam { 
+					!del tempfile-module-5-01.`file'
+					}				
 				!$plink --bfile tempfile-module-5-02 --mind ${mind}  --make-bed --out tempfile-module-5-03
+				foreach file in bim bed fam { 
+					!del tempfile-module-5-02.`file'
+					}
 				!$plink --bfile tempfile-module-5-03 --geno ${geno2} --make-bed --out tempfile-module-5-04		
+				foreach file in bim bed fam { 
+					!del tempfile-module-5-03.`file'
+					}				
 				!$plink --bfile tempfile-module-5-04 --mac 5  --make-bed --out tempfile-module-5-${round2}
+				foreach file in bim bed fam { 
+					!del tempfile-module-5-04.`file'
+					}
 				}
 			}
 		qui { // calculate post-qc metrics
@@ -1056,6 +1134,9 @@ syntax , param(string asis)
 			noi di in green"...`r(N)' genetic duplicates observed"
 			outsheet fid id using duplicates.remove, non noq replace
 			!$plink --bfile tempfile-module-5-round${rounds} --remove duplicates.remove --make-bed --out tempfile-module-6-01
+			foreach file in bim bed fam { 
+				!del tempfile-module-5-${rounds}.`file'
+				}
 			}
 		qui { // remove-related-samples (2nd-degree)
 			noi di in green"...identifying 2nd-degree relatives"
@@ -1143,6 +1224,9 @@ syntax , param(string asis)
 				!type tmp.remove >> 2nd-degree.remove
 				}
 			!$plink --bfile tempfile-module-6-01 --remove 2nd-degree.remove --make-bed --out tempfile-module-6-02
+			foreach file in bim bed fam { 
+				!del tempfile-module-6-01.`file'
+				}
 			}
 		qui { // remove-related-samples (3rd-degree)
 			noi di in green"...identifying 3rd-degree relatives"
@@ -1230,6 +1314,9 @@ syntax , param(string asis)
 				!type tmp.remove >> 3rd-degree.remove
 				}
 			!$plink --bfile tempfile-module-6-02 --remove 3rd-degree.remove --make-bed --out tempfile-module-6-final
+			foreach file in bim bed fam { 
+				!del tempfile-module-6-02.`file'
+				}
 			}
 		qui { // plot post remove
 			noi di in green"...plot post-removal relatedness"
