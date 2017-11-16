@@ -64,7 +64,7 @@ This part of the code runs a number of checks to make sure everything is in plac
  5. ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
 4. check location and presence of plink binaries to be qc'd
 ### module-1 - determining the original genotyping array
-It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. This module used Will Rayners resource (http://www.well.ox.ac.uk/~wrayner/strand/) to creeate a set of \*.dta files containing three variables (rsid - chr - bp (string format)) and merges against the \*.bim file and calculates a match. 
+It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. This module used Will Rayners resource (http://www.well.ox.ac.uk/~wrayner/strand/) to create a set of \*.dta files containing three variables (rsid - chr - bp (string format)) and merges against the \*.bim file and calculates a match. 
 
 ```
 rsid	chr	bp
@@ -96,10 +96,7 @@ qui { // create dummy array reference
 ```
 ![array check - jaccard output](../images/autism-agp2-1v2-combined.arraymatch.png)
 
-
-
 # Examples
-
 # Dependencies
 | Program | Installation Command
 | :----- | :------
