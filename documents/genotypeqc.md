@@ -7,7 +7,8 @@
 # Description
 This program runs a 'single-line-code' quality control of genotype array data utilising ```plink``` and ```plink2``` within ```stata```. Due to the complexity of the analysis the program utilises numerous reference file requires and other dependencies; these need to be noted in a parameters file. 
 ## Create a parameters file
-In the directory containing the genotypes to be QC'd, create a parameter file containing a list of ```global``` definitions. 
+The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. The parameter file is basically a set of globals that ```stata``` stores in memory and applies during the qc program
+### Definitions
 * ```array_ref``` the path to the folder containing the genotype array folders;
 * ```build_ref``` the path to the file ```rsid-hapmap-genome-location.dta```
 * ```kg_ref_frq``` the path to the file ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta```
@@ -25,16 +26,16 @@ In the directory containing the genotypes to be QC'd, create a parameter file co
 * ```kin_f``` the min. kinship releationship for 1st degree relatives (0.1770)
 * ```kin_s``` the min. kinship releationship for 2nd degree relatives (0.0884)
 * ```kin_t``` the min. kinship releationship for 3rd degree relatives (0.0442)
-
+### An example parameter file
 ```
-\\example parameter file
+*an example parameter file
 global array_ref   "E:\sandbox\example-data\genotyping-arrays\data"
 global build_ref   "E:\sandbox\example-data\genome-builds\data\rsid-hapmap-genome-location.dta" 
 global kg_ref_frq  "E:\sandbox\example-data\genotypes\1000-genomes\phase1\data\hg19\eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta"
 global hapmap_data "E:\sandbox\example-data\genotypes\hapmap\data\all\hg19-1\hapmap3-all-hg19-1"
 global aims        "E:\sandbox\example-data\genotypes\hapmap\data\all\hg19-1\hapmap3-all-hg19-1-aims.snp-list"
 global data_folder "E:\sandbox\example-data\genotypes\example" 
-global data_input	 "example" 
+global data_input  "example" 
 global rounds      4
 global hwep        10
 global hetsd       4
@@ -46,70 +47,15 @@ global kin_d       0.354
 global kin_f       0.177
 global kin_s       0.0884
 global kin_t       0.0442
+*the end of the example parameter file
 ```
+## What is happening under the bonnet?
+Although this is a single line of code, it is important to understand what is happening under the bonnet of the code. The code is split into mini modules each performing an important role in the qc.
+### 1. the preamble - checking if everything is where it is supposed to be
+This part of the code runs a number of checks to make sure everything is in its place and ready for the script. 
+> as of 16th November - the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
 
-
-The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. This can be created manually of via the script below.
-Note that the quality control thresholds can be altered in this script.
-
-```
-qui { // define dependencies
-	global array_ref   "<add_path_to_data_here>" // location of the genotyping array folder 
-	global build_ref   "<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
-	global kg_ref_frq  "<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
-	global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
-	global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
-  }
-qui { // define folder and files
-
-qui { // set working directory
-	cd ${data_folder}
-	}
-qui { // create parameter file
-	clear
-	set obs 39
-	gen a = "#"
-	replace a = "#########################################################################     "  in 1
-	replace a = "# template-parameters                                                         "  in 2
-	replace a = "# =======================================================================     "  in 3
-	replace a = "# This file is used to define specific globals for genotypeqc command.        "  in 4
-	replace a = "# *WARNING* do not change column 1 names                                      "  in 5
-	replace a = "# *WARNING* do not alter this panel                                           "  in 6
-	replace a = "# *WARNING* this is a tab-delimited file                                      "  in 7
-	replace a = "#########################################################################     "  in 8
-	replace a = "# - this line should be line 19                                               "  in 19
-	replace a = "#########################################################################     "  in 20
-	replace a = "Parameter Definition Notes                            	                   	   "  in 21
-	replace a = `"data_folder	${data_folder}                                                   "' in 22 
-	replace a = `"data_input	${data_input}                                                    "' in 23 
-	replace a = `"array_ref	${array_ref}                                                       "' in 24 
-	replace a = `"build_ref	${build_ref}                                                       "' in 25 
-	replace a = `"kg_ref_frq	${kg_ref_frq}                                                    "' in 26 
-	replace a = `"hapmap_data	${hapmap_data}                                                   "' in 27 
-	replace a = `"aims ${aims}                                                              	 "' in 28     
-	replace a = "rounds	4	// rounds of quality control                                         "' in 29 
-	replace a = "hwep	10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
-	replace a = "hetsd	4	// max. heterozygosity standard deviation from the mean              "' in 31 
-	replace a = "maf	0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
-	replace a = "mind	0.02	// max. missingness per individual to be tolerate                  "' in 33 
-	replace a = "geno1	0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
-	replace a = "geno2	0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
-	replace a = "kin_d	0.354	// min. kinship  for duplicates                                  "' in 36 
-	replace a = "kin_f	0.177	// min. kinship  for 1st degree relatives                        "' in 37 
-	replace a = "kin_s	0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
-	replace a = "kin_t	0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
-	outsheet a using ${data_input}.tmp, non noq replace
-	!$tabbed ${data_input}.tmp
-	!type ${data_input}.tmp.tabbed > ${data_input}.parameters
-	!del *.tmp *.tmp.tabbed
-  }
-qui { // run qc-pipeline
-  genotypeqc, param(${data_input}.parameters)
-  }
-```
-
-### Preamble
-1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
+| 1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
 2. create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
 3. check location of all dependent files\folders including;
  1. ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
