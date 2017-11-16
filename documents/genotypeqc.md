@@ -8,47 +8,45 @@
 This program runs a 'single-line-code' quality control of genotype array data utilising ```plink``` and ```plink2``` within ```stata```. Due to the complexity of the analysis the program utilises numerous reference file requires and other dependencies; these need to be noted in a parameters file. 
 ## Create a parameters file
 In the directory containing the genotypes to be QC'd, create a parameter file containing a list of ```global``` definitions. 
- ```array_ref```  the path to the folder containing the genotype array folders;
- ```build_ref```  the path to the file ```rsid-hapmap-genome-location.dta```
- ```kg_ref_frq```  the path to the file ```rsid-hapmap-genome-location.dta```add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
-
-global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
-global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
-global data_folder "<add_path_here>" // add file location in quotation marks
-global data_input	 "<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
-global rounds	     4	// rounds of quality control                                         "' in 29 
-global hwep	       10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
-global hetsd	     4	// max. heterozygosity standard deviation from the mean              "' in 31 
-global maf         0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
-global mind        0.02	// max. missingness per individual to be tolerate                  "' in 33 
-global geno1       0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
-global geno2       0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
-global kin_d       0.354	// min. kinship  for duplicates                                  "' in 36 
-global kin_f       0.177	// min. kinship  for 1st degree relatives                        "' in 37 
-global kin_s       0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
-global kin_t       0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
-
+* ```array_ref``` the path to the folder containing the genotype array folders;
+* ```build_ref``` the path to the file ```rsid-hapmap-genome-location.dta```
+* ```kg_ref_frq``` the path to the file ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta```
+* ```hapmap_data``` the path to the plink binaries files for hapmap3-all-hg19-1
+* ```aims``` the path to the file ```hapmap3-all-hg19-1-aims.snp-list```
+* ```data_folder``` the path to the folder containing the plink binaries to be qc'd
+* ```data_input``` the name of the plink binaries to be qc'd
+* ```rounds``` the number of rounds of quality contro to be applied (4)
+* ```hwep``` the max. hwe deviation in control samples to be tolerated (-log10(p)) (10)
+* ```hetsd```  the max. heterozygosity standard deviation from the mean (4)
+* ```mind``` the max. missingness per individual to be tolerate (0.02)
+* ```geno1``` the max. missingness per SNP to be tolerated (first round) (0.05)
+* ```geno2 ``` the max. max. missingness per SNP to be tolerated (final) (0.02)
+* ```kin_d``` the min. kinship releationship for duplicates (0.354)
+* ```kin_f``` the min. kinship releationship for 1st degree relatives (0.1770)
+* ```kin_s``` the min. kinship releationship for 2nd degree relatives (0.0884)
+* ```kin_t``` the min. kinship releationship for 3rd degree relatives (0.0442)
 
 ```
-global array_ref   "<add_path_to_data_here>" // location of the genotyping array folder 
-global build_ref   "<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
-global kg_ref_frq  "<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
-global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
-global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
-global data_folder "<add_path_here>" // add file location in quotation marks
-global data_input	 "<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
-global rounds	     4	// rounds of quality control                                         "' in 29 
-global hwep	       10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
-global hetsd	     4	// max. heterozygosity standard deviation from the mean              "' in 31 
-global maf         0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
-global mind        0.02	// max. missingness per individual to be tolerate                  "' in 33 
-global geno1       0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
-global geno2       0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
-global kin_d       0.354	// min. kinship  for duplicates                                  "' in 36 
-global kin_f       0.177	// min. kinship  for 1st degree relatives                        "' in 37 
-global kin_s       0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
-global kin_t       0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
-
+\\example parameter file
+global array_ref   "E:\sandbox\example-data\genotyping-arrays\data"
+global build_ref   "E:\sandbox\example-data\genome-builds\data\rsid-hapmap-genome-location.dta" 
+global kg_ref_frq  "E:\sandbox\example-data\genotypes\1000-genomes\phase1\data\hg19\eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta"
+global hapmap_data "E:\sandbox\example-data\genotypes\hapmap\data\all\hg19-1\hapmap3-all-hg19-1"
+global aims        "E:\sandbox\example-data\genotypes\hapmap\data\all\hg19-1\hapmap3-all-hg19-1-aims.snp-list"
+global data_folder "E:\sandbox\example-data\genotypes\example" 
+global data_input	 "example" 
+global rounds      4
+global hwep        10
+global hetsd       4
+global maf         0.01
+global mind        0.02
+global geno1       0.05
+global geno2       0.02
+global kin_d       0.354
+global kin_f       0.177
+global kin_s       0.0884
+global kin_t       0.0442
+```
 
 
 The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. This can be created manually of via the script below.
