@@ -51,11 +51,10 @@ global kin_t       0.0442
 ```
 ## What is happening under the bonnet?
 Although this is a single line of code, it is important to understand what is happening under the bonnet of the code. The code is split into mini modules each performing an important role in the qc.
-### 1. the preamble - checking if everything is where it is supposed to be
-This part of the code runs a number of checks to make sure everything is in its place and ready for the script. 
-> as of 16th November - the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
-
-| 1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
+### the preamble - checking if everything is where it is supposed to be
+This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
+> note that as of 16th November, the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
+1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
 2. create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
 3. check location of all dependent files\folders including;
  1. ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
@@ -64,50 +63,49 @@ This part of the code runs a number of checks to make sure everything is in its 
  4. ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
  5. ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
 4. check location and presence of plink binaries to be qc'd
-
-
-
-plink binary marker file contains information on marker identifiers, chromosome location and allele coding. It is often necessary to import these files into stata. This one line command imports the data, renames the variables, creates a genotype variable ```gt``` using the ```recodegenotype``` program and saves a copy of this coversion in the same directory as filename_bim.dta.
-
-The plink \*.bim file is tab-delimited text file with no header line, one line per variant with the following six fields:
-1. Chromosome code (either an integer, or 'X'/'Y'/'XY'/'MT'; '0' indicates unknown) or name
-2. Variant identifier
-3. Position in morgans or centimorgans (safe to use dummy value of '0')
-4. Base-pair coordinate (normally 1-based, but 0 ok; limited to 231-2)
-5. Allele 1 (corresponding to clear bits in .bed; usually minor)
-6. Allele 2 (corresponding to set bits in .bed; usually major)
-Allele codes can contain more than one character.
+### module-1 - determining the original genotyping array
+It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. This module used Will Rayners resource (http://www.well.ox.ac.uk/~wrayner/strand/) to creeate a set of \*.dta files containing three variables (rsid - chr - bp (string format)) and merges against the \*.bim file and calculates a match. 
 
 ```
-1	rs12354060	0	10004	A	G
-1	rs4477212	0	72017	T	A
-1	rs6650104	0	554340	G	A
-1	rs2185539	0	556738	C	G
-1	rs6681105	0	581938	G	A
+rsid	chr	bp
+AFFX-SNP_10021569	2	106584554
+AFFX-SNP_10026879	16	82323721
+AFFX-SNP_10029725	14	35532970
+AFFX-SNP_10034687	18	65000314
+AFFX-SNP_10036267	11	58562418
+AFFX-SNP_10037362	20	2628109
+AFFX-SNP_10037636	3	82820079
 ```
 
-The plink \*_bim.dta file contains 
+For imputed data we use a workaround and create a "dummy" array based on the imputation reference; see below
+```
+qui { // define reference name 
+ global imputation_reference michigan-imputation-server-v1.0.3-hrc-r1.1-2016
+ }
+qui { // create dummy folder
+ !mkdir ${array_ref}\\${imputation_reference}
+ cd ${array_ref}\\${imputation_reference}
+ }
+qui { // create dummy array reference
+ import delim using ${data_folder}\\${data_input}.bim, clear
+ keep v1 v2 v4
+ for var v1 - v4 : tostring X, replace
+ rename (v1 v2 v4) (chr rsid bp)
+ save ${imputation_reference}.dta, replace
+ }
+```
+![array check - jaccard output](../images/autism-agp2-1v2-combined.arraymatch.png)
+
+
 
 # Examples
-The program does not need the .bim to be included in the command. For example, the plink file example.bim can be converted to example_bim.dta as follows;
-```bim2dta, bim(example)```
-
-```
-chr	snp	bp	a1	a2	gt
-5	rs335163	122483920	G	A	R
-5	rs335166	122555741	C	A	M
-5	rs335168	122554718	A	C	M
-5	rs335170	122510142	A	C	M
-5	rs335178	122542019	G	A	R
-3	rs33518	42423300	A	G	R
-```
 
 # Dependencies
 | Program | Installation Command
 | :----- | :------
-|```recodegenotype``` | ```net install recodegenotype, from(https://raw.github.com/ricanney/stata/master/code/r/) replace```
+|```example``` | ```net install example, from(https://raw.github.com/ricanney/stata/master/code/e/) replace```
 
-Note that ```recodegenotype``` is automatically installed alongside ```bim2dta``` 
+Note that ```example``` is automatically installed alongside ```genotypeqc``` 
 
 |```program``` | ```ssc install program```
 
