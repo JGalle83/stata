@@ -8,10 +8,78 @@
 This program runs a 'single-line-code' quality control of genotype array data utilising ```plink``` and ```plink2``` within ```stata```. Due to the complexity of the analysis the program utilises numerous reference file requires and other dependencies; these need to be noted in a parameters file. 
 
 ## Overview of QC pipeline
+The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. This can be created manually of via the script below.
+Note that the quality control thresholds can be altered in this script.
+
+```
+qui { // define dependencies
+	global array_ref		"<add_path_to_data_here>" // location of the genotyping array folder 
+	global build_ref		"<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
+	global kg_ref_frq		"<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
+	global hapmap_data	"<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
+	global aims	        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
+  }
+qui { // define folder and files
+	global data_folder	"<add_path_here>" // add file location in quotation marks
+	global data_input		"<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
+	}
+qui { // set working directory
+	cd ${data_folder}
+	}
+qui { // create parameter file
+	clear
+	set obs 39
+	gen a = "#"
+	replace a = "#########################################################################     "  in 1
+	replace a = "# template-parameters                                                         "  in 2
+	replace a = "# =======================================================================     "  in 3
+	replace a = "# This file is used to define specific globals for genotypeqc command.        "  in 4
+	replace a = "# *WARNING* do not change column 1 names                                      "  in 5
+	replace a = "# *WARNING* do not alter this panel                                           "  in 6
+	replace a = "# *WARNING* this is a tab-delimited file                                      "  in 7
+	replace a = "#########################################################################     "  in 8
+	replace a = "# - this line should be line 19                                               "  in 19
+	replace a = "#########################################################################     "  in 20
+	replace a = "Parameter Definition Notes                            	                   	   "  in 21
+	replace a = `"data_folder	${data_folder}                                                   "' in 22 
+	replace a = `"data_input	${data_input}                                                    "' in 23 
+	replace a = `"array_ref	${array_ref}                                                       "' in 24 
+	replace a = `"build_ref	${build_ref}                                                       "' in 25 
+	replace a = `"kg_ref_frq	${kg_ref_frq}                                                    "' in 26 
+	replace a = `"hapmap_data	${hapmap_data}                                                   "' in 27 
+	replace a = `"aims ${aims}                                                              	 "' in 28     
+	replace a = "rounds	4	// rounds of quality control                                         "' in 29 
+	replace a = "hwep	10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
+	replace a = "hetsd	4	// max. heterozygosity standard deviation from the mean              "' in 31 
+	replace a = "maf	0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
+	replace a = "mind	0.02	// max. missingness per individual to be tolerate                  "' in 33 
+	replace a = "geno1	0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
+	replace a = "geno2	0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
+	replace a = "kin_d	0.354	// min. kinship  for duplicates                                  "' in 36 
+	replace a = "kin_f	0.177	// min. kinship  for 1st degree relatives                        "' in 37 
+	replace a = "kin_s	0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
+	replace a = "kin_t	0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
+	outsheet a using ${data_input}.tmp, non noq replace
+	!$tabbed ${data_input}.tmp
+	!type ${data_input}.tmp.tabbed > ${data_input}.parameters
+	!del *.tmp *.tmp.tabbed
+  }
+qui { // run qc-pipeline
+  genotypeqc, param(${data_input}.parameters)
+  }
+```
+
+### Preamble
 1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
 2. create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
 3. check location of all dependent files\folders including;
-..* d
+ 1. ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
+ 2. ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
+ 3. ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
+ 4. ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
+ 5. ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
+4. check location and presence of plink binaries to be qc'd
+
 
 
 plink binary marker file contains information on marker identifiers, chromosome location and allele coding. It is often necessary to import these files into stata. This one line command imports the data, renames the variables, creates a genotype variable ```gt``` using the ```recodegenotype``` program and saves a copy of this coversion in the same directory as filename_bim.dta.
