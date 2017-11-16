@@ -1,8 +1,13 @@
 # software - stata
 ## Background
 This is a repository of stata programs that I have written. Most are for use in genomic analysis and were written to work on a windows 10 machine and STATA 13.1 MP.
-To install all packages run https://github.com/ricanney/stata/blob/master/code/install-all.do additional dependencies (written by others) are also included in this script.
-
+To install all packages run the following script
+```
+ https://github.com/ricanney/stata/blob/master/code/install-all.do
+ '''
+ 
+ additional dependencies (written by others) are also included in this script.
+'''
 ## Programs
 ### bim2dta
 #### Syntax
