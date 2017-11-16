@@ -18,11 +18,11 @@
 program bim2dta
 syntax , bim(string asis)
 
-di "***************************************************"
-di "bim2dta - version 0.1a 10sept2015 richard anney "
-di "***************************************************"
-di "Renaming PLINK bim files (addition of genotype codes)"
-di "Started: $S_DATE $S_TIME"
+di in white"***************************************************"
+di in white"bim2dta - version 0.1a 10sept2015 richard anney "
+di in white"***************************************************"
+di in white"Renaming PLINK bim files (addition of genotype codes)"
+di in white"Started: $S_DATE $S_TIME"
 qui { 
 	capture confirm file "`bim'.bim"
 	if _rc==0 {
@@ -34,15 +34,15 @@ qui {
 		noi di in red"# exiting "
 		exit
 		}
-	noi di ".....importing bim file: `bim'.bim"
+	noi di in white".....importing bim file: `bim'.bim"
 	import delim  using `bim'.bim, clear 
-	noi di ".....renaming variables"
+	noi di in white".....renaming variables"
 	rename v1 chr
 	rename v2 snp
 	rename v4 bp
 	rename v5 a1
 	rename v6 a2
-	noi di ".....recoding genotypes"
+	noi di in white".....recoding genotypes"
 	noi recodegenotype , a1(a1) a2(a2)
 	rename _gt_tmp gt
 	order chr snp bp a1 a2 gt
@@ -50,10 +50,10 @@ qui {
 	compress
 	sort snp
 	save `bim'_bim.dta, replace
-	di ".....created new dta file: `bim'_bim.dta"
+	di in white".....created new dta file: `bim'_bim.dta"
 	}
-di "Completed: $S_DATE $S_TIME"
-di "done!"
+di in white"Completed: $S_DATE $S_TIME"
+di in white"done!"
 end;	
 
 	

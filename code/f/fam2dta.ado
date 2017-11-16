@@ -17,13 +17,23 @@
 program fam2dta
 syntax , fam(string asis)
 
-di "***************************************************"
-di "fam2dta - version 0.1a 10sept2015 richard anney "
-di "***************************************************"
-di "Renaming PLINK fam files"
-di "Started: $S_DATE $S_TIME"
+di in white "***************************************************"
+di in white "fam2dta - version 0.1a 10sept2015 richard anney "
+di in white "***************************************************"
+di in white "Renaming PLINK fam files"
+di in white "Started: $S_DATE $S_TIME"
 qui{
-	di ".....importing fam file: `fam'.fam"
+	capture confirm file "`fam'.fam"
+	if _rc==0 {
+		noi di in green"# `fam'.fam found and will be imported"
+		}
+	else {
+		noi di in red"# `fam'.fam not found "
+		noi di in red"# help: do not include .fam in filename  "
+		noi di in red"# exiting "
+		exit
+		}
+	di in white ".....importing fam file: `fam'.fam"
 	import delim  using `fam'.fam, clear delim(" ")
 	rename v1 fid 
 	rename v2 iid
@@ -35,8 +45,8 @@ qui{
 	order fid iid fatid motid sex pheno
 	sort fid iid
 	save `fam'_fam.dta, replace
-	di ".....created new dta file: `fam'_fam.dta"
+	di in white ".....created new dta file: `fam'_fam.dta"
 	}
-di "Completed: $S_DATE $S_TIME"
-di "done!"
+di in white "Completed: $S_DATE $S_TIME"
+di in white "done!"
 end;	
