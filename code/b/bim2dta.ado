@@ -24,6 +24,16 @@ di "***************************************************"
 di "Renaming PLINK bim files (addition of genotype codes)"
 di "Started: $S_DATE $S_TIME"
 qui { 
+	capture confirm file "`bim'.bim"
+	if _rc==0 {
+		noi di in green"# `bim'.bim found and will be imported"
+		}
+	else {
+		noi di in red"# `bim'.bim not found "
+		noi di in red"# help: do not include .bim in filename  "
+		noi di in red"# exiting "
+		exit
+		}
 	noi di ".....importing bim file: `bim'.bim"
 	import delim  using `bim'.bim, clear 
 	noi di ".....renaming variables"
