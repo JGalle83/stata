@@ -100,20 +100,19 @@ qui {
 		restore
 		}
 	else {
-		global xlabel "0(0.2).4"
 		twoway scatteri 1 1,            ///
-		title("Between-Family Relationships") ///
 		msymbol(i)                      ///
 		ylab("") xlab("")               ///
-		xtitle("Proportion of Zero IBS") ///
-		ylabel($xlabel)          ///
-		ytitle("Estimated Kinship Coefficient") ///
 		yscale(off) xscale(off)         ///
 		plotregion(lpattern(blank))     ///
-		caption("Twin/Duplicate Pairs; N = 0}"      ///
-						 "1st Degree Relative Pairs ; 0"     ///
-						 "2nd Degree Relative Pairs ; 0"     ///
-						 "3rd Degree Relative Pairs ; 0") nodraw saving(tmpKIN0_2.gph, replace)
+		nodraw saving(tmpKIN0_1.gph, replace)
+		
+		twoway scatteri 1 1,            ///
+		msymbol(i)                      ///
+		ylab("") xlab("")               ///
+		yscale(off) xscale(off)         ///
+		plotregion(lpattern(blank))     ///
+		nodraw saving(tmpKIN0_2.gph, replace)
 		}
 	}
 	
