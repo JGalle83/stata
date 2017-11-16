@@ -51,7 +51,20 @@ global kin_t       0.0442
 ```
 ## What is happening under the bonnet?
 Although this is a single line of code, it is important to understand what is happening under the bonnet of the code. The code is split into mini modules each performing an important role in the qc.
-### the preamble - checking if everything is where it is supposed to be
+
+|||
+| :---- | :------
+| Preamble | checking files / dependencies are present
+| Module-1 | determining the genotyping array from reference
+| Module-2 | updating marker identifiers to rsid (using 1000-genomes as a reference)
+| Module-3 | determining the genotyping build from reference
+| Module-4 | running pre-QC 
+| Module-5 | running QC 
+| Module 6 | remove related samples
+| Module 7 | define ancestry space using hapmap
+| Module 8 | create report
+
+### The preamble - checking if everything is where it is supposed to be
 This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
 > note that as of 16th November, the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
 1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
@@ -63,10 +76,11 @@ This part of the code runs a number of checks to make sure everything is in plac
  4. ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
  5. ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
 4. check location and presence of plink binaries to be qc'd
-### module-1 - determining the original genotyping array
-It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. This module used Will Rayners resource (http://www.well.ox.ac.uk/~wrayner/strand/) to create a set of \*.dta files containing three variables (rsid - chr - bp (string format)) and merges against the \*.bim file and calculates a match. 
+### Module-1 - determining the genotyping array from reference
+It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. Using a set of \*.dta files created from Will Rayners' resource (http://www.well.ox.ac.uk/~wrayner/strand/), this module merges against the \*.bim file and calculates a match based on common rsid. 
 
 ```
+* example head of *.dta file
 rsid	chr	bp
 AFFX-SNP_10021569	2	106584554
 AFFX-SNP_10026879	16	82323721
@@ -76,7 +90,10 @@ AFFX-SNP_10036267	11	58562418
 AFFX-SNP_10037362	20	2628109
 AFFX-SNP_10037636	3	82820079
 ```
+#### example output from module 1 (array check)
+![](../images/autism-agp2-1v2-combined.arraymatch.png)
 
+#### dealing with imputed data
 For imputed data we use a workaround and create a "dummy" array based on the imputation reference; see below
 ```
 qui { // define reference name 
@@ -94,7 +111,16 @@ qui { // create dummy array reference
  save ${imputation_reference}.dta, replace
  }
 ```
-![array check - jaccard output](../images/autism-agp2-1v2-combined.arraymatch.png)
+### Module-1 - determining the genotyping array from reference
+### Module-2 - updating marker identifiers to rsid (using 1000-genomes as a reference)
+### Module-3 - determining the genotyping build from reference
+### Module-4 - running pre-QC 
+### Module-5 - running QC 
+### Module 6 - remove related samples
+### Module 7 - define ancestry space using hapmap
+### Module 8 - create report
+
+
 
 # Examples
 # Dependencies
