@@ -1,18 +1,39 @@
 # Title
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sem ligula, fermentum at nulla eget, semper scelerisque diam. Mauris id libero vitae massa fringilla placerat ac ut nibh.
+![fam2dta](https://github.com/ricanney/stata/blob/master/code/f/fam2dta.ado) - a program that imports a plink \*.fam (family) file and converts it to a stata \*.dta file. 
+# Installation
+```net install fam2dta,                from(https://raw.github.com/ricanney/stata/master/code/f/) replace```
 # Syntax
-```
-syntax
-```
+```fam2dta, fam(filename)```
 # Descritption
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus sem ligula, fermentum at nulla eget, semper scelerisque diam. Mauris id libero vitae massa fringilla placerat ac ut nibh. Donec gravida quam est, at aliquam ex facilisis vel. Etiam quis ex sapien. Nulla sapien sem, auctor et neque egestas, scelerisque aliquet nunc. Vivamus venenatis massa velit, suscipit scelerisque nisi dapibus eget. Morbi commodo elementum ante, vel condimentum purus consectetur vel. Pellentesque efficitur risus in mauris elementum pellentesque. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce laoreet sem urna, sit amet varius leo tristique eu. Ut ultricies bibendum mi, vel convallis nulla egestas at. Integer fermentum nibh eget purus ornare pulvinar. Suspendisse a felis ac elit molestie consequat. Donec ac dui nunc. Vestibulum dapibus lorem non ante sagittis fringilla.
+The plink fam file contains information on family identifiers (ped format). It is often necessary to import these files into stata. This one line command imports the data, renames the variables, converts observations to string and saves a copy of this in the same directory as filename_fam.dta.
+
+The plink \*.fam file is space-delimited text file with no header line, one line per variant with the following six fields:
+```
+1. Family ID ('FID')
+2. Within-family ID ('IID'; cannot be '0')
+3. Within-family ID of father ('0' if father isn't in dataset)
+4. Within-family ID of mother ('0' if mother isn't in dataset)
+5. Sex code ('1' = male, '2' = female, '0' = unknown)
+6. Phenotype value ('1' = control, '2' = case, '-9'/'0'/non-numeric = missing data if case/control)
+```
+
+The plink \*_fam.dta file contains 
 
 # Examples
+The program does not need the .fam to be included in the command. For example, the plink file example.fam can be converted to example_fam.dta as follows;
+```fam2dta, fam(example)```
+
 ```
-example
+fid	iid	fatid	motid	sex	pheno
+1020	4	2	1	1	-9
+1030	1	0	0	2	-9
+1030	2	0	0	1	-9
+1030	3	2	1	1	-9
+1033	1	0	0	2	-9
+1033	2	0	0	1	-9
 ```
 
 # Dependencies
 | Program | Installation Command
 | :----- | :------
-|```program``` | ```ssc install program```
+|||
