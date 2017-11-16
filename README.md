@@ -1,13 +1,39 @@
-# stata-genomics-ado
-This is a repository of stata codes that I have written.
-Most are for use in genomic analysis and all were written to work on a windows 10 machine and STATA 13.1 MP.
-Some packages, like the genotypeqc command use v13+ to create docx files.
+# software - stata
+## Background
+This is a repository of stata programs that I have written. Most are for use in genomic analysis and were written to work on a windows 10 machine and STATA 13.1 MP.
+To install all packages run https://github.com/ricanney/stata/blob/master/code/install-all.do additional dependencies (written by others) are also included in this script.
 
-To install all packages run https://github.com/ricanney/stata/blob/master/code/install-all.do
+## Programs
+### bim2dta
+#### Syntax
+'''
+bim2dta, bim(filename)
+'''
+#### Description
 
-For the above code to work, two additional files are required in the destination folder
-* stata.toc
-* *package*.pkg
+
+
+### bim2eigenvec
+### bim2ldexclude
+### datestamp
+### ensembl2symbol
+### fam2dta
+### genotypeqc
+### graphgene
+### graphmanhattan
+### graphplinkfrq
+### graphplinkhet
+### graphplinkhwe
+### graphplinkimiss
+### graphplinkkin0
+### graphplinklmiss
+### graphqq
+### gwas2prs
+### profilescore
+### recodegenotyp
+### recodestrand
+### symbol2ensembl
+
 
 # data-repositories
 to run genotypeqc download the following archive;
