@@ -6,23 +6,64 @@
 ```genotypeqc, param(<parameter_file>)```
 # Description
 This program runs a 'single-line-code' quality control of genotype array data utilising ```plink``` and ```plink2``` within ```stata```. Due to the complexity of the analysis the program utilises numerous reference file requires and other dependencies; these need to be noted in a parameters file. 
+## Create a parameters file
+In the directory containing the genotypes to be QC'd, create a parameter file containing a list of ```global``` definitions. 
+ ```array_ref```  the path to the folder containing the genotype array folders;
+ ```build_ref```  the path to the file ```rsid-hapmap-genome-location.dta```
+ ```kg_ref_frq```  the path to the file ```rsid-hapmap-genome-location.dta```add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
 
-## Overview of QC pipeline
+global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
+global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
+global data_folder "<add_path_here>" // add file location in quotation marks
+global data_input	 "<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
+global rounds	     4	// rounds of quality control                                         "' in 29 
+global hwep	       10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
+global hetsd	     4	// max. heterozygosity standard deviation from the mean              "' in 31 
+global maf         0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
+global mind        0.02	// max. missingness per individual to be tolerate                  "' in 33 
+global geno1       0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
+global geno2       0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
+global kin_d       0.354	// min. kinship  for duplicates                                  "' in 36 
+global kin_f       0.177	// min. kinship  for 1st degree relatives                        "' in 37 
+global kin_s       0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
+global kin_t       0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
+
+
+```
+global array_ref   "<add_path_to_data_here>" // location of the genotyping array folder 
+global build_ref   "<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
+global kg_ref_frq  "<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
+global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
+global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
+global data_folder "<add_path_here>" // add file location in quotation marks
+global data_input	 "<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
+global rounds	     4	// rounds of quality control                                         "' in 29 
+global hwep	       10	// max. hwe deviation in control samples to be tolerated (-log10(p)) "' in 30 
+global hetsd	     4	// max. heterozygosity standard deviation from the mean              "' in 31 
+global maf         0.01	// min. minor allele frequency per SNP to be tolerated             "' in 32 
+global mind        0.02	// max. missingness per individual to be tolerate                  "' in 33 
+global geno1       0.05	// max. missingness per SNP to be tolerated (first round)        "' in 34 
+global geno2       0.02	// max. missingness per SNP to be tolerated (final)              "' in 35 
+global kin_d       0.354	// min. kinship  for duplicates                                  "' in 36 
+global kin_f       0.177	// min. kinship  for 1st degree relatives                        "' in 37 
+global kin_s       0.0884	// min. kinship  for 2nd degree relatives                      "' in 38 
+global kin_t       0.0442	// min. kinship  for 3rd degree relatives                      "' in 39 
+
+
+
 The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. This can be created manually of via the script below.
 Note that the quality control thresholds can be altered in this script.
 
 ```
 qui { // define dependencies
-	global array_ref		"<add_path_to_data_here>" // location of the genotyping array folder 
-	global build_ref		"<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
-	global kg_ref_frq		"<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
-	global hapmap_data	"<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
-	global aims	        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
+	global array_ref   "<add_path_to_data_here>" // location of the genotyping array folder 
+	global build_ref   "<add_path_to_rsid-hapmap-genome-location.dta_here>" // location of the genotyping build folder
+	global kg_ref_frq  "<add_path_to_eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta_here>" // location of the 1000-genomes allele frequency file (hg19\eur_1000g_phase1integrated_v3_chrall_impute_macgt5.dta)
+	global hapmap_data "<add_path_to_hapmap3-all-hg19-1_plink_binaries_here>"  // hg19+1 hapmap referenece genotypes without *.bed suffix
+	global aims        "<add_path_to_hapmap3-all-hg19-1-aims.snp-list_here>" // ancestry informative markers
   }
 qui { // define folder and files
-	global data_folder	"<add_path_here>" // add file location in quotation marks
-	global data_input		"<add_filename_here>" // add the name of the plink binaries to be put through quality-control in quotation marks
-	}
+
 qui { // set working directory
 	cd ${data_folder}
 	}
