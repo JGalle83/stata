@@ -101,7 +101,22 @@ syntax , param(string asis)
 			do _ooo.do
 			if _rc==0 {
 				noi di in green"# the tabbed.pl script exists and is correctly assigned as  $tabbed"
-				noi di in white"# ensure perl is working on your system and can be called from the command-line"
+				noi di in white"# ensuring perl is working on your system and can be called from the command-line"
+				clear 
+				set obs 10
+				gen a = "a b c d"
+				outsheet a using test_pl.txt, noq replace
+				!$tabbed test_pl.txt
+				capture confirm file "test_pl.txt.tabbed"
+				if _rc==0 {
+					noi di in green"# the tabbed.pl script is working"
+					}
+				else {
+					noi di in red"# the tabbed.pl script did not work"
+					noi di in red"# download and install active perl on your computer https://www.activestate.com/activeperl/downloads"
+					exit
+					}
+				!del test_pl.*
 				}
 			else {
 				noi di in red"# tabbed.pl does not exists; download executable from https://github.com/ricanney/perl "
@@ -136,12 +151,10 @@ syntax , param(string asis)
 		!mkdir $wd
 		cd $wd
 		}
-	qui { // import parameters
-		import delim using ${cd}\\`param', stringcols(_all) rowr(21) varname(21) clear
-		gen global = "global " + parameter + `" ""' + definition + `"""' 
-		outsheet global using _000x.do, non noq replace
-		do _000x.do
-		erase _000x.do
+	qui { // run parameters
+		noi di in red" *** as of 16th November - the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file"
+		noi di in red" *** see https://github.com/ricanney/stata/edit/master/documents/genotypeqc.md for details of new parameter file structure"
+		do ${cd}\\`param'
 		global input "${data_folder}\\${data_input}"
 		global output "${data_folder}\\${data_input}-qc-v5"
 		}

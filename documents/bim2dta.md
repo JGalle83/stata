@@ -4,7 +4,7 @@
 ```net install bim2dta,                from(https://raw.github.com/ricanney/stata/master/code/b/) replace```
 # Syntax
 ```bim2dta, bim(filename)```
-# Descritption
+# Description
 The plink binary marker file contains information on marker identifiers, chromosome location and allele coding. It is often necessary to import these files into stata. This one line command imports the data, renames the variables, creates a genotype variable ```gt``` using the ```recodegenotype``` program and saves a copy of this coversion in the same directory as filename_bim.dta.
 
 The plink \*.bim file is tab-delimited text file with no header line, one line per variant with the following six fields:

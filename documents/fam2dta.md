@@ -4,7 +4,7 @@
 ```net install fam2dta,                from(https://raw.github.com/ricanney/stata/master/code/f/) replace```
 # Syntax
 ```fam2dta, fam(filename)```
-# Descritption
+# Description
 The plink fam file contains information on family identifiers (ped format). It is often necessary to import these files into stata. This one line command imports the data, renames the variables, converts observations to string and saves a copy of this in the same directory as filename_fam.dta.
 
 The plink \*.fam file is space-delimited text file with no header line, one line per variant with the following six fields:
