@@ -1,9 +1,9 @@
 # Title
 ![bim2dta](https://github.com/ricanney/stata/blob/master/code/b/bim2dta.ado) - a program that imports a plink \*.bim (binary marker) file and converts it to a stata \*.dta file. 
+# Installation
+```net install bim2dta,                from(https://raw.github.com/ricanney/stata/master/code/b/) replace```
 # Syntax
-```
-bim2dta, bim(filename)
-```
+```bim2dta, bim(filename)```
 # Descritption
 The plink binary marker file contains information on marker identifiers, chromosome location and allele coding. It is often necessary to import these files into stata. This one line command imports the data, renames the variables, creates a genotype variable ```gt``` using the ```recodegenotype``` program and saves a copy of this coversion in the same directory as filename_bim.dta.
 
@@ -28,11 +28,21 @@ The plink \*_bim.dta file contains
 
 # Examples
 The program does not need the .bim to be included in the command. For example, the plink file example.bim can be converted to example_bim.dta as follows;
+```bim2dta, bim(example)```
+
 ```
-bim2dta, bim(example)
+chr	snp	bp	a1	a2	gt
+5	rs335163	122483920	G	A	R
+5	rs335166	122555741	C	A	M
+5	rs335168	122554718	A	C	M
+5	rs335170	122510142	A	C	M
+5	rs335178	122542019	G	A	R
+3	rs33518	42423300	A	G	R
 ```
 
 # Dependencies
 | Program | Installation Command
 | :----- | :------
-|```program``` | ```ssc install program```
+|```recodegenotype``` | ```net install recodegenotype, from(https://raw.github.com/ricanney/stata/master/code/r/) replace```
+
+Note that ```recodegenotype``` is automatically installed alongside ```bim2dta``` 
