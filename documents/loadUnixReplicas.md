@@ -30,11 +30,15 @@ This can be installed / activated as described in this blog https://www.howtogee
 
 Commands are then called by running the following
 
-```bash -c "command"```
+```
+bash -c "command"
+```
 
 Note that this required the command to be contained within quotation marks. Therefore, to run in STATA you would write
 
-```!bash -c "command"```
+```
+!bash -c "command"
+```
 
 If you need literal quotes within the command you can backslash escape them
 
