@@ -17,6 +17,7 @@ net install graphplinkkin0,         from(https://raw.github.com/ricanney/stata/m
 net install graphplinklmiss,        from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install graphqq,                from(https://raw.github.com/ricanney/stata/master/code/g/) replace
 net install gwas2prs,               from(https://raw.github.com/ricanney/stata/master/code/g/) replace
+net install loadUnixReplicas,       from(https://raw.github.com/ricanney/stata/master/code/l/) replace
 net install profilescore,           from(https://raw.github.com/ricanney/stata/master/code/p/) replace
 net install recodegenotype,         from(https://raw.github.com/ricanney/stata/master/code/r/) replace
 net install recodestrand,           from(https://raw.github.com/ricanney/stata/master/code/r/) replace
