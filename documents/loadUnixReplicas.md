@@ -39,7 +39,7 @@ Note that this required the command to be contained within quotation marks. Ther
 ```
 !bash -c "command"
 ```
-
+_tips from stack overflow_
 If you need literal quotes within the command you can backslash escape them
 
 ```
