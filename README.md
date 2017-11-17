@@ -1,4 +1,43 @@
-# software - stata
+# Software - Stata
+## Getting started - profile.do
+It is important to prepare your ```profile.do``` file with some standard commands and the location of commonly used programs. MY ```profile.do``` links to ```plink```, ```plink2```, ```tabbed.pl``` and a range of windows executables that I have collected over the years that mimic ```linux``` commands. The ```profile.do``` file can be found in ```C:\Program Files (x86)\Stata13```.
+
+```
+noi di "Opening Time: $S_DATE $S_TIME"                                         // set time when program is intiated
+set maxvar 32767, perm
+set more off, perm
+set mem 1G,perm
+set type double,perm
+macro drop _all
+
+// define globals
+global init_personal "D:\Software\stata\code\dev-ado"
+global init_root     "D:\Software\stata\data" 
+global init_unix     "D:\Software\bash\bin"
+
+global tabbed         perl D:\Software\perl\code\tabbed.pl
+global plink	         "D:\Software\plink\bin\win\plink.exe"
+global plink2	        "D:\Software\plink\bin\win\plink2.exe"
+global Rterm_path     `"C:\Program Files\R\R-3.3.1\bin\x64\Rterm.exe"'
+global Rterm_options  `"--vanilla"'
+
+set scheme plotplainblind , permanently
+sysdir set PERSONAL  ${init_personal}                                          // define PERSONAL DIRECTORY
+cd                   ${init_root}                                              // set ROOT to DATA
+loadUnixReplicas , folder(${init_unix})                                        // set global for unix replicas from init_unix folder
+
+noi di"CURRENT .. working directory is set to ... ${init_root}"
+noi di"PERSONAL ..... ado directory is set to ... ${init_personal}"
+noi di"---------------------------------------------------------------------------------------------------"
+noi di"Defining universal global files ....... "
+noi di"............... PLINK ................. $plink "
+noi di"............... PLINK2 ................ $plink2 "
+noi di"............... TABBED ................ $tabbed "
+noi di"............... UNIX . ................ $init_unix "
+noi di"............... R ..................... $Rterm_path "
+noi di"............... R (option) ............ $Rterm_options"
+noi di"---------------------------------------------------------------------------------------------------"
+```
 ## Background
 This is a repository of stata programs that I have written. Most are for use in genomic analysis and were written to work on a windows 10 machine and STATA 13.1 MP.
 
@@ -27,6 +66,7 @@ This script also includes additional dependencies not written by this author oth
 | ```graphplinklmiss```	| plot missingness (by locus) from plink generated \*.lmiss file                     		| ![info](https://github.com/ricanney/stata/blob/master/documents/graphplinklmiss.md) ![ado](https://github.com/ricanney/stata/blob/master/code/g/graphplinklmiss.ado)	
 | ```graphqq```	        | plot simple qq (pp) plot from association data (p)                                 		| ![info](https://github.com/ricanney/stata/blob/master/documents/graphqq.md)	![ado](https://github.com/ricanney/stata/blob/master/code/g/graphqq.ado)	
 | ```gwas2prs```	       | prepare association files for profilescore (PRS) analysis                           	| ![info](https://github.com/ricanney/stata/blob/master/documents/gwas2prs.md) ![ado](https://github.com/ricanney/stata/blob/master/code/g/gwas2prs.ado)	
+| ```loadUnixReplicas```| load windows executables that mimic unix commands                                    | ![info](https://github.com/ricanney/stata/blob/master/documents/loadUnixReplicas.md) ![ado](https://github.com/ricanney/stata/blob/master/code/l/loadUnixReplicas.ado
 | ```profilescore```	   | create profile (polygenic risk score) from ```gwas2prs``` and ```genotypeqc``` processed data	| ![info](https://github.com/ricanney/stata/blob/master/documents/profilescore.md) ![ado](https://github.com/ricanney/stata/blob/master/code/p/profilescore.ado)	
 | ```recodegenotype```  | converts ACGT+ID coded alleles to UIPAC genotype codes                              	| ![info](https://github.com/ricanney/stata/blob/master/documents/recodegenotype.md) ![ado](https://github.com/ricanney/stata/blob/master/code/r/recodegenotype.ado)	
 | ```recodestrand```	   | flip alleles to a refrence strand including reverse complementary coding            	| ![info](https://github.com/ricanney/stata/blob/master/documents/recodestrand.md) ![ado](https://github.com/ricanney/stata/blob/master/code/r/recodestrand.ado)	
