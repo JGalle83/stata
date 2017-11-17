@@ -16,8 +16,8 @@ global init_root     "D:\Software\stata\data"
 global init_unix     "D:\Software\bash\bin"
 
 global tabbed         perl D:\Software\perl\code\tabbed.pl
-global plink	         "D:\Software\plink\bin\win\plink.exe"
-global plink2	        "D:\Software\plink\bin\win\plink2.exe"
+global plink          "D:\Software\plink\bin\win\plink.exe"
+global plink2         "D:\Software\plink\bin\win\plink2.exe"
 global Rterm_path     `"C:\Program Files\R\R-3.3.1\bin\x64\Rterm.exe"'
 global Rterm_options  `"--vanilla"'
 
