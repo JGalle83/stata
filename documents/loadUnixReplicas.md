@@ -25,18 +25,26 @@ loadUnixReplicas , folder(${init_unix})                                        /
 
 # Alternatives
 Windows 10 includes an underlying “Windows Subsystem for Linux” to run Linux applications.  If you are using windows 10 there is an option to run a linux bash shell that runs directly from command-line. 
+
 This can be installed / activated as described in this blog https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/ . This can be accessed via the bash shell; however, using the ```bash -c``` you can run Linux applications without first launching a Bash window. 
+
 Commands are then called by running the following
+
 ```bash -c "command"```
+
 Note that this required the command to be contained within quotation marks. Therefore, to run in STATA you would write
+
 ```!bash -c "command"```
+
 If you need literal quotes within the command you can backslash escape them
 
 ```
 $ echo "Here is a \"quoted string\""
 Here is a "quoted string"
 ```
+
 However if you are trying to prevent word splitting of the variable, the outer quotes are usually sufficient I think
+
 ```
 $ var="quoted string"; echo "Here is a $var"
 Here is a quoted string
