@@ -58,13 +58,13 @@ Although this is a single line of code, it is important to understand what is ha
 ![](../images/genotypeqc-preamble.png)
 
 This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
--[x] software dependencies ```plink``` ```plink2``` ```tabbed.pl```
--[x] reference data dependencies include;
--```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
--```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
--```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
--```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
--```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
+- [x] software dependencies ```plink``` ```plink2``` ```tabbed.pl```
+- [x] reference data dependencies include;
+- ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
+- ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
+- ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
+- ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
+- ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
 
 ![](../images/genotypeqc-module1.png)
 
