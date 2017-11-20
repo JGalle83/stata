@@ -55,41 +55,28 @@ global kin_t       0.0442
 ## What is happening under the bonnet?
 Although this is a single line of code, it is important to understand what is happening under the bonnet of the code. The code is split into mini modules each performing an important role in the qc.
 
-|||
-| :---- | :------
-| Preamble | checking files / dependencies are present
-| Module-1 | determining the genotyping array from reference
-| Module-2 | updating marker identifiers to rsid (using 1000-genomes as a reference)
-| Module-3 | determining the genotyping build from reference
-| Module-4 | running pre-QC 
-| Module-5 | running QC 
-| Module 6 | remove related samples
-| Module 7 | define ancestry space using hapmap
-| Module 8 | create report
-
 ![](../images/genotypeqc-preamble.png)
+
 This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
-[x] check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
-[x] create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
-[x] check location of all dependent files\folders including;
- * ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
- *  ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
- * ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
- * ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
- * ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
-[x] check location and presence of plink binaries to be qc'd
+
+[x] software dependencies ```plink``` ```plink2``` ```tabbed.pl```
+
+[x] reference data dependencies include;
+
+```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
+
+```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
+
+```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
+
+```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
+
+```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
+
 ![](../images/genotypeqc-module1.png)
-![](../images/genotypeqc-module2.png)
-![](../images/genotypeqc-module3.png)
-![](../images/genotypeqc-module4.png)
-![](../images/genotypeqc-module5.png)
-![](../images/genotypeqc-module6.png)
-![](../images/genotypeqc-module7.png)
-![](../images/genotypeqc-module8.png)
 
-
-### Module-1 - determining the genotyping array from reference
 It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. Using a set of \*.dta files created from Will Rayners' resource (http://www.well.ox.ac.uk/~wrayner/strand/), this module merges against the \*.bim file and calculates a match based on common rsid. 
+
 
 ```
 * example head of *.dta file
@@ -102,11 +89,11 @@ AFFX-SNP_10036267	11	58562418
 AFFX-SNP_10037362	20	2628109
 AFFX-SNP_10037636	3	82820079
 ```
-#### example output from module 1 (array check)
+
 ![](../images/autism-agp2-1v2-combined.arraymatch.png)
 
-#### dealing with imputed data
 For imputed data we use a workaround and create a "dummy" array based on the imputation reference; see below
+
 ```
 qui { // define reference name 
  global imputation_reference michigan-imputation-server-v1.0.3-hrc-r1.1-2016
@@ -123,6 +110,25 @@ qui { // create dummy array reference
  save ${imputation_reference}.dta, replace
  }
 ```
+
+![](../images/genotypeqc-module2.png)
+
+
+![](../images/genotypeqc-module3.png)
+
+![](../images/genotypeqc-module4.png)
+
+![](../images/genotypeqc-module5.png)
+
+![](../images/genotypeqc-module6.png)
+
+![](../images/genotypeqc-module7.png)
+
+![](../images/genotypeqc-module8.png)
+
+
+### Module-1 - determining the genotyping array from reference
+
 ### Module-1 - determining the genotyping array from reference
 
 ### Module-2 - updating marker identifiers to rsid (using 1000-genomes as a reference)
