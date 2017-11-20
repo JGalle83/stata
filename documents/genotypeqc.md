@@ -57,15 +57,6 @@ Although this is a single line of code, it is important to understand what is ha
 
 ![](../images/genotypeqc-preamble.png)
 
-This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
-- [x] software dependencies ```plink``` ```plink2``` ```tabbed.pl```
-- [x] reference data dependencies include;
-- ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
-- ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
-- ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
-- ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
-- ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
-
 ![](../images/genotypeqc-module1.png)
 
 It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. Using a set of \*.dta files created from Will Rayners' resource (http://www.well.ox.ac.uk/~wrayner/strand/), this module merges against the \*.bim file and calculates a match based on common rsid. 
@@ -106,7 +97,6 @@ qui { // create dummy array reference
 
 ![](../images/genotypeqc-module2.png)
 
-
 ![](../images/genotypeqc-module3.png)
 
 ![](../images/genotypeqc-module4.png)
@@ -118,19 +108,6 @@ qui { // create dummy array reference
 ![](../images/genotypeqc-module7.png)
 
 ![](../images/genotypeqc-module8.png)
-
-
-### Module-1 - determining the genotyping array from reference
-
-### Module-1 - determining the genotyping array from reference
-
-### Module-2 - updating marker identifiers to rsid (using 1000-genomes as a reference)
-### Module-3 - determining the genotyping build from reference
-### Module-4 - running pre-QC 
-### Module-5 - running QC 
-### Module 6 - remove related samples
-### Module 7 - define ancestry space using hapmap
-### Module 8 - create report
 
 
 
