@@ -65,6 +65,8 @@ Although this is a single line of code, it is important to understand what is ha
 | Module 8 | create report
 
 ### The preamble - checking if everything is where it is supposed to be
+![](../images/genotypeqc-preamble.png)
+
 This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
 > note that as of 16th November, the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
 1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
@@ -112,6 +114,7 @@ qui { // create dummy array reference
  }
 ```
 ### Module-1 - determining the genotyping array from reference
+
 ### Module-2 - updating marker identifiers to rsid (using 1000-genomes as a reference)
 ### Module-3 - determining the genotyping build from reference
 ### Module-4 - running pre-QC 
