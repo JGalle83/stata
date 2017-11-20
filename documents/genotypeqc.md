@@ -46,8 +46,8 @@ global maf         0.01
 global mind        0.02
 global geno1       0.05
 global geno2       0.02
-global kin_d       0.354
-global kin_f       0.177
+global kin_d       0.3540
+global kin_f       0.1770
 global kin_s       0.0884
 global kin_t       0.0442
 *the end of the example parameter file
@@ -108,18 +108,6 @@ qui { // create dummy array reference
 ![](../images/genotypeqc-module7.png)
 
 ![](../images/genotypeqc-module8.png)
-
-
-
-# Examples
-# Dependencies
-| Program | Installation Command
-| :----- | :------
-|```example``` | ```net install example, from(https://raw.github.com/ricanney/stata/master/code/e/) replace```
-
-Note that ```example``` is automatically installed alongside ```genotypeqc``` 
-
-|```program``` | ```ssc install program```
 
 
 # data-repositories
