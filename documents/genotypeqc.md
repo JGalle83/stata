@@ -8,6 +8,9 @@
 This program runs a 'single-line-code' quality control of genotype array data utilising ```plink``` and ```plink2``` within ```stata```. Due to the complexity of the analysis the program utilises numerous reference file requires and other dependencies; these need to be noted in a parameters file. 
 ## Create a parameters file
 The pipeline requires a number of dependencies and thresholds to be defined within a parameters file. The parameter file is basically a set of globals that ```stata``` stores in memory and applies during the qc program
+
+> note that as of 16th November, the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
+
 ### Definitions
 * ```array_ref``` the path to the folder containing the genotype array folders;
 * ```build_ref``` the path to the file ```rsid-hapmap-genome-location.dta```
@@ -64,20 +67,27 @@ Although this is a single line of code, it is important to understand what is ha
 | Module 7 | define ancestry space using hapmap
 | Module 8 | create report
 
-### The preamble - checking if everything is where it is supposed to be
 ![](../images/genotypeqc-preamble.png)
-
 This part of the code runs a number of checks to make sure everything is in place and ready for the script. 
-> note that as of 16th November, the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file
-1. check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
-2. create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
-3. check location of all dependent files\folders including;
- 1. ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
- 2. ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
- 3. ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
- 4. ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
- 5. ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
-4. check location and presence of plink binaries to be qc'd
+[x] check dependencies including ```plink``` ```plink2``` ```tabbed.pl```
+[x] create a temp folder using ```ralpha``` -  if the script crashes this is where the temp files and \*.log files will be found
+[x] check location of all dependent files\folders including;
+ * ```rsid-hapmap-genome-location.dta``` - an rsid list and chromosome location file to determine genome build.
+ *  ```eur-1000g-phase1integrated-v3-chrall-impute-macgt5-frq.dta``` - a reference allele frequency file generated from the european 1000-genomes project phase 1-vers3 genotype files.
+ * ```hapmap3-all-hg19-1.bed``` ```hapmap3-all-hg19-1.bim``` ```hapmap3-all-hg19-1.fam``` - reference genotypes from the hapmap3 project.
+ * ```hapmap3-all-hg19-1-aims.snp-list``` - a set of ancestry informative markers derived from the ```hapmap3-all-hg19``` genotypes.
+ * ```genotype-array\data``` - a folder containing reference markers for a range of known genotype arrays enabling assignment of most-likely array to genotype data.
+[x] check location and presence of plink binaries to be qc'd
+![](../images/genotypeqc-module1.png)
+![](../images/genotypeqc-module2.png)
+![](../images/genotypeqc-module3.png)
+![](../images/genotypeqc-module4.png)
+![](../images/genotypeqc-module5.png)
+![](../images/genotypeqc-module6.png)
+![](../images/genotypeqc-module7.png)
+![](../images/genotypeqc-module8.png)
+
+
 ### Module-1 - determining the genotyping array from reference
 It is rare to know specifically which array was used to genotype the sample. Often shorthand is used and can introduce some problems in downstream analyses. For example, researchers may call the array the psych-chip or immuno-chip or illumin 1M array without realising that multiple versions of these arrays exist. Using a set of \*.dta files created from Will Rayners' resource (http://www.well.ox.ac.uk/~wrayner/strand/), this module merges against the \*.bim file and calculates a match based on common rsid. 
 
