@@ -29,6 +29,7 @@ The pipeline requires a number of dependencies and thresholds to be defined with
 * ```kin_f``` the min. kinship releationship for 1st degree relatives (0.1770)
 * ```kin_s``` the min. kinship releationship for 2nd degree relatives (0.0884)
 * ```kin_t``` the min. kinship releationship for 3rd degree relatives (0.0442)
+
 ### An example parameter file
 ```
 *an example parameter file
@@ -52,6 +53,7 @@ global kin_s       0.0884
 global kin_t       0.0442
 *the end of the example parameter file
 ```
+
 ## What is happening under the bonnet?
 Although this is a single line of code, it is important to understand what is happening under the bonnet of the code. The code is split into mini modules each performing an important role in the qc.
 
