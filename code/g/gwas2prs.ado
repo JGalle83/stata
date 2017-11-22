@@ -18,16 +18,17 @@ qui {
 	count
 	global inputSNP `r(N)'
 	di in white"# >> ${inputSNP} SNPs in the dataset"
+	di in white"#########################################################################"
 	}
 di in white"# > checking if variables exist and are in correct format"
 di in white"# >> chromosome variable: chr "
 qui { 
 	capture confirm var chr 
 	if _rc==0 {
-		noi di in green"# >> chr is present"
+		di in green"# >> chr is present"
 		}
 	else {
-		noi di in red"# >> the var chr is absent ... exiting"
+		di in red"# >> the var chr is absent ... exiting"
 		exit
 		}
 	di in white"# >>> processing chr"
@@ -44,10 +45,10 @@ di in white"# >> chromosome location variable: bp "
 qui { 
 	capture confirm var bp 
 	if _rc==0 {
-		noi di in green"# >> bp is present"
+		di in green"# >> bp is present"
 		}
 	else {
-		noi di in red"# >> the var bp is absent ... exiting"
+		di in red"# >> the var bp is absent ... exiting"
 		exit
 		}
 	di in white"# >>> processing bp"
@@ -60,15 +61,15 @@ qui {
 	foreach var in a1 a2  {
 		capture confirm string var `var' 
 		if _rc==0 {
-			noi di in green"# >>> the allele variable `var' is present"
+			di in green"# >>> the allele variable `var' is present"
 			}
 		else {
-			noi di in red"# >>> the allele variable `var' is absent ... exiting"
+			di in red"# >>> the allele variable `var' is absent ... exiting"
 			exit
 			}
 		}
 	di in white"# >>> processing alleles - removing ID, W and S genotype codes"
-	recodegenotype, a1(a1) a2(a2)
+	noi recodegenotype, a1(a1) a2(a2)
 	count if _gt == "ID" | _gt == "W" | _gt == "S"	
 	global problemSNP `r(N)'	
 	drop if _gt == "ID" | _gt == "W" | _gt == "S"	
@@ -99,7 +100,6 @@ qui {
 		replace direction = subinstr(direction, "-", "",.)
 		replace direction = subinstr(direction, "+", "",.)
 		gen count = length(direction)
-		noi ta count
 		count if count > 1
 		global directionSNP `r(N)'
 		drop if count > 1
@@ -153,7 +153,7 @@ qui {
 				}
 			di in white"# >>> identifying strand flips"
 			qui { 
-				recodestrand, ref_a1(b1) ref_a2(b2) alt_a1(a1) alt_a2(a2) 
+				noi recodestrand, ref_a1(b1) ref_a2(b2) alt_a1(a1) alt_a2(a2) 
 				gen a1_frq = .
 				replace a1_frq = maf if b1 == _tmpb1
 				replace a1_frq = 1-maf if b1 == _tmpb2
@@ -177,7 +177,7 @@ qui {
 	order chr bp rsid a1 a2 a1_f or p
 	keep  chr bp rsid a1 a2 a1_f or p
 	outsheet using "`name'-prePRS.tsv", noq replace
-	!$gzip   "`name'-prePRS.tsv"
+	!$gzip  -f "`name'-prePRS.tsv"
 	}
 di in white"# > make meta-log file (flat txt file)"
 qui {
@@ -210,6 +210,15 @@ qui {
 	replace a =  `"#########################################################################"'           in 24
 	outsheet using `name'-prePRS.meta-log, non noq replace
 	}
+di in white`"# Output.................................................. `name'-prePRS.tsv.gz "'
+di in white"# Number of snps imported ................................ ${inputSNP}"
+di in white"# Number of snps in output................................ ${outputSNP}"
+di in white"# Number of snps dropped due to (ID/W/S) genotype code.... ${problemSNP}"
+di in white"# Number of snps dropped due to non-autosomal chromosome.. ${nonautosomeSNP}"
+di in white"# Number of snps dropped due to info score < 0.8 ......... ${infoSNP}"
+di in white"# Number of snps dropped due missing in >1 study (meta) .. ${directionSNP}"
+di in white"# Number of snps dropped due to duplicated identifier..... ${dupsSNP}"
+di in white"# Origin of a1_frq ....................................... ${a1_frq}"
 di in white"#########################################################################"
 di in white"# Completed: $S_DATE $S_TIME"
 di in white"#########################################################################"
