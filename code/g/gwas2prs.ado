@@ -209,16 +209,16 @@ qui {
 	replace a = `"# Origin of a1_frq ....................................... ${a1_frq}"'                 in 23
 	replace a =  `"#########################################################################"'           in 24
 	outsheet using `name'-prePRS.meta-log, non noq replace
+	di in white`"# Output.................................................. `name'-prePRS.tsv.gz "'
+	di in white"# Number of snps imported ................................ ${inputSNP}"
+	di in white"# Number of snps in output................................ ${outputSNP}"
+	di in white"# Number of snps dropped due to (ID/W/S) genotype code.... ${problemSNP}"
+	di in white"# Number of snps dropped due to non-autosomal chromosome.. ${nonautosomeSNP}"
+	di in white"# Number of snps dropped due to info score < 0.8 ......... ${infoSNP}"
+	di in white"# Number of snps dropped due missing in >1 study (meta) .. ${directionSNP}"
+	di in white"# Number of snps dropped due to duplicated identifier..... ${dupsSNP}"
+	di in white"# Origin of a1_frq ....................................... ${a1_frq}"
 	}
-di in white`"# Output.................................................. `name'-prePRS.tsv.gz "'
-di in white"# Number of snps imported ................................ ${inputSNP}"
-di in white"# Number of snps in output................................ ${outputSNP}"
-di in white"# Number of snps dropped due to (ID/W/S) genotype code.... ${problemSNP}"
-di in white"# Number of snps dropped due to non-autosomal chromosome.. ${nonautosomeSNP}"
-di in white"# Number of snps dropped due to info score < 0.8 ......... ${infoSNP}"
-di in white"# Number of snps dropped due missing in >1 study (meta) .. ${directionSNP}"
-di in white"# Number of snps dropped due to duplicated identifier..... ${dupsSNP}"
-di in white"# Origin of a1_frq ....................................... ${a1_frq}"
 di in white"#########################################################################"
 di in white"# Completed: $S_DATE $S_TIME"
 di in white"#########################################################################"
