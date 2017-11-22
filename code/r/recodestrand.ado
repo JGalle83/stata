@@ -34,7 +34,7 @@ di in white"# - this script creates flip code for all markers that were flipped 
 di in white"#"
 di in white"# this is still beta and need to be fully checked - approx 90% satisfied "
 di in white"# that the code is error-free"
-i in white"#########################################################################"
+di in white"#########################################################################"
 di in white"# Started: $S_DATE $S_TIME"
 di in white"#########################################################################"
 di in white"# > generating genotype variable for reference alleles"
