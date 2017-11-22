@@ -55,7 +55,6 @@
 */
 program genotypeqc
 syntax , param(string asis) 
-
 	qui { // introduce program
 		noi di in green"#########################################################################"
 		noi di in green"# genotypeqc                                                             "
@@ -64,172 +63,187 @@ syntax , param(string asis)
 		noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
 		noi di in green"#########################################################################"
 		noi di in green""
-		}
-	qui { // confirm dependencies are correctly defined
+		}		
+	qui { // preamble
 		noi di in green"#########################################################################"
-		noi di in green"# checking necessary files exist and are set as globals"
-		qui { // plink v1.9
-			capture confirm file "$plink"
-			if _rc==0 {
-				noi di in green"# plink v1.9+ exists and is correctly assigned as  $plink"
-				}
-			else {
-				noi di in red"# plink v1.9 does not exists; download executable from https://www.cog-genomics.org/plink2 "
-				noi di in red"# set plink v1.9 location using;  "
-				noi di in red`"# global plink "folder\file"  "'
-				exit
-				}
+		noi di in green"# Preamble                                                              #"
+		noi di in green"#########################################################################"
+		qui { // create temporary working directory (using ralpha)
+			noi di in green"#########################################################################"
+			noi di in green"# > create temporary working directory                                  #"
+			noi di in green"#########################################################################"
+			!cd > _000x.tsv
+			import delim using _000x.tsv, varname(nonames) clear
+			erase _000x.tsv
+			gen a = ""
+			ssc install ralpha
+			ralpha folderRandom, range(A/z) l(10)
+			gen a1 = `"global wd ""' + v1 + "\" + folderRandom + `"""'
+			gen a2 = `"global cd ""' + v1 + `"""'
+			gen n = _n
+			keep n a1-a2
+			reshape long a, i(n) 
+			outsheet a using _000a.do, non noq replace
+			do _000a.do
+			erase _000a.do
+			noi di in green"# the current directory is ............. $cd"
+			noi di in green"# the temporary working directory is ... $wd"
+			noi di in green"#########################################################################"
+			noi di in green""
+			!mkdir $wd
+			cd $wd
 			}
-		qui { // plink v2
-			capture confirm file "$plink2"
-			if _rc==0 {
-				noi di in green"# plink v2+  exists and is correctly assigned as  $plink2"
-				}
-			else {
-				noi di in red"# plink v2 does not exists; download executable from https://www.cog-genomics.org/plink/2.0/ "
-				noi di in red"# set plink v2 location using;  "
-				noi di in red`"# global plink2 "folder\file"  "'
-				exit
-				}
-			}
-		qui { // tabbed
- 			clear
-			set obs 1
-			gen a = "$tabbed"
-			replace a = subinstr(a,"perl ","capture confirm file ",.)
-			outsheet a using _ooo.do, non noq replace
-			do _ooo.do
-			if _rc==0 {
-				noi di in green"# the tabbed.pl script exists and is correctly assigned as  $tabbed"
-				noi di in white"# ensuring perl is working on your system and can be called from the command-line"
-				clear 
-				set obs 10
-				gen a = "a b c d"
-				outsheet a using test_pl.txt, noq replace
-				!$tabbed test_pl.txt
-				capture confirm file "test_pl.txt.tabbed"
+		qui { // check path of dependent software is true
+			noi di in green"#########################################################################"
+			noi di in green"# > check path of dependent software is true                            #"
+			noi di in green"#########################################################################"
+			qui { // plink v1.9
+				capture confirm file "$plink"
 				if _rc==0 {
-					noi di in green"# the tabbed.pl script is working"
+					noi di in green"# plink v1.9+ exists and is correctly assigned as  $plink"
 					}
 				else {
-					noi di in red"# the tabbed.pl script did not work"
-					noi di in red"# download and install active perl on your computer https://www.activestate.com/activeperl/downloads"
+					noi di in red"# plink v1.9 does not exists; download executable from https://www.cog-genomics.org/plink2 "
+					noi di in red"# set plink v1.9 location using;  "
+					noi di in red`"# global plink "folder\file"  "'
 					exit
 					}
-				!del test_pl.*
 				}
-			else {
-				noi di in red"# tabbed.pl does not exists; download executable from https://github.com/ricanney/perl "
-				noi di in red"# set tabbed.pl location using;  "
-				noi di in red`"# global tabbed "folder\file"  "'
-				exit
+			qui { // plink v2
+				capture confirm file "$plink2"
+				if _rc==0 {
+					noi di in green"# plink v2+  exists and is correctly assigned as  $plink2"
+					}
+				else {
+					noi di in red"# plink v2 does not exists; download executable from https://www.cog-genomics.org/plink/2.0/ "
+					noi di in red"# set plink v2 location using;  "
+					noi di in red`"# global plink2 "folder\file"  "'
+					exit
+					}
 				}
-			erase _ooo.do
+			qui { // tabbed
+				clear
+				set obs 1
+				gen a = "$tabbed"
+				replace a = subinstr(a,"perl ","capture confirm file ",.)
+				outsheet a using _ooo.do, non noq replace
+				do _ooo.do
+				if _rc==0 {
+					noi di in green"# the tabbed.pl script exists and is correctly assigned as  $tabbed"
+					noi di in green"# ..... ensuring perl is working on your system and can be called from the command-line"
+					clear 
+					set obs 10
+					gen a = "a b c d"
+					outsheet a using test_pl.txt, noq replace
+					!$tabbed test_pl.txt
+					capture confirm file "test_pl.txt.tabbed"
+					if _rc==0 {
+						noi di in green"# ..... the tabbed.pl script is working"
+						}
+					else {
+						noi di in red"# ..... the tabbed.pl script did not work"
+						noi di in red"# download and install active perl on your computer https://www.activestate.com/activeperl/downloads"
+						exit
+						}
+					!del test_pl.*
+					}
+				else {
+					noi di in red"# tabbed.pl does not exists; download executable from https://github.com/ricanney/perl "
+					noi di in red"# set tabbed.pl location using;  "
+					noi di in red`"# global tabbed "folder\file"  "'
+					exit
+					}
+				erase _ooo.do
+				}
+			noi di in green"#########################################################################"
 			}
-		noi di in green"#########################################################################"
-		}
-	qui { // define sandbox working directory (using ralpha)
-		!cd > _000x.tsv
-		import delim using _000x.tsv, varname(nonames) clear
-		erase _000x.tsv
-		gen a = ""
-		ssc install ralpha
-		ralpha folderRandom, range(A/z) l(10)
-		gen a1 = `"global wd ""' + v1 + "\" + folderRandom + `"""'
-		gen a2 = `"global cd ""' + v1 + `"""'
-		gen n = _n
-		keep n a1-a2
-		reshape long a, i(n) 
-		outsheet a using _000a.do, non noq replace
-		do _000a.do
-		erase _000a.do
-		noi di in green"#########################################################################"
-		noi di in green"# the current directory is ............. $cd"
-		noi di in green"# the temporary working directory is ... $wd"
-		noi di in green"#########################################################################"
-		noi di in green""
-		!mkdir $wd
-		cd $wd
-		}
-	qui { // run parameters
-		noi di in red" *** as of 16th November - the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file"
-		noi di in red" *** see https://github.com/ricanney/stata/edit/master/documents/genotypeqc.md for details of new parameter file structure"
-		do ${cd}\\`param'
-		global input "${data_folder}\\${data_input}"
-		global output "${data_folder}\\${data_input}-qc-v5"
-		}
-	qui { // check dependencies from parameter file
-		noi di in green"#########################################################################"
-		noi di in green"# checking for dependency files;"
-		foreach i in build_ref kg_ref_frq aims  {
-			capture confirm file "${`i'}"
-			if _rc==0 {
-				noi di in green"# ...................................... ${`i'} found"
-				}
-			else {
-				noi di in red"# ...................................... ${`i'} does not exist"
-				exit
-				}
+		qui { // run parameters
+			noi di in red" *** as of 16th November - the parameter file has become streamlined, removing annotation and becoming in essence a \*.do file"
+			noi di in red" *** all globals can be assigned prior to running genotyeqc and a dummy parameter file can be created in lieu"
+			noi di in red" *** see https://github.com/ricanney/stata/edit/master/documents/genotypeqc.md for details of new parameter file structure"
+			do ${cd}\\`param'
+			global input "${data_folder}\\${data_input}"
+			global output "${data_folder}\\${data_input}-qc-v5"
 			}
-		foreach i in bim bed fam {
-			capture confirm file "${hapmap_data}.`i'"
-			if _rc==0 {
-				noi di in green"# ...................................... ${hapmap_data}.`i' found"
+		qui { // check path of dependent reference data is true
+			noi di in green"#########################################################################"
+			noi di in green"# > check path of dependent reference data is true                      #"
+			noi di in green"#########################################################################"
+			foreach i in build_ref kg_ref_frq aims  {
+				capture confirm file "${`i'}"
+				if _rc==0 {
+					noi di in green"# ...................................... ${`i'} found"
+					}
+				else {
+					noi di in red"# ...................................... ${`i'} does not exist"
+					exit
+					}
 				}
-			else {
-				noi di in red"# ...................................... ${hapmap_data}.`i' does not exist"
-				exit
-				}
-			}
-		capture cd "$array_ref"
-		if _rc==0 {
-			noi di in green"# ...................................... $array_ref directory exists"
-			}
-		else {
-			noi di in red"# ...................................... ${array_ref} directory does not exist"
-			exit
-			}
-		cd $wd	
-		}
-	qui { // report parameters to screen
-		noi di in green"#########################################################################"
-		noi di in green"# checking for input files;"
-		qui { // ${input}
 			foreach i in bim bed fam {
-				capture confirm file "${input}.`i'"
+				capture confirm file "${hapmap_data}.`i'"
 				if _rc==0 {
-					noi di in green"# ...................................... ${input}.`i' found"
+					noi di in green"# ...................................... ${hapmap_data}.`i' found"
 					}
 				else {
-					noi di in red"# ...................................... ${input}.`i' does not exist"
+					noi di in red"# ...................................... ${hapmap_data}.`i' does not exist"
 					exit
 					}
 				}
+			capture cd "$array_ref"
+			if _rc==0 {
+				noi di in green"# ...................................... $array_ref directory exists"
+				}
+			else {
+				noi di in red"# ...................................... ${array_ref} directory does not exist"
+				exit
+				}
+			cd $wd	
 			}
-		noi di in green"# The dataset will be processed and deposited as; "
-		noi di in green"# ...................................... ${output}"
-		noi di in green"#########################################################################"
-		noi di in green"# The following parameters will be applied"
-		noi di in green"# minimum minor-allele-frequency retained ........................ mac5"
-		noi di in green"# maximum genotype-missingness ................................... ${geno2} (preQC = ${geno1})"
-		noi di in green"# maximum individual-missingness ................................. ${mind}"
-		noi di in green"# maximum tolerated heterozygosity outliers (by-sd) .............. ${hetsd}"
-		noi di in green"# maximum tolerated hardy-weinberg deviation ..................... p < 1E-${hwep}"
-		noi di in green"#########################################################################"
-		noi di in green"# the minimum kinship score for duplicates is set at ............. ${kin_d}"  
-		noi di in green"# the minimum kinship score for 1st degree relatives is set at ... ${kin_f}"  
-		noi di in green"# the minimum kinship score for 2nd degree relatives is set at ... ${kin_s}"  
-		noi di in green"# the minimum kinship score for 3rd degree relatives is set at ... ${kin_t}"  
-		noi di in green"#########################################################################"
-		noi di in green""
-		}
+		qui { // check path of plink binaries to be quality controlled is true
+			noi di in green"#########################################################################"
+			noi di in green"# > check path of plink binaries to be quality controlled is true       #"
+			noi di in green"#########################################################################"
+			qui { // ${input}
+				foreach i in bim bed fam {
+					capture confirm file "${input}.`i'"
+					if _rc==0 {
+						noi di in green"# ...................................... ${input}.`i' found"
+						}
+					else {
+						noi di in red"# ...................................... ${input}.`i' does not exist"
+						exit
+						}
+					}
+				}
+			noi di in green"#########################################################################"
+			noi di in green""
+			noi di in green"#########################################################################"
+			noi di in green"# > display output file and thresholds                                  #"
+			noi di in green"#########################################################################"
+			noi di in green"# The dataset will be processed and deposited as                        #"
+			noi di in green"# ...................................... ${output}"
+			noi di in green"#########################################################################"
+			noi di in green"# The following parameters will be applied"
+			noi di in green"# minimum minor-allele-frequency retained ........................ mac5"
+			noi di in green"# maximum genotype-missingness ................................... ${geno2} (preQC = ${geno1})"
+			noi di in green"# maximum individual-missingness ................................. ${mind}"
+			noi di in green"# maximum tolerated heterozygosity outliers (by-sd) .............. ${hetsd}"
+			noi di in green"# maximum tolerated hardy-weinberg deviation ..................... p < 1E-${hwep}"
+			noi di in green"# the minimum kinship score for duplicates is set at ............. ${kin_d}"  
+			noi di in green"# the minimum kinship score for 1st degree relatives is set at ... ${kin_f}"  
+			noi di in green"# the minimum kinship score for 2nd degree relatives is set at ... ${kin_s}"  
+			noi di in green"# the minimum kinship score for 3rd degree relatives is set at ... ${kin_t}"  
+			noi di in green"#########################################################################"
+			noi di in green""
+			}
+			}
 	qui { // Module #1 - determining the original genotyping array 
 		noi di in green"#########################################################################"
-		noi di in green"# Module #1 - determining the original genotyping array                 #"
+		noi di in green"# Module #1 - define most likely genotyping array of plink binaries from reference data"
 		noi di in green"#########################################################################"
 		qui { // import bim file
 			noi di in green"...importing ............................${input}.bim"
-			bim2dta,bim(${input})
+			qui bim2dta,bim(${input})
 			rename snp rsid
 			keep rsid
 			sort rsid
@@ -475,7 +489,7 @@ syntax , param(string asis)
 				}
 		qui { // rename snps without rsid using 1000-genomes as a reference
 			noi di in green"...update to latest rsid using 1000-genomes as a reference"
-			bim2dta, bim(tempfile-module-2-07)
+			qui bim2dta, bim(tempfile-module-2-07)
 			split snp,p("rs")
 			capture confirm variable snp2
 			if !_rc {
@@ -580,7 +594,7 @@ syntax , param(string asis)
 				keep if tag == 0
 				outsheet rsid using tempfile-module-2-09.extract, non noq replace
 				!$plink --bfile tempfile-module-2-09 --extract tempfile-module-2-09.extract --freq --out tempfile-module-2-09
-				bim2dta, bim(tempfile-module-2-09)
+				qui bim2dta, bim(tempfile-module-2-09)
 				!$tabbed tempfile-module-2-09.frq
 				import delim using tempfile-module-2-09.frq.tabbed, clear	
 				destring maf, replace force
@@ -729,7 +743,7 @@ syntax , param(string asis)
 		noi di in green"#########################################################################"
 		qui { // check build of input binaries
 			noi di in green"...checking the build of the input binaries"
-			bim2dta, bim($input)
+			qui bim2dta, bim($input)
 			rename snp rsid
 			keep rsid chr bp
 			duplicates drop rsid, force
@@ -776,7 +790,7 @@ syntax , param(string asis)
 			}
 		qui { // check build of output binaries
 			noi di in green"...checking the build of the output binaries"
-			bim2dta, bim(tempfile-module-2-final)
+			qui bim2dta, bim(tempfile-module-2-final)
 			rename snp rsid
 			keep rsid chr bp
 			duplicates drop rsid, force
@@ -941,7 +955,7 @@ syntax , param(string asis)
 			}
 		qui { // remove excessive cryptic relatedness
 			noi di in green"...remove excess cryptic relatedness"
-			fam2dta, fam(tempfile-module-5-06)
+			qui fam2dta, fam(tempfile-module-5-06)
 			count
 			global sampleSize `r(N)'
 			noi di in green"...$sampleSize individuals are retained following preliminary quality-control"
@@ -1358,7 +1372,7 @@ syntax , param(string asis)
 			}
 		qui { // merge hapmap-ref
 			foreach i in test hapmap { 
-				bim2dta, bim(tempfile-module-7-`i'-01)
+				qui bim2dta, bim(tempfile-module-7-`i'-01)
 				keep snp a1 a2
 				rename (a1 a2) (`i'_a1 `i'_a2)
 				save tempfile-module-7-`i'.dta,replace
@@ -1566,10 +1580,10 @@ syntax , param(string asis)
 			noi di in green"...create final plots as(png) for reports"
 			qui { // plot marker by chromosome	
 				noi di in green"...plotting markers by chromosome by input / output"
-				bim2dta,bim(${input})
+				qui bim2dta,bim(${input})
 				hist chr,  xlabel(1(1)25) xtitle("Chromosome") discrete freq ylabel(#4,format(%9.0g))
 				graph save input_chrHist.gph, replace
-				bim2dta,bim(tempfile-module-6-final)
+				qui bim2dta,bim(tempfile-module-6-final)
 				hist chr,  xlabel(1(1)25) xtitle("Chromosome") discrete freq ylabel(#4,format(%9.0g))
 				graph save tempfile-final_chrHist.gph, replace
 				graph combine input_chrHist.gph  tempfile-final_chrHist.gph, caption("CREATED: $S_DATE $S_TIME" "INPUT: ${input}" "OUTPUT: ${output}",	size(tiny)) col(1) ycommon
@@ -1638,5 +1652,14 @@ syntax , param(string asis)
 		noi di in green"#########################################################################"
 		cd ${cd}
 		!rmdir  $wd /S /Q
+		!mkdir ..//${output}
+		!del ${output}.hg-buildmatc* ${output}.arraymatc*
+		!copy "${output}.bed"                           "..//${output}//${output}.bed"
+		!copy "${output}.bim"                           "..//${output}//${output}.bim"
+		!copy "${output}_bim.dta"                       "..//${output}//${output}_bim.dta"
+		!copy "${output}.fam"                           "..//${output}//${output}.fam"
+		!copy "${output}.keep-ceuLike"                  "..//${output}//${output}.keep-ceuLike"
+		!copy "${output}.meta-log"                      "..//${output}//${output}.meta-log"
+		!copy "${output}.quality-control-report.docx"   "..//${output}//${output}.quality-control-report.docx"
 		}
 end;

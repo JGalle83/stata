@@ -26,7 +26,7 @@ di in white"Started: $S_DATE $S_TIME"
 qui { 
 	capture confirm file "`bim'.bim"
 	if _rc==0 {
-		noi di in green"# `bim'.bim found and will be imported"
+		 di in green"# `bim'.bim found and will be imported"
 		}
 	else {
 		noi di in red"# `bim'.bim not found "
@@ -34,16 +34,16 @@ qui {
 		noi di in red"# exiting "
 		exit
 		}
-	noi di in white".....importing bim file: `bim'.bim"
+	 di in white".....importing bim file: `bim'.bim"
 	import delim  using `bim'.bim, clear 
-	noi di in white".....renaming variables"
+	 di in white".....renaming variables"
 	rename v1 chr
 	rename v2 snp
 	rename v4 bp
 	rename v5 a1
 	rename v6 a2
-	noi di in white".....recoding genotypes"
-	noi recodegenotype , a1(a1) a2(a2)
+	 di in white".....recoding genotypes"
+	 recodegenotype , a1(a1) a2(a2)
 	rename _gt_tmp gt
 	order chr snp bp a1 a2 gt
 	keep  chr snp bp a1 a2 gt
