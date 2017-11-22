@@ -17,6 +17,7 @@
 # Date: 10th September 2015
 #########################################################################
 */
+
 program graphplinklmiss
 syntax , lmiss(string asis) [geno(real 0.05)]
 
@@ -34,8 +35,8 @@ di in white"# Dependencies : tabbed.pl via ${tabbed}                            
 di in white"#########################################################################"
 di in white"# Started: $S_DATE $S_TIME"
 di in white"#########################################################################"
-di in white"# > check path of plink *.lmiss file is true"
 preserve
+di in white"# > check path of plink *.lmiss file is true"
 qui { // *.lmiss
 	capture confirm file "`lmiss'.lmiss"
 	if _rc==0 {
@@ -84,7 +85,7 @@ qui { // tabbed
 	erase _ooo.do
 	}
 di in white"# > processing *.lmiss"
- qui {
+qui {
 	!$tabbed `lmiss'.lmiss
 	import delim using `lmiss'.lmiss.tabbed, clear case(lower)
 	erase `lmiss'.lmiss.tabbed

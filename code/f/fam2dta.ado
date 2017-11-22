@@ -56,7 +56,6 @@ qui {
 di in white"# > saving file as `fam'_fam.dta"
 qui {
 	save `fam'_fam.dta, replace
-	di in white ".....created new dta file: `fam'_fam.dta"
 	}
 di in white"#########################################################################"
 di in white"# Completed: $S_DATE $S_TIME"
