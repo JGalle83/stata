@@ -3,12 +3,14 @@ program loadUnixReplicas
 version 10.1
 syntax , folder(string asis) 
 
-di "***************************************************"
-di "loadUnixReplicas - version 0.1a 02oct2015 richard anney "
-di "***************************************************"
-di "Load global definitions for unixreplicas"
-di "***************************************************"
-di "Started: $S_DATE $S_TIME"
+di in white"#########################################################################"
+di in white"# loadUnixReplicas - version 0.1a 02oct2015 richard anney "
+di in white"#########################################################################"
+di in white"# Load global definitions for unixreplicas"
+di in white"#########################################################################"
+di in white"# Started: $S_DATE $S_TIME"
+di in white"#########################################################################"
+di in red`"# as an alternative use !bash -c "<unix code>""'
 
 qui {
 	clear

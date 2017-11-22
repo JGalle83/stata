@@ -24,29 +24,29 @@ program graphgene
 syntax  ,  chr(string asis) start(string asis) end(string asis) gene_file(string asis) 
 
 qui { // introduce program
-	noi di in green"#########################################################################"
-	noi di in green"# graphgene                                                              "
-	noi di in green"# version:       1.0                                                     "
-	noi di in green"# Creation Date: 7th September 2017                                      "
-	noi di in green"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
-	noi di in green"#########################################################################"
-	noi di in green"# Note:       The genome build is based on the ensembl gene-location file"
-	noi di in green"#########################################################################"
-	noi di in green""
+	di in white"#########################################################################"
+	di in white"# graphgene                                                              "
+	di in white"# version:       1.0                                                     "
+	di in white"# Creation Date: 7th September 2017                                      "
+	di in white"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
+	di in white"#########################################################################"
+	di in white"# Note:       The genome build is based on the ensembl gene-location file"
+	di in white"#########################################################################"
+	di in white""
 	}
 qui { // check file dependencies
-	noi di in green"# checking ensembl gene-location file;"
+	di in white"# checking ensembl gene-location file;"
 	capture confirm file "`gene_file'"
 	if _rc==0 {
-		noi di in green"# ...................................... `gene_file' found"
+		di in white"# ...................................... `gene_file' found"
 		}
 	else {
-		noi di in red"# ...................................... `gene_file' does not exist"
+		di in red"# ...................................... `gene_file' does not exist"
 		exit
 		}
 	}
 qui { // display region to plot
-	noi di in green "# This script will plot genes on chromosome `chr': from `start' to `end'"
+	di in white "# This script will plot genes on chromosome `chr': from `start' to `end'"
 	}
 qui { // create DUMMY gene data (for gene deserts)
 			noi di"...create DUMMY gene data (for gene deserts)"

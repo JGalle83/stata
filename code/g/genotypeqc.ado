@@ -1666,4 +1666,7 @@ syntax , param(string asis)
 		!copy "${output}.quality-control-report.docx"   "${output_2}.quality-control-report.docx"
 		!del  ${output}*
 		}
+di in white"#########################################################################"
+di in white"# Completed: $S_DATE $S_TIME"
+di in white"#########################################################################"
 end;

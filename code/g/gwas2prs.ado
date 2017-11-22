@@ -1,23 +1,23 @@
 program gwas2prs
 syntax , name(string asis) reference(string asis) 
-noi di"#########################################################################"
-noi di"# gwas2prs               "
-noi di"# version:  1a              "
-noi di"# Creation Date: 5Oct2017            "
-noi di"# Author:  Richard Anney (anneyr@cardiff.ac.uk)     "
-noi di"#########################################################################"
-noi di"# This is a script to standardise the prePRS files from gwas summary statistics     "
-noi di"# -----------------------------------------------------------------------"
-noi di"# syntax , name(string asis) reference(string asis) "
-noi di"#########################################################################"
-noi di "Started: $S_DATE $S_TIME"
+di in white"#########################################################################"
+di in white"# gwas2prs               "
+di in white"# version:  1a              "
+di in white"# Creation Date: 5Oct2017            "
+di in white"# Author:  Richard Anney (anneyr@cardiff.ac.uk)     "
+di in white"#########################################################################"
+di in white"# This is a script to standardise the prePRS files from gwas summary statistics     "
+di in white"# -----------------------------------------------------------------------"
+di in white"# syntax , name(string asis) reference(string asis) "
+di in white"#########################################################################"
+di in white "Started: $S_DATE $S_TIME"
 
 qui { // count input
 	count
 	global inputSNP `r(N)'
 	}
 qui { // drop problematic genotypes
-	noi di in green"removing ID, W and S genotype codes"
+	di in white "removing ID, W and S genotype codes"
 	recodegenotype, a1(a1) a2(a2)
 	count if _gt == "ID" | _gt == "W" | _gt == "S"	
 	global problemSNP `r(N)'	
@@ -25,7 +25,7 @@ qui { // drop problematic genotypes
 	drop _gt
 	}
 qui { // update chromosome codes and limit to autosomes
-	noi di in green"updating chromosomes (assuming coded 1-22)"
+	di in white "updating chromosomes (assuming coded 1-22)"
 	destring chr, replace
 	count if chr > 22
 	global nonautosomeSNP `r(N)'
@@ -34,7 +34,7 @@ qui { // update chromosome codes and limit to autosomes
 	for var chr bp: tostring X, replace
 	}
 qui { // cleaning based on info score
-	noi di in green"cleaning based on info score"
+	di in white "cleaning based on info score"
 	capture confirm variable info
 	if !_rc {
 		count if info < .8
@@ -47,7 +47,7 @@ qui { // cleaning based on info score
 		}
 	}
 qui { // cleaning based on direction variable
-	noi di in green"cleaning based on direction variable"
+	di in white "cleaning based on direction variable"
 	capture confirm variable direction
 	if !_rc {
 		replace direction = subinstr(direction, "-", "",.)
@@ -64,7 +64,7 @@ qui { // cleaning based on direction variable
 		}
 	}
 qui { // removing duplicated SNPs by rsid
-	noi di"removing duplicated SNPs by rsid"
+	di in white"removing duplicated SNPs by rsid"
 	duplicates tag rsid, gen(tag)
 	count if tag != 0
 	global dupsSNP `r(N)'
@@ -74,11 +74,11 @@ qui { // removing duplicated SNPs by rsid
 qui { // create a1_frq if not present
 	capture confirm variable a1_frq
 	if !_rc {
-		noi di"a1_frq present"
+		di in white"a1_frq present"
 		global a1_frq "a1_frq present in input and used in output"
 	}
 	else {
-		noi di"a1_frq not present"
+		di in white"a1_frq not present"
 		global a1_frq "a1_frq not present in input and matched frq from ${ref} used in output"
 		rename (a1 a2 rsid) (b1 b2 snp) 
 		merge 1:1 snp using `reference'_frq.dta
@@ -102,7 +102,7 @@ qui { // outsheet data
 	!$gzip   "`name'-prePRS.tsv"
 	}
 qui { // make meta log
-	noi di in green"...make a meta-log file (flat txt file)"
+	di in white"...make a meta-log file (flat txt file)"
 	clear
 	set obs 25
 	gen a = ""

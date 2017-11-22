@@ -16,25 +16,40 @@
 
 program bim2ldexclude
 syntax , bim(string asis) 
-noi di"#########################################################################"
-noi di"# bim2ldexclude               "
-noi di"# version:  1a              "
-noi di"# Creation Date: 25may2017            "
-noi di"# Author:  Richard Anney (anneyr@cardiff.ac.uk)     "
-noi di"#########################################################################"
-noi di"# This is a script to identify from a bim file the long-range LD regions"
-noi di"# as described in; "
-noi di"# Long-Range LD Can Confound Genome Scans in Admixed Populations. Alkes "
-noi di"# Price, Mike Weale et al., The American Journal of Human Genetics 83, "
-noi di"# 127 - 147, July 2008              "
-noi di"# -----------------------------------------------------------------------"
-noi di"# Syntax : bim2ldexclude, bim(filename)    "
-noi di"# for filename, .bim is not needed          "
-noi di"#########################################################################"
-noi di "Started: $S_DATE $S_TIME"
-noi di "-importing bim file: `bim'.bim"
+
+di in white"#########################################################################"
+di in white"# bim2ldexclude                                                          "
+di in white"# version:  1a                                                           "
+di in white"# Creation Date: 25may2017                                               "
+di in white"# Author:  Richard Anney (anneyr@cardiff.ac.uk)                          "
+di in white"#########################################################################"
+di in white"# A command to identifies long-ld-regions from *.bim files (plink-format "
+di in white"# marker files). The regions excluded are identified in; "
+di in white"# Long-Range LD Can Confound Genome Scans in Admixed Populations. Alkes "
+di in white"# Price, Mike Weale et al., The American Journal of Human Genetics 83, "
+di in white"# 127 - 147, July 2008              "
+di in white"#########################################################################"
+di in white"# Started: $S_DATE $S_TIME"
+di in white"#########################################################################"
+di in white"# > check path of plink *.bim file is true"
+qui { 
+	capture confirm file "`bim'.bim"
+	if _rc==0 {
+		noi di in green"# >> `bim'.bim found and will be imported"
+		}
+	else {
+		noi di in red"# >> `bim'.bim not found "
+		noi di in red"# >> help: do not include .bim in filename  "
+		noi di in red"# >> exiting "
+		exit
+		}
+	}
+di in white"# > importing *.bim file"
 qui { 
 	import delim using `bim'.bim, clear 
+	}
+di in white"# > identifying regions to exclude"
+qui { 
 	gen drop = .
 	replace drop = 1 if (v1 == 1  & v4 >= 48000000  & v4 <= 52000000)
 	replace drop = 1 if (v1 == 2  & v4 >= 86000000  & v4 <= 100500000)
@@ -60,10 +75,15 @@ qui {
 	replace drop = 1 if (v1 == 12 & v4 >= 33000000  & v4 <= 40000000)
 	replace drop = 1 if (v1 == 12 & v4 >= 109500000 & v4 <= 112000000)
 	replace drop = 1 if (v1 == 20 & v4 >= 32000000  & v4 <= 34500000)	
+	}
+di in white`"# > exporting snp-list to file "long-range-ld.exclude""'
+qui { 
 	outsheet v2 if drop == 1 using "long-range-ld.exclude", replace non noq
 	}
-di "Completed: $S_DATE $S_TIME"
-di "done!"
+di in white"#########################################################################"
+di in white"# Completed: $S_DATE $S_TIME"
+di in white"#########################################################################"
 end;	
+	
 
 	

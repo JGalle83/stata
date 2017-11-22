@@ -1,16 +1,17 @@
 program symbol2ensembl
 syntax , name (string asis) symbol(string asis) data(string asis) history(string asis) 
-noi di"#########################################################################"
-noi di"# symbol2ensembl               "
-noi di"# version:  1a              "
-noi di"# Creation Date: 02Oct2017            "
-noi di"# Author:  Richard Anney (anneyr@cardiff.ac.uk)     "
-noi di"#########################################################################"
-noi di"# This is a script to derive from a bim file (and matching bed fam) the "
-noi di"# a command to convert gene-symbols to ensembl identifiers          "
-noi di"# -----------------------------------------------------------------------"
-noi di"# Syntax : symbol2ensembl, name(<output-name>) symbol(<varname>) data(<ensembl-database>) history(<gene_history.9606 file>)   "
-noi di"#########################################################################"
+
+di in white"#########################################################################"
+di in white"# symbol2ensembl               "
+di in white"# version:  1a              "
+di in white"# Creation Date: 02Oct2017            "
+di in white"# Author:  Richard Anney (anneyr@cardiff.ac.uk)     "
+di in white"#########################################################################"
+di in white"# This is a script to derive from a bim file (and matching bed fam) the "
+di in white"# a command to convert gene-symbols to ensembl identifiers          "
+di in white"# -----------------------------------------------------------------------"
+di in white"# Syntax : symbol2ensembl, name(<output-name>) symbol(<varname>) data(<ensembl-database>) history(<gene_history.9606 file>)   "
+di in white"#########################################################################"
 noi di "Started: $S_DATE $S_TIME"
 
 qui { // clean up gene-names
@@ -138,7 +139,7 @@ qui { // create meta-log
 	replace a = `"#########################################################################"'            in 11
 	replace a = `"# Run Information"'                                                                    in 12      
 	replace a = `"# ======================================================================="'            in 13
-	replace a = `"# Name ................................................... `name'-ensembl-list.dta "' in 14
+	replace a = `"# Name ................................................... `name'-ensembl-list.dta"'   in 14
 	replace a = `"# Date ................................................... $S_DATE $S_TIME "'          in 15
 	replace a = `"# Number of non-missing symbols imported ................. ${nonMissSymbol}"'          in 16
 	replace a = `"# Number of unique symbols ............................... ${uniqueSymbol}"'           in 17

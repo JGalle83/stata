@@ -19,21 +19,21 @@
 */
 program graphplinkfrq
 syntax , frq(string asis) 
-noi di"#########################################################################"
-noi di"# graphplinkfrq                                                          "
-noi di"# version:       2a                                                      "
-noi di"# Creation Date: 21April2017                                             "
-noi di"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
-noi di"#########################################################################"
-noi di"# This is a script to plot the output from frq file from the --freq      "
-noi di"# routine in plink.                                                      " 
-noi di"# The input data comes in standard format from the frq output.         "
-noi di"# -----------------------------------------------------------------------"
-noi di"# Dependencies : tabbed.pl via ${tabbed}                                 "
-noi di"# -----------------------------------------------------------------------"
-noi di"# Syntax : graphplinkfrq, frq(filename) [maf(real 0.05)]                 "
-noi di"# for filename, .frq is not needed                                       "
-noi di"#########################################################################"
+di in white"#########################################################################"
+di in white"# graphplinkfrq                                                          "
+di in white"# version:       2a                                                      "
+di in white"# Creation Date: 21April2017                                             "
+di in white"# Author:        Richard Anney (anneyr@cardiff.ac.uk)                    "
+di in white"#########################################################################"
+di in white"# This is a script to plot the output from frq file from the --freq      "
+di in white"# routine in plink.                                                      " 
+di in white"# The input data comes in standard format from the frq output.         "
+di in white"# -----------------------------------------------------------------------"
+di in white"# Dependencies : tabbed.pl via ${tabbed}                                 "
+di in white"# -----------------------------------------------------------------------"
+di in white"# Syntax : graphplinkfrq, frq(filename) [maf(real 0.05)]                 "
+di in white"# for filename, .frq is not needed                                       "
+di in white"#########################################################################"
 qui { 
 	preserve
 	!$tabbed `frq'.frq.counts
@@ -51,7 +51,7 @@ qui {
 	sum total
 	global mac5 = 5/`r(max)'
 	sum maf
-	noi di"-plotting frequency distribution to tmpFRQ.gph"
+	di in white"-plotting frequency distribution to tmpFRQ.gph"
 	if `r(min)' != `r(max)' {
 		tw hist maf,  width(0.004) start(0) percent ///
 		   xlabel(0(.1)0.5) ///
