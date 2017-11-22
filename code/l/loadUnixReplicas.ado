@@ -1,13 +1,11 @@
 program loadUnixReplicas
-*! version 0.1a 02oct2015 richard anney
-version 10.1
-syntax , folder(string asis) 
 
+syntax , folder(string asis) 
 di in white"#########################################################################"
 di in white"# loadUnixReplicas - version 0.1a 02oct2015 richard anney "
 di in white"#########################################################################"
-di in white"# Load global definitions for unixreplicas"
-di in red `"# as an alternative use !bash -c "<unix code>""'
+di in white"# Creates global link to unix executables "
+di in red `"# as an alternative to unix executable use !bash -c "<unix code>""'
 di in white"#########################################################################"
 di in white"# Started: $S_DATE $S_TIME"
 di in white"#########################################################################"
