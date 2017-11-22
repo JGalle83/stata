@@ -164,6 +164,7 @@ syntax , param(string asis)
 			do ${cd}\\`param'
 			global input "${data_folder}\\${data_input}"
 			global output "${data_folder}\\${data_input}-qc-v5"
+			global output_2 "${data_input}-qc-v5"
 			}
 		qui { // check path of dependent reference data is true
 			noi di in green"#########################################################################"
@@ -1652,14 +1653,17 @@ syntax , param(string asis)
 		noi di in green"#########################################################################"
 		cd ${cd}
 		!rmdir  $wd /S /Q
-		!mkdir ..//${output}
+		cd ..
 		!del ${output}.hg-buildmatc* ${output}.arraymatc*
-		!copy "${output}.bed"                           "..//${output}//${output}.bed"
-		!copy "${output}.bim"                           "..//${output}//${output}.bim"
-		!copy "${output}_bim.dta"                       "..//${output}//${output}_bim.dta"
-		!copy "${output}.fam"                           "..//${output}//${output}.fam"
-		!copy "${output}.keep-ceuLike"                  "..//${output}//${output}.keep-ceuLike"
-		!copy "${output}.meta-log"                      "..//${output}//${output}.meta-log"
-		!copy "${output}.quality-control-report.docx"   "..//${output}//${output}.quality-control-report.docx"
+		!mkdir "${output_2}"
+		cd "${output_2}"
+		!copy "${output}.bed"                           "${output_2}.bed"
+		!copy "${output}.bim"                           "${output_2}.bim"
+		!copy "${output}_bim.dta"                       "${output_2}_bim.dta"
+		!copy "${output}.fam"                           "${output_2}.fam"
+		!copy "${output}.keep-ceuLike"                  "${output_2}.keep-ceuLike"
+		!copy "${output}.meta-log"                      "${output_2}.meta-log"
+		!copy "${output}.quality-control-report.docx"   "${output_2}.quality-control-report.docx"
+		!del  ${output}*
 		}
 end;
