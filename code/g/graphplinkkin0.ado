@@ -97,7 +97,7 @@ qui { // tabbed
 	}
 di in white"# > processing *.kin0"
 qui { 
-	preserve
+	
 	!$tabbed `kin0'.kin0
 	import delim using `kin0'.kin0.tabbed, clear case(lower)
 	erase `kin0'.kin0.tabbed
