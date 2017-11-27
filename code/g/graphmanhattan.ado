@@ -44,7 +44,7 @@ net install colorscheme, from(https://github.com/matthieugomez/stata-colorscheme
 preserve
 di in white"# > retaining working variables"
 qui { 
-	keep `ch' `p' `bp'
+	keep `chr' `p' `bp'
 	}
 di in white"# > checking variable in correct format"
 qui { // chr
